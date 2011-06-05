@@ -728,6 +728,15 @@ protocol_property(Ptc, Prop) :-
 
 
 
+'$lgt_entity_property_includes'(Entity, provides(Functor/Arity, To, Properties)) :-
+	'$lgt_predicate_property_'(To, Functor/Arity, line_clauses_from(Line, N, Entity)),
+	(	Line =\= -1 ->
+		Properties = [line(Line), clauses(N)]
+	;	Properties = [clauses(N)]
+	).
+
+
+
 % create_object(?object_identifier, +list, +list, +list)
 
 create_object(Obj, Rels, Dirs, Clauses) :-
@@ -15676,6 +15685,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_object_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the object
 '$lgt_valid_object_property'(defines(_, _)).			% list of definition properties for a predicate locally defined in the object
 '$lgt_valid_object_property'(includes(_, _, _)).		% list of definition properties for a multifile predicate defined in contributing entities
+'$lgt_valid_object_property'(provides(_, _, _)).		% list of definition properties for a multifile predicate defined for other entities
 '$lgt_valid_object_property'(info(_)).					% list of pairs with user-defined object documentation
 
 
@@ -15710,6 +15720,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_category_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the category
 '$lgt_valid_category_property'(defines(_, _)).			% list of definition properties for a predicate defined in the category
 '$lgt_valid_category_property'(includes(_, _, _)).		% list of definition properties for a multifile predicate defined in contributing entities
+'$lgt_valid_category_property'(provides(_, _, _)).		% list of definition properties for a multifile predicate defined for other entities
 '$lgt_valid_category_property'(info(_)).				% list of pairs with user-defined category documentation
 
 
