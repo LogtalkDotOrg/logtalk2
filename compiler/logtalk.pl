@@ -263,7 +263,7 @@
 :- dynamic('$lgt_pp_entity_aux_clause_'/1).					% '$lgt_pp_entity_aux_clause_'(Clause)
 :- dynamic('$lgt_pp_final_entity_aux_clause_'/1).			% '$lgt_pp_final_entity_aux_clause_'(Clause)
 
-:- dynamic('$lgt_pp_clause_number_'/3).						% '$lgt_pp_clause_number_'(Functor, Arity, Number)
+:- dynamic('$lgt_pp_clause_number_'/3).						% '$lgt_pp_clause_number_'(TFunctor, TArity, Number)
 
 :- dynamic('$lgt_pp_defines_predicate_'/4).					% '$lgt_pp_defines_predicate_'(Functor, Arity, TFunctor, TArity)
 :- dynamic('$lgt_pp_calls_predicate_'/4).					% '$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity)
@@ -8712,7 +8712,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	TClause = (THead:-TBody)
 	),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
-	'$lgt_clause_number'(Head, N),
+	'$lgt_clause_number'(THead, N),
 	'$lgt_add_predicate_first_clause_line_property'(N, Head).
 
 '$lgt_tr_clause'(Fact, _, _, _, _) :-
@@ -8762,17 +8762,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_debugger.fact'(Fact, N, ExCtx)), HeadCtx, _) :-
 	'$lgt_tr_head'(Fact, TFact, HeadCtx),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
-	'$lgt_clause_number'(Fact, N),
+	'$lgt_clause_number'(TFact, N),
 	'$lgt_add_predicate_first_clause_line_property'(N, Fact).
 
 
-'$lgt_clause_number'(Head, N) :-
-	functor(Head, Functor, Arity),
-	(	retract('$lgt_pp_clause_number_'(Functor, Arity, N0)) ->
+'$lgt_clause_number'(THead, N) :-
+	functor(THead, TFunctor, TArity),
+	(	retract('$lgt_pp_clause_number_'(TFunctor, TArity, N0)) ->
 		N is N0 + 1
 	;	N = 1
 	),
-	assertz('$lgt_pp_clause_number_'(Functor, Arity, N)).
+	assertz('$lgt_pp_clause_number_'(TFunctor, TArity, N)).
 
 
 '$lgt_add_predicate_first_clause_line_property'(1, QHead) :-
@@ -8810,7 +8810,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!.
 
 '$lgt_add_entity_predicate_properties'(Entity) :-
-	'$lgt_pp_clause_number_'(Functor, Arity, N),
+	'$lgt_pp_defines_predicate_'(Functor, Arity, TFunctor, TArity),
+	'$lgt_pp_clause_number_'(TFunctor, TArity, N),
 	once(retract('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine,_))))),
 	assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine,N)))),
 	fail.
