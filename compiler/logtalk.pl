@@ -1774,6 +1774,12 @@ logtalk_compile(Files, Flags) :-
 		asserta('$lgt_pp_file_compiler_flag_'(reload, always))
 	;	true
 	),
+	(	'$lgt_pp_file_compiler_flag_'(smart_compilation, on) ->
+		% smart_compilation flag on requires the clean flag off
+		retractall('$lgt_pp_file_compiler_flag_'(clean, _)),
+		asserta('$lgt_pp_file_compiler_flag_'(clean, off))
+	;	true
+	),
 	(	'$lgt_pp_file_compiler_flag_'(hook, Entity) ->
 		% pre-compile hooks in order to speed up entity compilation
 		(	Entity == user ->
