@@ -133,12 +133,13 @@ RELEASE NOTES
     '$lgt_is_list'/1 and and replaced the old '$lgt_is_list'/1 predicate by
     a new '$lgt_is_list_or_partial_list'/1 predicate.
 
-    Updated the SWI-Prolog config file in order to avoid preventing loading
-    of a Logtalk source file when a Prolog file with the same name exists on
-    the same lookup directory. In addition, add source location information
-    to the generated Prolog files resulting from the compilation of Logtalk
-    source files. This location information is necessary for supporting some
-    of the SWI-Prolog development tools.
+    Updated the SWI-Prolog config file in order to delete QLF files when the
+    "clean" flag is "on" and to avoid preventing loading of a Logtalk source
+    file when a Prolog file with the same name exists on the same lookup
+    directory. In addition, add source location information to the generated
+    Prolog files resulting from the compilation of Logtalk source files. This
+    location information is necessary for supporting some of the SWI-Prolog
+    development tools.
 
     Updated the SWI-Prolog integration files in order to hide the source code
     of the Logtalk (::)/2 and (<<)/2 built-in predicates from this compiler

@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: June 2, 2011
+%  last updated: June 5, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -163,6 +163,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_file_extension'(logtalk, '.lgt').
 '$lgt_file_extension'(prolog, '.pl').
 '$lgt_file_extension'(xml, '.xml').
+'$lgt_file_extension'(tmp, '.qlf').
 
 
 
