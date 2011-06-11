@@ -176,6 +176,9 @@ RELEASE NOTES
     implementation of the expand_path/2 predicate (resulting from recent
     changes to the SWI-Prolog absolute_file_name/3 built-in predicate).
 
+    Updated the "xml_parser" contribution in order to workaround portability
+    issues with GNU Prolog.
+
     Correct a bug in some shell scripts where "#/bin/bash" was used instead
     of "#!/bin/bash". Thanks to Yiorgos Adamopoulos for the bug report.
 
