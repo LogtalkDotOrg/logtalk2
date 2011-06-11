@@ -11,13 +11,12 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: May 15, 2011
+%  last updated: June 11, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 :- built_in.
-:- set_prolog_flag(strict_iso, off).
 
 
 
@@ -54,9 +53,6 @@
 
 '$lgt_predicate_property'(Pred, Prop) :-
 	predicate_property(Pred, Prop).
-
-'$lgt_predicate_property'(Pred, built_in) :-
-	predicate_property(Pred, built_in_fd).
 
 
 
@@ -99,11 +95,13 @@ setup_call_cleanup(_, _, _) :-
 % the third argument, which must be either "predicate" or "control_construct",
 % is used to guide the compilation of these meta-predicates in debug mode
 
-'$lgt_pl_meta_predicate'(Callable, Template, predicate) :-
+'$lgt_pl_meta_predicate'(Callable, Template, Kind) :-
 	functor(Callable, Functor, Arity),
 	predicate_property(Functor/Arity, meta_predicate(Template)),
-	(	predicate_property(Functor/Arity, built_in)
-	;	predicate_property(Functor/Arity, built_in_fd)
+	predicate_property(Functor/Arity, built_in),
+	(	predicate_property(Functor/Arity, control_construct) ->
+		Kind = control_construct
+	;	Kind = predicate
 	),
 	!.
 

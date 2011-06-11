@@ -153,10 +153,7 @@ RELEASE NOTES
     making use of the recently implemented call/N built-in control constructs
     when available.
 
-    Updated the GNU Prolog config file setting the "strict_iso" flag to "off"
-    in order to avoid the annoying incompatibility of the predicate_property/2
-    predicate with the de facto standard of taking a callable term as first
-    argument.
+    Updated the GNU Prolog config file for the stable 1.4.0 release.
 
     Updated the SICStus Prolog 4 config file in order to workaround some of
     the incompatible changes to absolute_file_name/2 and open/3-4 introduced
