@@ -352,10 +352,6 @@ Obj<<Goal :-
 	var(Variable),
 	throw(error(instantiation_error, logtalk(throw(_), _))).
 
-'$lgt_runtime_error_handler'(error(Variable)) :-
-	var(Variable),
-	throw(error(instantiation_error, logtalk(throw(_), _))).
-
 '$lgt_runtime_error_handler'(error(Variable, Context)) :-
 	var(Variable),
 	throw(error(instantiation_error, throw(_), Context)).
@@ -413,22 +409,6 @@ Obj<<Goal :-
 		throw(error(existence_error(category, CtgOrPtc), logtalk(_, _)))
 	).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(':'(_, TFunctor2/TArity2), _))) :-
-	!,
-	'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))).
-
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))) :-	% SWI-Prolog
-	'$lgt_decompile_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
-	'$lgt_decompile_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
-	functor(Goal2, Functor2, Arity2),
-	throw(error(existence_error(procedure, Functor1/Arity1), logtalk(Goal2, Entity))).
-
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), TFunctor2/TArity2)) :-				% GNU Prolog and B-Prolog
-	'$lgt_decompile_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
-	'$lgt_decompile_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
-	functor(Goal2, Functor2, Arity2),
-	throw(error(existence_error(procedure, Functor1/Arity1), logtalk(Goal2, Entity))).
-
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% Ciao
 	atom_concat('user:', TFunctor, ModTFunctor),
 	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
@@ -454,10 +434,6 @@ Obj<<Goal :-
 	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
 	functor(Goal, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
-
-'$lgt_runtime_error_handler'(error(Variable, _)) :-
-	var(Variable),
-	throw(error(instantiation_error, logtalk(throw(_), _))).
 
 '$lgt_runtime_error_handler'(error(Error, logtalk(Object::Goal, user))) :-
 	Object == user,
