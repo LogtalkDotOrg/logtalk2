@@ -360,6 +360,9 @@ Obj<<Goal :-
 	var(Variable),
 	throw(error(instantiation_error, throw(_), Context)).
 
+'$lgt_runtime_error_handler'(error(error(Error, _), Context)) :-
+	'$lgt_runtime_error_handler'(error(Error, Context)).
+
 '$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_obj_ne_nv'(Self, Goal, Sender)), _, _)) :-
 	(	Self == user ->
 		throw(error(existence_error(goal_thread, Goal), logtalk(Goal, Sender)))
@@ -4993,8 +4996,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	'$lgt_load_prolog_code'(PrologFile, SourceFile, [])
 	),
 	(	'$lgt_compiler_flag'(clean, on) ->
-		% try to delete the intermediate Prolog ignoring any failure or error:
+		% try to delete the intermediate Prolog (ignore failure or error):
 		catch(('$lgt_delete_file'(PrologFile) -> true; true), _, true),
+		% try to delete any Prolog-specific auxiliary file (ignore failure or error):
 		forall(
 			'$lgt_file_name'(tmp, Source, _, TmpFile),
 			catch(('$lgt_delete_file'(TmpFile) -> true; true), _, true))
@@ -5764,9 +5768,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	catch(close(Input), _, true),
 	(	nonvar(Output) ->
 		catch(close(Output), _, true),
-		'$lgt_file_name'(logtalk, Name, File, _),	% try to delete the intermediate Prolog file in order to
-		'$lgt_file_name'(prolog, Name, _, Prolog),	% avoid problems when using the "smart_compilation" flag
+		% try to delete the intermediate Prolog (ignore failure or error) in order to
+		% prevent problems when using the "smart_compilation" flag:
+		'$lgt_file_name'(logtalk, Name, File, _),
+		'$lgt_file_name'(prolog, Name, _, Prolog),
 		catch(('$lgt_delete_file'(Prolog) -> true; true), _, true),
+		% try to delete any Prolog-specific auxiliary file (ignore failure or error):
 		forall(
 			'$lgt_file_name'(tmp, Name, _, TmpFile),
 			catch(('$lgt_delete_file'(TmpFile) -> true; true), _, true))
