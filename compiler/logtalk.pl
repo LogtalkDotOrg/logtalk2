@@ -113,7 +113,7 @@
 
 % table of loaded files
 
-:- dynamic('$lgt_loaded_file_'/2).					% '$lgt_loaded_file_'(File, Directory)
+:- dynamic('$lgt_loaded_file_'/3).					% '$lgt_loaded_file_'(File, Directory, Options)
 
 
 % debugger status and tables
@@ -4016,6 +4016,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_logtalk._dcl'(expand_library_path(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(loaded_file(_, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(loaded_file(_, _, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_aux_clauses(_), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(entity_prefix(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _), p(p(p)), no, 0).
@@ -4049,6 +4050,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_logtalk._def'(expand_library_path(Library, Path), _, '$lgt_expand_library_path'(Library, Path)).
 '$lgt_logtalk._def'(loaded_file(File, Directory), _, '$lgt_loaded_file_'(File, Directory)).
+'$lgt_logtalk._def'(loaded_file(File, Directory, Options), _, '$lgt_loaded_file_'(File, Directory, Options)).
 '$lgt_logtalk._def'(compile_aux_clauses(Clauses), _, '$lgt_compile_aux_clauses'(Clauses)).
 '$lgt_logtalk._def'(entity_prefix(Entity, Prefix), _, '$lgt_entity_prefix'(Entity, Prefix)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads), _, '$lgt_compile_predicate_heads'(Heads, THeads)).
@@ -4910,23 +4912,23 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_clean_pp_clauses',
 	'$lgt_set_compiler_flags'(Flags),
-	'$lgt_load_file'(File),
+	'$lgt_load_file'(File, Flags),
 	'$lgt_load_files'(Files, Flags).
 
 '$lgt_load_files'(File, Flags) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_set_compiler_flags'(Flags),
-	'$lgt_load_file'(File),
+	'$lgt_load_file'(File, Flags),
 	'$lgt_clear_compiler_flags',
 	'$lgt_clean_pp_clauses'.
 
 
 
-% '$lgt_load_file'(@source_file_name)
+% '$lgt_load_file'(@source_file_name, @list)
 %
 % compiles to disk and then loads to memory a source file
 
-'$lgt_load_file'(Term) :-
+'$lgt_load_file'(Term, Flags) :-
 	compound(Term),
 	!,
 	Term =.. [Library, Source],
@@ -4936,16 +4938,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_current_directory'(ExpandedPath),		% don't provide the necessary support for expanding paths
 	(	Current \== ExpandedPath ->
 		'$lgt_report_working_directory'(ExpandedPath),
-		'$lgt_load_file'(Source),
+		'$lgt_load_file'(Source, Flags),
 		'$lgt_change_directory'(Current),
 		'$lgt_report_working_directory'(Current)
-	;	'$lgt_load_file'(Source)
+	;	'$lgt_load_file'(Source, Flags)
 	).
 
-'$lgt_load_file'(Source) :-
+'$lgt_load_file'(Source, Flags) :-
 	'$lgt_current_directory'(Directory),
 	'$lgt_file_name'(logtalk, Source, File, _),
-	(	'$lgt_loaded_file_'(File, Directory) ->
+	(	'$lgt_loaded_file_'(File, Directory, _) ->
 		(	'$lgt_compiler_flag'(reload, skip) ->
 			'$lgt_report_skipping_file'(Source)
 		;	'$lgt_report_reloading_file'(Source),
@@ -4957,7 +4959,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		'$lgt_compile_file'(Source),
 		'$lgt_load_compiled_file'(Source),
 		'$lgt_report_loaded_file'(Source),
-		assertz('$lgt_loaded_file_'(File, Directory))
+		assertz('$lgt_loaded_file_'(File, Directory, Flags))
 	).
 
 
