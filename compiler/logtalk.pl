@@ -13999,17 +13999,31 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % reports possible misspelt predicate calls in the body of object and category predicates
 
-'$lgt_report_misspelt_calls'(_, _) :-
-	'$lgt_compiler_flag'(misspelt, error),
-	'$lgt_misspelt_call'(Pred),
-	throw(existence_error(predicate, Pred)).
-
 '$lgt_report_misspelt_calls'(Type, Entity) :-
-	(   '$lgt_compiler_flag'(misspelt, warning),
-		setof(Pred, '$lgt_misspelt_call'(Pred), Preds) ->
+	'$lgt_compiler_flag'(misspelt, FlagValue),
+	'$lgt_report_misspelt_calls'(FlagValue, Type, Entity).
+
+
+'$lgt_report_misspelt_calls'(silent, _, _).
+
+'$lgt_report_misspelt_calls'(error, _, _) :-
+	(	'$lgt_misspelt_predicate_call'(Predicate) ->
+		throw(existence_error(predicate, Predicate))
+	;	'$lgt_misspelt_non_terminal_call'(NonTerminal) ->
+		throw(existence_error(non_terminal, NonTerminal))
+	;	true
+	).
+
+'$lgt_report_misspelt_calls'(warning, Type, Entity) :-
+	'$lgt_report_misspelt_predicate_calls'(Type, Entity),
+	'$lgt_report_misspelt_non_terminal_calls'(Type, Entity).
+
+
+'$lgt_report_misspelt_predicate_calls'(Type, Entity) :-
+	(	setof(Predicate, '$lgt_misspelt_predicate_call'(Predicate), Predicates) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
-		(	Preds = [_] ->
+		(	Predicates = [_] ->
 			(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _)) ->
 				write('%         WARNING!  This predicate is called but may not be defined: ')
 			;	write('%         WARNING!  This predicate is called but never defined: ')
@@ -14020,16 +14034,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			),
 			nl, write('%                       ')
 		),
-		'$lgt_writeq_list'(Preds), nl,
+		'$lgt_writeq_list'(Predicates), nl,
 		(	'$lgt_compiler_flag'(report, warnings) ->
 			'$lgt_report_warning_entity_context'(Type, Entity)
 		;	true
 		)
-	;	true
+	;	true	
 	).
 
 
-'$lgt_misspelt_call'(Functor/Arity) :-
+'$lgt_misspelt_predicate_call'(Functor/Arity) :-
 	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
 	\+ '$lgt_pp_defines_predicate_'(Functor, Arity, _, _),
 	\+ '$lgt_pp_dynamic_'(Functor, Arity),
@@ -14039,7 +14053,32 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	Arity2 is Arity - 2,
 	\+ '$lgt_pp_calls_non_terminal_'(Functor, Arity2).
 
-'$lgt_misspelt_call'(Functor//Arity) :-
+
+'$lgt_report_misspelt_non_terminal_calls'(Type, Entity) :-
+	(	setof(NonTerminal, '$lgt_misspelt_non_terminal_call'(NonTerminal), NonTerminals) ->
+		'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		(	NonTerminals = [_] ->
+			(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _)) ->
+				write('%         WARNING!  This non-terminal is called but may not be defined: ')
+			;	write('%         WARNING!  This non-terminal is called but never defined: ')
+			)
+		;	(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _)) ->
+				write('%         WARNING!  These non-terminals are called but may not be defined: ')
+			;	write('%         WARNING!  These non-terminals are called but never defined: ')
+			),
+			nl, write('%                       ')
+		),
+		'$lgt_writeq_list'(NonTerminals), nl,
+		(	'$lgt_compiler_flag'(report, warnings) ->
+			'$lgt_report_warning_entity_context'(Type, Entity)
+		;	true
+		)
+	;	true
+	).
+
+
+'$lgt_misspelt_non_terminal_call'(Functor//Arity) :-
 	'$lgt_pp_calls_non_terminal_'(Functor, Arity),
 	\+ '$lgt_pp_defines_non_terminal_'(Functor, Arity),
 	ExtArity is Arity + 2,
