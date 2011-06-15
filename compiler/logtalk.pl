@@ -2032,50 +2032,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, Rnm, _),
 	call(Dcl, Pred, PScope, Meta, Flags, SCtn, TCtn),
 	!,
-	functor(Pred, Functor, Arity),
 	(	\+ \+ PScope = Scope ->
 		true
 	;	Sender = SCtn
 	),
-	(	Prop = logtalk
-	;	'$lgt_scope'(Prop, PScope)
-	;	(	Flags /\ 2 =:= 2 ->
-			Prop = (dynamic)
-		;	Prop = static
-		)
-	;	Prop = declared_in(TCtn)
-	;	Meta \== no,
-		Meta =.. [_| MetaArgs],			% Pred can be an alias
-		Meta2 =.. [Functor| MetaArgs],
-		Prop = meta_predicate(Meta2)
-	;	Flags /\ 32 =:= 32,
-		Prop = (coinductive)
-	;	Flags /\ 16 =:= 16,
-		Prop = (multifile)
-	;	Flags /\ 8 =:= 8,
-		NTArity is Arity - 2,
-		Prop = non_terminal(Functor//NTArity)
-	;	Flags /\ 4 =:= 4,
-		Prop = synchronized
-	;	once((	'$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _, _, _, _, _, _)
-			;	'$lgt_current_category_'(TCtn, _, TCtnDcl, _, _, _)
-			;	'$lgt_current_protocol_'(TCtn, _, TCtnDcl, _, _)
-		)),
-		\+ call(TCtnDcl, Pred, _, _, _),
-		'$lgt_find_original_predicate'(Obj, Rnm, Pred, Original),
-		Prop = alias_of(Original)
-	;	(	call(Def, Pred, _, _, DCtn) ->
-			(	Prop = defined_in(DCtn)
-			;	'$lgt_find_overridden_predicate'(DCtn, Pred, Super),
-				Prop = redefined_from(Super)
-			)
-		;	true
-		)
-	;	'$lgt_predicate_property_'(TCtn, Functor/Arity, info(Info)),
-		Prop = info(Info)
-	;	'$lgt_predicate_property_'(TCtn, Functor/Arity, mode(Mode, Solutions)),
-		Prop = mode(Mode, Solutions)
-	).
+	'$lgt_scope'(CScope, PScope),
+	'$lgt_predicate_property_user'(Prop, Pred, CScope, Meta, Flags, TCtn, Obj, Def, Rnm).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, Scope) :-
 	'$lgt_built_in_method'(Pred, PScope, Meta, Flags),
@@ -2084,53 +2046,110 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		true
 	;	Sender = Obj
 	),
-	(	Prop = logtalk
-	;	'$lgt_scope'(Prop, PScope)
-	;	Flags /\ 1 =:= 1,		% just to help document predicate declaration bit patterns
-		Prop = built_in			% as this clause only deals with built-in methods
-	;	(	Flags /\ 2 =:= 2 ->
-			Prop = (dynamic)
-		;	Prop = static
-		)
-	;	Meta \== no,
-		Prop = meta_predicate(Meta)
-	;	Flags /\ 16 =:= 16,
-		Prop = (multifile)
-	;	Flags /\ 8 =:= 8,
-		functor(Pred, Functor, Arity2),
-		Arity is Arity2 - 2,
-		Prop = non_terminal(Functor//Arity)
-	;	Flags /\ 4 =:= 4,
-		Prop = synchronized
-	).
+	'$lgt_scope'(CScope, PScope),
+	'$lgt_predicate_property_built_in_method'(Prop, Pred, CScope, Meta, Flags).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
 	'$lgt_lgt_built_in'(Pred),
 	!,
-	(	Prop = logtalk
-	;	Prop = (public)
-	;	Prop = built_in
-	;	Prop = static
-	).
+	'$lgt_predicate_property_lgt_built_in'(Prop).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
 	'$lgt_pl_built_in'(Pred),
 	!,
-	(	Prop = prolog
-	;	(	'$lgt_pl_meta_predicate'(Pred, Meta, _) ->
-			(	Prop = private
-			;	Prop = meta_predicate(Meta)
-			)
-		;	Prop = (public)
-		)
-	;	Prop = built_in
-	;	(	'$lgt_predicate_property'(Pred, (dynamic)) ->
-			Prop = (dynamic)
-		;	Prop = static
-		)
-	;	'$lgt_predicate_property'(Pred, (multifile)),
-		Prop = (multifile)
+	'$lgt_predicate_property_pl_built_in'(Prop, Pred).
+
+
+'$lgt_predicate_property_user'(logtalk, _, _, _, _, _, _, _, _).
+'$lgt_predicate_property_user'((public), _, (public), _, _, _, _, _, _).
+'$lgt_predicate_property_user'(protected, _, protected, _, _, _, _, _, _).
+'$lgt_predicate_property_user'(private, _, private, _, _, _, _, _, _).
+'$lgt_predicate_property_user'((dynamic), _, _, _, Flags, _, _, _, _) :-
+	Flags /\ 2 =:= 2.
+'$lgt_predicate_property_user'(static, _, _, _, Flags, _, _, _, _) :-
+	Flags /\ 2 =\= 2.
+'$lgt_predicate_property_user'(declared_in(TCtn), _, _, _, _, TCtn, _, _, _).
+'$lgt_predicate_property_user'(meta_predicate(Meta), Pred, _, Meta0, _, _, _, _, _) :-
+	Meta0 \== no,
+	functor(Pred, Functor, _),
+	Meta0 =.. [_| MetaArgs],		% Pred can be an alias
+	Meta =.. [Functor| MetaArgs].
+'$lgt_predicate_property_user'((coinductive), _, _, _, Flags, _, _, _, _) :-
+	Flags /\ 32 =:= 32.
+'$lgt_predicate_property_user'((multifile), _, _, _, Flags, _, _, _, _) :-
+	Flags /\ 16 =:= 16.
+'$lgt_predicate_property_user'(non_terminal(Functor//Arity), Pred, _, _, Flags, _, _, _, _) :-
+	Flags /\ 8 =:= 8,
+	functor(Pred, Functor, ExtArity),
+	Arity is ExtArity - 2.
+'$lgt_predicate_property_user'(synchronized, _, _, _, Flags, _, _, _, _) :-
+	Flags /\ 4 =:= 4.
+'$lgt_predicate_property_user'(alias_of(Original), Pred, _, _, _, TCtn, Obj, _, Rnm) :-
+	once((	'$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _, _, _, _, _, _)
+		 ;	'$lgt_current_category_'(TCtn, _, TCtnDcl, _, _, _)
+		 ;	'$lgt_current_protocol_'(TCtn, _, TCtnDcl, _, _)
+	)),
+	\+ call(TCtnDcl, Pred, _, _, _),
+	'$lgt_find_original_predicate'(Obj, Rnm, Pred, Original).
+'$lgt_predicate_property_user'(defined_in(DCtn), Pred, _, _, _, _, _, Def, _) :-
+	(	call(Def, Pred, _, _, DCtn) ->
+		true
+	;	fail
 	).
+'$lgt_predicate_property_user'(redefined_from(Super), Pred, _, _, _, _, _, Def, _) :-
+	(	call(Def, Pred, _, _, DCtn) ->
+		'$lgt_find_overridden_predicate'(DCtn, Pred, Super)
+	;	fail
+	).
+'$lgt_predicate_property_user'(info(Info), Pred, _, _, _, TCtn, _, _, _) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_predicate_property_'(TCtn, Functor/Arity, info(Info)).
+'$lgt_predicate_property_user'(mode(Mode, Solutions), Pred, _, _, _, TCtn, _, _, _) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_predicate_property_'(TCtn, Functor/Arity, mode(Mode, Solutions)).
+
+
+'$lgt_predicate_property_built_in_method'(logtalk, _, _, _, _).
+'$lgt_predicate_property_built_in_method'((public), _, (public), _, _).
+'$lgt_predicate_property_built_in_method'(protected, _, protected, _, _).
+'$lgt_predicate_property_built_in_method'(private, _, private, _, _).
+'$lgt_predicate_property_built_in_method'(built_in, _, _, _, _).	%Flags /\ 1 =:= 1.
+'$lgt_predicate_property_built_in_method'((dynamic), _, _, _, Flags) :-
+	Flags /\ 2 =:= 2.
+'$lgt_predicate_property_built_in_method'(static, _, _, _, Flags) :-
+	Flags /\ 2 =\= 2.
+'$lgt_predicate_property_built_in_method'(meta_predicate(Meta), _, _, Meta, _) :-
+	Meta \== no.
+'$lgt_predicate_property_built_in_method'((multifile), _, _, _, Flags) :-
+	Flags /\ 16 =:= 16.
+'$lgt_predicate_property_built_in_method'(non_terminal(Functor//Arity), Pred, _, _, Flags) :-
+	Flags /\ 8 =:= 8,
+	functor(Pred, Functor, ExtArity),
+	Arity is ExtArity - 2.
+'$lgt_predicate_property_built_in_method'(synchronized, _, _, _, Flags) :-
+	Flags /\ 4 =:= 4.
+
+
+'$lgt_predicate_property_lgt_built_in'(logtalk).
+'$lgt_predicate_property_lgt_built_in'((public)).
+'$lgt_predicate_property_lgt_built_in'(built_in).
+'$lgt_predicate_property_lgt_built_in'(static).
+
+
+'$lgt_predicate_property_pl_built_in'(prolog, _).
+'$lgt_predicate_property_pl_built_in'(private, Pred) :-
+	'$lgt_pl_meta_predicate'(Pred, _, _).
+'$lgt_predicate_property_pl_built_in'(meta_predicate(Meta), Pred) :-
+	'$lgt_pl_meta_predicate'(Pred, Meta, _).
+'$lgt_predicate_property_pl_built_in'((public), Pred) :-
+	\+ '$lgt_pl_meta_predicate'(Pred, _, _).
+'$lgt_predicate_property_pl_built_in'(built_in, _). 
+'$lgt_predicate_property_pl_built_in'((dynamic), Pred) :-
+	'$lgt_predicate_property'(Pred, (dynamic)).
+'$lgt_predicate_property_pl_built_in'(static, Pred) :-
+	'$lgt_predicate_property'(Pred, static).
+'$lgt_predicate_property_pl_built_in'((multifile), Pred) :-
+	'$lgt_predicate_property'(Pred, (multifile)).
 
 
 

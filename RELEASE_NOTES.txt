@@ -136,6 +136,9 @@ RELEASE NOTES
     Turning on the "smart_compilation" compiler flag will now automatically
     switch off the "clean" flag.
 
+    Reimplemented the predicate_property/2 built-in method in order to make
+    it deterministic for most calls where the second argument is bound.
+
     For all config files, renamed the predicate '$lgt_is_proper_list'/1 to
     '$lgt_is_list'/1 and and replaced the old '$lgt_is_list'/1 predicate by
     a new '$lgt_is_list_or_partial_list'/1 predicate.
