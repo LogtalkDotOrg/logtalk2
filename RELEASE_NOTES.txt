@@ -51,7 +51,7 @@ RELEASE NOTES
 
     Added a loaded_file/3 predicate to the "logtalk" built-in object, which
     complements the existing loaded_file/2 predicate and gives access to the
-    specific options used when the file was compiled and loaded.
+    explicit options used when the file was compiled and loaded.
 
     Implemented compiler support for the meta_non_terminal/1 directive and the
     call//N built-in non-terminal.

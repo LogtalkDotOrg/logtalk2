@@ -4049,7 +4049,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_logtalk._def'(expand_library_path(Library, Path), _, '$lgt_expand_library_path'(Library, Path)).
-'$lgt_logtalk._def'(loaded_file(File, Directory), _, '$lgt_loaded_file_'(File, Directory)).
+'$lgt_logtalk._def'(loaded_file(File, Directory), _, '$lgt_loaded_file_'(File, Directory, _)).
 '$lgt_logtalk._def'(loaded_file(File, Directory, Options), _, '$lgt_loaded_file_'(File, Directory, Options)).
 '$lgt_logtalk._def'(compile_aux_clauses(Clauses), _, '$lgt_compile_aux_clauses'(Clauses)).
 '$lgt_logtalk._def'(entity_prefix(Entity, Prefix), _, '$lgt_entity_prefix'(Entity, Prefix)).
