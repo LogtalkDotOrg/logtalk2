@@ -2103,9 +2103,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	).
 '$lgt_predicate_property_user'(info(Info), Pred, _, _, _, TCtn, _, _, _) :-
 	functor(Pred, Functor, Arity),
-	'$lgt_predicate_property_'(TCtn, Functor/Arity, info(Info)).
+	(	'$lgt_predicate_property_'(TCtn, Functor/Arity, info(Info)) ->
+		true
+	;	fail
+	).
 '$lgt_predicate_property_user'(mode(Mode, Solutions), Pred, _, _, _, TCtn, _, _, _) :-
 	functor(Pred, Functor, Arity),
+	% we cannot make mode/2 property deterministic as a predicate can support several different modes
 	'$lgt_predicate_property_'(TCtn, Functor/Arity, mode(Mode, Solutions)).
 
 
