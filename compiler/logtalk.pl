@@ -497,7 +497,7 @@ object_property(Obj, Prop) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	(	'$lgt_object_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Obj, Internal),
-		(	Internal = file(Base, Start, End, Path) ->
+		(	Internal = file_lines(Base, Path, Start, End) ->
 			(	Prop = file(Base, Path)
 			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
 			)
@@ -545,6 +545,7 @@ object_property(Obj, Prop) :-
 	;	'$lgt_entity_property_declares'(object, Obj, Dcl, DDcl, Flags, Prop)
 	;	'$lgt_entity_property_defines'(object, Obj, Def, DDef, Prop)
 	;	'$lgt_entity_property_includes'(Obj, Prop)
+	;	'$lgt_entity_property_provides'(Obj, Prop)
 	).
 
 
@@ -557,7 +558,7 @@ category_property(Ctg, Prop) :-
 	'$lgt_current_category_'(Ctg, _, Dcl, Def, _, Flags),
 	(	'$lgt_category_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Ctg, Internal),
-		(	Internal = file(Base, Start, End, Path) ->
+		(	Internal = file_lines(Base, Path, Start, End) ->
 			(	Prop = file(Base, Path)
 			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
 			)
@@ -581,6 +582,7 @@ category_property(Ctg, Prop) :-
 	;	'$lgt_entity_property_declares'(category, Ctg, Dcl, _, Flags, Prop)
 	;	'$lgt_entity_property_defines'(category, Ctg, Def, _, Prop)
 	;	'$lgt_entity_property_includes'(Ctg, Prop)
+	;	'$lgt_entity_property_provides'(Ctg, Prop)
 	).
 
 
@@ -593,7 +595,7 @@ protocol_property(Ptc, Prop) :-
 	'$lgt_current_protocol_'(Ptc, _, Dcl, _, Flags),
 	(	'$lgt_protocol_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Ptc, Internal),
-		(	Internal = file(Base, Start, End, Path) ->
+		(	Internal = file_lines(Base, Path, Start, End) ->
 			(	Prop = file(Base, Path)
 			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
 			)
@@ -707,7 +709,7 @@ protocol_property(Ptc, Prop) :-
 
 
 
-'$lgt_entity_property_includes'(Entity, provides(Functor/Arity, To, Properties)) :-
+'$lgt_entity_property_provides'(Entity, provides(Functor/Arity, To, Properties)) :-
 	'$lgt_predicate_property_'(To, Functor/Arity, line_clauses_from(Line, N, Entity)),
 	(	Line =\= -1 ->
 		Properties = [line(Line), clauses(N)]
@@ -2109,7 +2111,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	).
 '$lgt_predicate_property_user'(mode(Mode, Solutions), Pred, _, _, _, TCtn, _, _, _) :-
 	functor(Pred, Functor, Arity),
-	% we cannot make mode/2 property deterministic as a predicate can support several different modes
+	% we cannot make the mode/2 property deterministic as a predicate can support several different modes
 	'$lgt_predicate_property_'(TCtn, Functor/Arity, mode(Mode, Solutions)).
 
 
@@ -5040,8 +5042,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		Type = category
 	),
 	(	% check file information using the file/2 entity property, if available:
-		'$lgt_entity_property_'(Entity, file(OldBase, _, _, OldPath)),
-		'$lgt_pp_file_relation_clause_'('$lgt_entity_property_'(Entity, file(NewBase, _, _, NewPath))),
+		'$lgt_entity_property_'(Entity, file_lines(OldBase, OldPath, _, _)),
+		'$lgt_pp_file_relation_clause_'('$lgt_entity_property_'(Entity, file_lines(NewBase, NewPath, _, _))),
 		(OldPath \== NewPath; OldBase \== NewBase) ->
 		File = OldBase-OldPath
 	;	% either no file/2 entity property or we're reloading the same file
@@ -5592,8 +5594,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	'$lgt_compiler_flag'(source_data, on),
 		'$lgt_pp_file_path_'(File, Path) ->
 		(	'$lgt_pp_term_position_'((Start - _)) ->
-			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, _, Path))))
-		;	assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, -1, _, Path))))
+			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, Start, _))))
+		;	assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, -1, _))))
 		)
 	;	true
 	).
@@ -5602,10 +5604,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	'$lgt_compiler_flag'(source_data, on) ->
 		(	'$lgt_pp_file_path_'(File, Path) ->
 			(	'$lgt_pp_term_position_'((_ - End)) ->
-				retract('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, _, Path)))),
-				assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, End, Path))))
-			;	retract('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, _, Path)))),
-				assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, -1, Path))))
+				retract('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, Start, _)))),
+				assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, Start, End))))
+			;	retract('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, Start, _)))),
+				assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, Start, -1))))
 			), !
 		;	true
 		),
