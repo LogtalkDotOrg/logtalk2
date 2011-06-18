@@ -1,5 +1,5 @@
 "  Maintainer:	Paulo Moura <pmoura@logtalk.org>
-"  Revised on:	2008.06.02
+"  Revised on:	2011.06.18
 "  Language:	Logtalk
 
 " This Logtalk indent file is a modified version of the Prolog
@@ -41,6 +41,9 @@ function! GetLogtalkIndent()
 		let ind = ind + &sw
 	" Check for clause head on previous line
 	elseif pline =~ ':-\s*\(%.*\)\?$'
+		let ind = ind + &sw
+	" Check for grammar rule head on previous line
+	elseif pline =~ '-->\s*\(%.*\)\?$'
 		let ind = ind + &sw
 	" Check for entity closing directive on previous line
 	elseif pline =~ '^\s*:-\send_\(object\|protocol\|category\)\.\(%.*\)\?$'
