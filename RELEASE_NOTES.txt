@@ -192,6 +192,10 @@ RELEASE NOTES
     Correct a bug in some shell scripts where "#/bin/bash" was used instead
     of "#!/bin/bash". Thanks to Yiorgos Adamopoulos for the bug report.
 
+    Updated the MacOS X command-files (on the "scripts/macosx/command_files/"
+    folder) in order to depend on the value of the LOGTALKHOME environment
+    variable instead of using a fixed path to the Prolog integration scripts.
+
     Corrected some bugs on the tab triggers for the Gedit Logtalk snippets
     that prevented their use.
 

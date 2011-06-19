@@ -10,4 +10,4 @@
 ## The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ## ================================================================
 
-exec /opt/local/bin/eclipselgt
+exec $LOGTALKHOME/integration/eclipselgt.sh

@@ -10,4 +10,4 @@
 ## The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ## ================================================================
 
-exec /opt/local/bin/xsblgt
+exec $LOGTALKHOME/integration/xsblgt.sh

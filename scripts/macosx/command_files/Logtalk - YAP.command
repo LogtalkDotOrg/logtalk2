@@ -10,4 +10,4 @@
 ## The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ## ================================================================
 
-exec /opt/local/bin/yaplgt
+exec $LOGTALKHOME/integration/yaplgt.sh
