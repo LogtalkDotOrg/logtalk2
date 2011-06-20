@@ -196,6 +196,9 @@ RELEASE NOTES
     folder) in order to depend on the value of the LOGTALKHOME environment
     variable instead of using a fixed path to the Prolog integration scripts.
 
+    Corrected a registry permission error when using the Windows installer
+    from a user account with no administration privileges.
+
     Corrected some bugs on the tab triggers for the Gedit Logtalk snippets
     that prevented their use.
 
