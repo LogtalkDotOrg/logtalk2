@@ -30,7 +30,7 @@ Always read carefully the release notes when updating to a new version.
 
 Changes in the Logtalk compiler between releases may render some files from
 older versions incompatible with new ones. You may need to update your local
-Logtalk user files by running e.g. the "cplgtdirs" shell script.
+Logtalk user files by running e.g. the "logtalk_user_setup" shell script.
 
 If your Logtalk programs depend on some of the example files, it is advisable
 that you check your code against the new version before throwing away the
@@ -308,5 +308,9 @@ no longer accept conjunctions in the first argument.
 
 Logtalk version 2.43.0 is more strict when checking predicate multifile
 declarations, requiring that the object holding the predicate declaration
-makes it both public and multifile. In addtion, Logtalk generated exception
-terms now use the format error(Error, logtalk(Goal, Sender)).
+makes it both public and multifile. In addition, Logtalk generated exception
+terms now use the format error(Error, logtalk(Goal, This)). A new compiler
+flag, "source_data", whose default value is "on", results in keeping several
+data about the source files being compiled. This is useful for integration
+with development tools but results in increased memory requirements. It's
+advisable to turn this option off for production code.

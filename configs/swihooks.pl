@@ -11,7 +11,8 @@
 %
 %  integration code for SWI Prolog 5.8.0 and later versions to compile and
 %  load Logtalk files using SWI Prolog consult/1, to support edit/1 and
-%  make/0, and to improve usability when using the XPCE profiler
+%  make/0, and to improve usability when using the XPCE profiler and XPCE
+%  graphical debugger
 %
 %  last updated: May 11, 2011
 % 
