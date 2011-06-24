@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: May 15, 2011
+%  last updated: June 24, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -376,9 +376,18 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 %
 % expands a file path to a full path
 
-'$lgt_expand_path'(Path, ExpandedPath) :-
-	working_directory(Current, Current),
-	absolute_file_name(Path, [access(none), file_type(txt), relative_to(Current)], ExpandedPath).
+:- if((current_prolog_flag(version_data, yap(Major,Minor,_,_)), (Major,Minor) @< (6,3))).
+	'$lgt_expand_path'(Path, ExpandedPath) :-
+		working_directory(Current, Current),
+		absolute_file_name(Path, [access(none), file_type(txt), relative_to(Current)], ExpandedPath).
+:- else.
+	'$lgt_expand_path'(Path, ExpandedPath) :-
+		working_directory(Current, Current),
+		(	absolute_file_name(Path, [expand(true), relative_to(Current), file_errors(fail)], ExpandedPath) ->
+			true
+		;	absolute_file_name(Path, [expand(true), relative_to(Current), file_type(directory), file_errors(fail)], ExpandedPath)
+		).
+:- endif.
 
 
 % '$lgt_file_exists'(+atom)
