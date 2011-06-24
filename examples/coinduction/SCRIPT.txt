@@ -198,3 +198,22 @@ X = [approach, lower, down, in, out, exit, raise, up, approach|...],
 R = [ (approach, 0), (lower, 1.0), (down, _G7737), (in, _G7743), (out, _G7749), (exit, _G7755), (raise, _G7761), (up, _G7767), (..., ...)|...],
 {_G7783>0.0, _G7792=_G7743+_G7808+_G7805+_G7802+_G7799+_G7783, _G7813=_G7743+_G7808+_G7805+_G7802, _G7799>1.0, _G7799<2.0, _G7767=... + ... + _G7799, _G7864=... + ..., ... > ..., ..., ...} ;
 false.
+
+
+% finding the cyclic paths in graphs:
+
+?- cp1::path(a, Path).
+Path = [a, b|_S1], % where
+    _S1 = [b|_S1] ;
+Path = [a, b, c, d|_S1], % where
+    _S1 = [d|_S1] ;
+Path = [a|_S1], % where
+    _S1 = [b, c, a|_S1] ;
+false.
+
+?- cp2::path(a, Path).
+Path = [a|_S1], % where
+    _S1 = [b, c, a|_S1] ;
+Path = [a|_S1], % where
+    _S1 = [b, c, d, a|_S1] ;
+false.

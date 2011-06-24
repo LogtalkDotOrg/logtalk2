@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2010/09/06,
+		date is 2011/06/24,
 		comment is 'Unit tests for the "coinduction" example.']).
 
 	:- discontiguous(succeeds/1).
@@ -55,5 +55,16 @@
 		bagof(X, automata::automata(X, s0), [X1, X2]),
 		X1 == [a, b, c, d| X1],
 		X2 == [a, b, e| X2].
+
+	succeeds(coinduction_cyclic_paths_1) :-
+		bagof(P, cp1::path(a, P), [P1, P2, P3]),
+		X1 = [b| X1], P1 == [a| X1],
+		X2 = [d| X2], P2 == [a, b, c| X2],
+		X3 = [b, c, a| X3], P3 == [a| X3].
+
+	succeeds(coinduction_cyclic_paths_2) :-
+		bagof(P, cp2::path(a, P), [P1, P2]),
+		X1 = [b, c, a| X1], P1 == [a| X1],
+		X2 = [b, c, d, a| X2], P2 == [a| X2].
 
 :- end_object.

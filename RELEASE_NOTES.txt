@@ -283,6 +283,10 @@ RELEASE NOTES
     Updated the "mtbatch" multi-threading example in order to provide expanded
     benchmarking of the "tak" example.
 
+    Updated the "coinduction" example with individual examples of finding the
+    cyclic paths in graphs. Thanks to Feliks Kluzniak and Gopal Gupta for the
+    examples.
+
     Updated the MacPorts portfile and the script that updates it in order to
     remove the calculation of the MD5 checksum, which is being phased out by
     MacPorts.

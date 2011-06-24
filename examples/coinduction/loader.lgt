@@ -18,7 +18,8 @@
 			sorting,
 			automata,
 			counter,
-			nested
+			nested,
+			cyclic_paths
 		])
 	).
 
