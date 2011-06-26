@@ -8,9 +8,6 @@
 #define MyAppRegURL "http://logtalk.org/regform.html"
 #define MyAppRegUrlName "Logtalk Registration.url"
 
-#define LOGTALKHOME "{reg:HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment,LOGTALKHOME|{pf}\Logtalk}"
-#define LOGTALKUSER "{reg:HKCU\Environment,LOGTALKUSER|{userdocs}\Logtalk}"
-
 #define MyBaseDir "C:\lgtsvn"
 
 [Setup]
@@ -22,7 +19,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 ChangesEnvironment=yes
 ChangesAssociations=yes
-DefaultDirName={#LOGTALKHOME}
+DefaultDirName={{pf}\Logtalk}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile={#MyBaseDir}\LICENSE.txt
@@ -43,8 +40,8 @@ MinVersion=0,5.0
 [Types]
 Name: "full"; Description: "Full installation"
 Name: "base"; Description: "Base system installation"
-Name: "user"; Description: "User files installation (must be run by all end-users)"
-Name: "prolog"; Description: "Prolog integration (see documentation for compatibility details)"
+Name: "user"; Description: "User files installation"
+Name: "prolog"; Description: "Prolog integration shortcuts"
 Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
 [Components]
@@ -64,7 +61,7 @@ Name: "prolog\xsbmt"; Description: "XSB-MT integration (version 3.3 or later)"; 
 Name: "prolog\yap"; Description: "YAP integration (version 6.0.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Tasks]
-Name: registration; Description: "&Register {#MyAppName} (opens a web page; requires an Internet connection)"; Components: base user
+Name: registration; Description: "&Register {#MyAppName} (opens a web page; requires an Internet connection)"; Components: base
 Name: shortcut; Description: "&Create a desktop shortcut to the Logtalk user folder"; Components: user
 
 [Languages]
@@ -89,8 +86,8 @@ Source: "{#MyBaseDir}\xml\*"; Excludes: ".*"; DestDir: "{code:GetLgtUserDir}\xml
 Source: "{#MyBaseDir}\settings.lgt"; DestDir: "{code:GetLgtUserDir}"; DestName: "settings.lgt"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "{#MyBaseDir}\VERSION.txt"; DestDir: "{code:GetLgtUserDir}"; DestName: "VERSION.txt"; Components: user; Flags: ignoreversion uninsneveruninstall
 
-Source: "{#MyBaseDir}\scripts\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion
-Source: "{#MyBaseDir}\xml\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion
+Source: "{#MyBaseDir}\scripts\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion; Check: IsAdminLoggedOn
+Source: "{#MyBaseDir}\xml\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion; Check: IsAdminLoggedOn
 
 [INI]
 Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"; Components: base
@@ -143,19 +140,28 @@ Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user
 Name: "{userdesktop}\Logtalk user files"; Filename: "{code:GetLgtUserDir}"; Components: user; Tasks: shortcut
 
 [Registry]
-Root: HKLM; Subkey: "Software\Logtalk"; ValueType: dword; ValueName: "Version"; ValueData: "2430"; Components: base; Flags: deletevalue uninsdeletevalue
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Components: base; Flags: deletevalue uninsdeletevalue
-Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: deletevalue uninsdeletevalue
-Root: HKLM; Subkey: "SOFTWARE\Classes\MIME\Database\Content Type\text/x-logtalk"; Components: base; Flags: uninsdeletevalue
-Root: HKLM; Subkey: "SOFTWARE\Classes\MIME\Database\Content Type\text/x-logtalk"; ValueType: string; ValueName: "Extension"; ValueData: ".lgt"; Components: base; Flags: deletevalue uninsdeletevalue
-Root: HKCR; Subkey: ".lgt"; ValueType: string; ValueName: ""; ValueData: "LogtalkSourceFile"; Components: base; Flags: uninsdeletevalue
-Root: HKCR; Subkey: "LogtalkSourceFile"; ValueType: string; ValueName: ""; ValueData: "Logtalk source file"; Components: base; Flags: uninsdeletekey
+; admin users
+Root: HKLM; Subkey: "Software\Logtalk"; ValueType: dword; ValueName: "Version"; ValueData: "2430"; Components: base; Flags: deletevalue uninsdeletevalue; Check: IsAdminLoggedOn
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Components: base; Flags: deletevalue uninsdeletevalue; Check: IsAdminLoggedOn
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: deletevalue uninsdeletevalue; Check: IsAdminLoggedOn
+Root: HKLM; Subkey: "SOFTWARE\Classes\MIME\Database\Content Type\text/x-logtalk"; Components: base; Flags: uninsdeletevalue; Check: IsAdminLoggedOn
+Root: HKLM; Subkey: "SOFTWARE\Classes\MIME\Database\Content Type\text/x-logtalk"; ValueType: string; ValueName: "Extension"; ValueData: ".lgt"; Components: base; Flags: deletevalue uninsdeletevalue; Check: IsAdminLoggedOn
+Root: HKCR; Subkey: ".lgt"; ValueType: string; ValueName: ""; ValueData: "LogtalkSourceFile"; Components: base; Flags: uninsdeletevalue; Check: IsAdminLoggedOn
+Root: HKCR; Subkey: "LogtalkSourceFile"; ValueType: string; ValueName: ""; ValueData: "Logtalk source file"; Components: base; Flags: uninsdeletekey; Check: IsAdminLoggedOn
+; non-admin users
+Root: HKCU; Subkey: "Software\Logtalk"; ValueType: dword; ValueName: "Version"; ValueData: "2430"; Components: base; Flags: deletevalue uninsdeletevalue; Check: not IsAdminLoggedOn
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Components: base; Flags: deletevalue uninsdeletevalue; Check: not IsAdminLoggedOn
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: deletevalue uninsdeletevalue; Check: not IsAdminLoggedOn
+Root: HKCU; Subkey: "SOFTWARE\Classes\MIME\Database\Content Type\text/x-logtalk"; Components: base; Flags: uninsdeletevalue; Check: not IsAdminLoggedOn
+Root: HKCU; Subkey: "SOFTWARE\Classes\MIME\Database\Content Type\text/x-logtalk"; ValueType: string; ValueName: "Extension"; ValueData: ".lgt"; Components: base; Flags: deletevalue uninsdeletevalue; Check: not IsAdminLoggedOn
+Root: HKCU; Subkey: ".lgt"; ValueType: string; ValueName: ""; ValueData: "LogtalkSourceFile"; Components: base; Flags: uninsdeletevalue; Check: not IsAdminLoggedOn
+Root: HKCU; Subkey: "LogtalkSourceFile"; ValueType: string; ValueName: ""; ValueData: "Logtalk source file"; Components: base; Flags: uninsdeletekey; Check: not IsAdminLoggedOn
 
 [Run]
-Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base user; Flags: postinstall shellexec skipifsilent
-Filename: "{app}\CUSTOMIZE.txt"; Description: "Read the customization instructions for completing your setup"; Components: base user; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\CUSTOMIZE.txt"; Description: "Read the customization instructions for completing your setup"; Components: base; Flags: postinstall shellexec skipifsilent
 
-Filename: "{app}\{#MyAppRegUrlName}"; Flags: shellexec nowait; Tasks: registration
+Filename: "{app}\{#MyAppRegUrlName}"; Components: base; Flags: shellexec nowait; Tasks: registration
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}"; Components: base
@@ -178,19 +184,19 @@ begin
 end;
 
 function ShouldSkipPage(PageID: Integer): Boolean;
+var
+  LOGTALKHOME: String;
 begin
-  if (PageID = wpSelectDir) and not IsAdminLoggedOn then
-    Result := True
-  else if (PageID = wpSelectComponents) and not IsAdminLoggedOn then
-  begin
-    WizardForm.TypesCombo.ItemIndex := 2;
-    WizardForm.TypesCombo.OnChange(nil);
-    Result := True
-  end
-  else if (PageID = wpReady) and not IsAdminLoggedOn then
-    Result := True
+  if IsAdminLoggedOn then
+    if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment', 'LOGTALKHOME', LOGTALKHOME) then
+      WizardForm.DirEdit.Text := LOGTALKHOME
+    else
+      WizardForm.DirEdit.Text := ExpandConstant('{pf}') + '\Logtalk'
+  else if RegQueryStringValue(HKCU, 'Environment', 'LOGTALKHOME', LOGTALKHOME) then
+    WizardForm.DirEdit.Text := LOGTALKHOME
   else
-    Result := False;
+    WizardForm.DirEdit.Text := ExpandConstant('{localappdata}') + '\Logtalk';
+  Result := false
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
@@ -333,7 +339,9 @@ function SP4ExePath: String;
 var
   SP_PATH: String;
 begin
-  if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus4.1_x86-win32-nt-4\', 'SP_PATH', SP_PATH) then
+  if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus4.2_x86-win32-nt-4\', 'SP_PATH', SP_PATH) then
+    Result := SP_PATH + '\bin\spwin.exe'
+  else if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus4.1_x86-win32-nt-4\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
   else if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus4.0_win32\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
@@ -506,7 +514,7 @@ end;
 procedure InitializeWizard;
 var
   Version, InstalledVersion: Cardinal;
-  LOGTALKHOME: String;
+  LOGTALKHOME, LOGTALKUSER: String;
 begin
   Explanation := 'Select the folder in which Setup should install Logtalk user files, then click Next.'
                  + Chr(13) + Chr(13)
@@ -520,23 +528,30 @@ begin
     Explanation,
     False, 'New Folder');
   LgtUserDirPage.Add('');
-  LgtUserDirPage.Values[0] := ExpandConstant('{#LOGTALKUSER}');
+  if RegQueryStringValue(HKCU, 'Environment', 'LOGTALKUSER', LOGTALKUSER) then
+    LgtUserDirPage.Values[0] := LOGTALKUSER
+  else 
+    LgtUserDirPage.Values[0] := ExpandConstant('{userdocs}') + '\Logtalk';
   if not IsAdminLoggedOn then
   begin
-    Warning := 'Full installation of Logtalk requires an administrative user.'
+    Warning := 'You are running this installer from a non-administrative account.'
                + Chr(13) + Chr(13)
-               + 'If the base Logtalk system is already installed, you may proceed in order to setup Logtalk for you as an end-user.'
+               + 'If the base Logtalk system is already installed by an administrator, you may either simply setup Logtalk for you as an end-user by choosing to install only the user-level files or perform a full installation.'
                + Chr(13) + Chr(13)
                + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user files to their default, pristine state.';
     WarningPage := CreateOutputMsgPage(wpWelcome, 'Information', 'Please read the following important information before continuing.', Warning);
   end;
-  if RegQueryDWordValue(HKLM, 'Software\Logtalk\', 'Version', Version) then
+  if RegQueryDWordValue(HKCU, 'Software\Logtalk', 'Version', Version) then
     InstalledVersion := Version
-  else if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'LOGTALKHOME', LOGTALKHOME) and DirExists(LOGTALKHOME) then
+  else if RegQueryDWordValue(HKLM, 'Software\Logtalk', 'Version', Version) then
+    InstalledVersion := Version
+  else if RegQueryStringValue(HKCU, 'Environment', 'LOGTALKHOME', LOGTALKHOME) and DirExists(LOGTALKHOME) then
+    InstalledVersion := 0
+  else if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment', 'LOGTALKHOME', LOGTALKHOME) and DirExists(LOGTALKHOME) then
     InstalledVersion := 0
   else
     InstalledVersion := -1;
-  if IsAdminLoggedOn and (InstalledVersion >= 0) and (InstalledVersion < 2430) then
+  if (InstalledVersion >= 0) and (InstalledVersion < 2430) then
   begin
     Warning := 'Your Logtalk user directory is outdated!'
                + Chr(13) + Chr(13)
@@ -545,7 +560,7 @@ begin
                + 'All aditional Logtalk users on your computer must also use this installer to update their Logtalk user folders.';
     WarningPage := CreateOutputMsgPage(wpWelcome, 'Warning', 'Logtalk user folder update required.', Warning)
   end;
-  if IsAdminLoggedOn and NoBackEndPrologCompilerInstalled then
+  if NoBackEndPrologCompilerInstalled then
   begin
     Error := 'No compatible Prolog compiler found!'
              + Chr(13) + Chr(13)

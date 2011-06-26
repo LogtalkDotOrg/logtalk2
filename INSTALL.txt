@@ -60,8 +60,8 @@ the environment variables. Some Prolog compilers don't expand environment
 variables, resulting in "file not found" errors when attempting to use the
 Logtalk integration scripts.
 
-If you're using Windows, you can setup both the LOGTALKHOME and LOGTALKUSER
-environment variables using the "System" control panel.
+If you're using Windows, you can simply use the provided installer (which
+suports both admin and non-admin users) to perform a full installation.
 
 
 * Installing for one or more users by a user with administrative rights:
