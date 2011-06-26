@@ -154,8 +154,8 @@ Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: deletevalue uninsdeletevalue; Check: not IsAdminLoggedOn
 Root: HKCU; Subkey: "SOFTWARE\Classes\MIME\Database\Content Type\text/x-logtalk"; Components: base; Flags: uninsdeletevalue; Check: not IsAdminLoggedOn
 Root: HKCU; Subkey: "SOFTWARE\Classes\MIME\Database\Content Type\text/x-logtalk"; ValueType: string; ValueName: "Extension"; ValueData: ".lgt"; Components: base; Flags: deletevalue uninsdeletevalue; Check: not IsAdminLoggedOn
-Root: HKCU; Subkey: ".lgt"; ValueType: string; ValueName: ""; ValueData: "LogtalkSourceFile"; Components: base; Flags: uninsdeletevalue; Check: not IsAdminLoggedOn
-Root: HKCU; Subkey: "LogtalkSourceFile"; ValueType: string; ValueName: ""; ValueData: "Logtalk source file"; Components: base; Flags: uninsdeletekey; Check: not IsAdminLoggedOn
+Root: HKCU; Subkey: "SOFTWARE\Classes\.lgt"; ValueType: string; ValueName: ""; ValueData: "LogtalkSourceFile"; Components: base; Flags: uninsdeletevalue; Check: not IsAdminLoggedOn
+Root: HKCU; Subkey: "SOFTWARE\Classes\LogtalkSourceFile"; ValueType: string; ValueName: ""; ValueData: "Logtalk source file"; Components: base; Flags: uninsdeletekey; Check: not IsAdminLoggedOn
 
 [Run]
 Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base; Flags: postinstall shellexec skipifsilent
