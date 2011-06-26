@@ -532,11 +532,11 @@ begin
     LgtUserDirPage.Values[0] := LOGTALKUSER
   else 
     LgtUserDirPage.Values[0] := ExpandConstant('{userdocs}') + '\Logtalk';
-  if not IsAdminLoggedOn then
+  if not IsAdminLoggedOn and RegQueryDWordValue(HKLM, 'Software\Logtalk', 'Version', Version) then
   begin
     Warning := 'You are running this installer from a non-administrative account.'
                + Chr(13) + Chr(13)
-               + 'If the base Logtalk system is already installed by an administrator, you may either simply setup Logtalk for you as an end-user by choosing to install only the user-level files or perform a full installation.'
+               + 'The base Logtalk system is already installed by an administrator. You may simply setup Logtalk for you as an end-user by choosing to install only the user-level files. In alternative, you may perform a full installation.'
                + Chr(13) + Chr(13)
                + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user files to their default, pristine state.';
     WarningPage := CreateOutputMsgPage(wpWelcome, 'Information', 'Please read the following important information before continuing.', Warning);
