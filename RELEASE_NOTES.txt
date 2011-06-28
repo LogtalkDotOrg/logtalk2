@@ -109,6 +109,12 @@ RELEASE NOTES
     a meta-argument that requires a runtime compilation in the context of
     "sender".
 
+    Corrected a bug in the compilation of explicit-qualified calls to module
+    meta-predicates where the module qualification would be dropped from the
+    compiled call. Note that these calls will use Logtalk meta-predicate
+    semantics (i.e. the meta-arguments will be called in the context of the
+    caller) instead of the usual Prolog module meta-predicate semantics.
+
     Refined error checking for the built-in predicates category_property/2,
     object_property/2, and protocol_property/2, throwing a type_error/2 when
     the second argument is neither a variable or a callable term. Added an

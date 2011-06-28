@@ -2149,7 +2149,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pl_meta_predicate'(Pred, Meta, _).
 '$lgt_predicate_property_pl_built_in'((public), Pred) :-
 	\+ '$lgt_pl_meta_predicate'(Pred, _, _).
-'$lgt_predicate_property_pl_built_in'(built_in, _). 
+'$lgt_predicate_property_pl_built_in'(built_in, _).
 '$lgt_predicate_property_pl_built_in'((dynamic), Pred) :-
 	'$lgt_predicate_property'(Pred, (dynamic)).
 '$lgt_predicate_property_pl_built_in'(static, Pred) :-
@@ -9774,8 +9774,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			throw(domain_error(meta_argument_specifier, Meta))
 		;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
 			'$lgt_tr_module_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
-			TPred =.. [Functor| TArgs],
-			DPred =.. [Functor| DArgs]
+			TPred0 =.. [Functor| TArgs],
+			TPred = {':'(Module, TPred0)},
+			'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+			DPred0 =.. [Functor| DArgs],
+			DPred = '$lgt_debugger.goal'(':'(Module, Pred), DPred0, ExCtx)
 		)
 	;	% we're compiling a call to a module predicate
 		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
@@ -14066,7 +14069,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			'$lgt_report_warning_entity_context'(Type, Entity)
 		;	true
 		)
-	;	true	
+	;	true
 	).
 
 
