@@ -54,3 +54,26 @@ For examples of how to write unit tests check the "testing" example in the
 Note: when using the <</2 control construct to access and test an object
 internal predicates, make sure that the "context_switching_calls" compiler
 flag is set to "allow" for those objects.
+
+In order to debug failed unit tests, you can compile the unit test objects
+without using the hook/1 option and use the <</2 control construct to call
+the individual tests. For example, if you have a test(test_n) unit test that
+is failing, you can type:
+
+	| ?- logtalk_load(my_tests).
+	...
+
+	| ?- my_tests << test(test_n).
+	...
+
+You may also compile the unit test objects in debug mode and use Logtalk's
+built-in debugger. For example:
+
+	| ?- logtalk_load(my_tests, [debug(on)]).
+	...
+
+	| ?- debugger::trace.
+	...
+
+	| ?- my_tests << test(test_n).
+	...
