@@ -115,6 +115,10 @@ RELEASE NOTES
     semantics (i.e. the meta-arguments will be called in the context of the
     caller) instead of the usual Prolog module meta-predicate semantics.
 
+    Corrected a bug and simplified the generation of linking clauses for
+    coinductive predicates. Thanks to Feliks Kluzniak for the counter-example
+    that exposed the bug.
+
     Refined error checking for the built-in predicates category_property/2,
     object_property/2, and protocol_property/2, throwing a type_error/2 when
     the second argument is neither a variable or a callable term. Added an

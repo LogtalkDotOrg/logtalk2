@@ -7910,16 +7910,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	atom_concat('_coinductive_', Functor, CoinductiveFunctor),
 	functor(CoinductiveHead, CoinductiveFunctor, Arity),
 	'$lgt_unify_head_thead_args'(Arity, Head, CoinductiveHead),
-	'$lgt_comp_ctx_mode'(Ctx, Mode),
-	'$lgt_comp_ctx_mode'(HeadCtx, Mode),
-	'$lgt_comp_ctx_mode'(BodyCtx, Mode),
-	'$lgt_comp_ctx_exec_ctx'(HeadCtx, HeadExCtx),
-	'$lgt_exec_ctx'(HeadExCtx, Sender, This, Self, MetaCallCtx, _),
-	'$lgt_comp_ctx_exec_ctx'(BodyCtx, BodyExCtx),
-	% when calling a coinductive predicate, we start with an empty stack of ancestor goals:
-	'$lgt_exec_ctx'(BodyExCtx, Sender, This, Self, MetaCallCtx, []),
 	% add a linking clause from the original predicate to the predicate generated to implement coinduction:
-	'$lgt_tr_clause'((Head :- CoinductiveHead), HeadCtx, BodyCtx),
+	'$lgt_tr_clause'((Head :- CoinductiveHead), Ctx, Ctx),
 	assertz('$lgt_pp_coinductive_'(Head, CoinductiveHead)),
 	assertz('$lgt_pp_coinductive_flag_'(Head)),
 	'$lgt_tr_coinductive_directive'(Preds, Ctx).
