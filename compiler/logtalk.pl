@@ -221,7 +221,6 @@
 :- dynamic('$lgt_pp_non_terminal_'/3).						% '$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)
 :- dynamic('$lgt_pp_multifile_'/2).							% '$lgt_pp_multifile_'(Functor, Arity)
 :- dynamic('$lgt_pp_coinductive_'/2).						% '$lgt_pp_coinductive_'(Pred, CoinductivePred)
-:- dynamic('$lgt_pp_coinductive_flag_'/1).					% '$lgt_pp_coinductive_flag_'(Pred)
 
 :- dynamic('$lgt_pp_object_'/11).							% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)
 :- dynamic('$lgt_pp_category_'/6).							% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)
@@ -6079,7 +6078,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	retractall('$lgt_pp_discontiguous_'(_, _)),
 	retractall('$lgt_pp_multifile_'(_, _)),
 	retractall('$lgt_pp_coinductive_'(_, _)),
-	retractall('$lgt_pp_coinductive_flag_'(_)),
 	retractall('$lgt_pp_mode_'(_, _)),
 	retractall('$lgt_pp_meta_predicate_'(_)),
 	retractall('$lgt_pp_value_annotation_'(_, _, _, _)),
@@ -7910,10 +7908,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	atom_concat('_coinductive_', Functor, CoinductiveFunctor),
 	functor(CoinductiveHead, CoinductiveFunctor, Arity),
 	'$lgt_unify_head_thead_args'(Arity, Head, CoinductiveHead),
-	% add a linking clause from the original predicate to the predicate generated to implement coinduction:
-	'$lgt_tr_clause'((Head :- CoinductiveHead), Ctx, Ctx),
+	% add the linking clauses from the original predicate to the predicate generated to implement coinduction:
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx, Stack),
+	'$lgt_tr_clause'((Head :- {'$lgt_member'(Head, Stack)}), Ctx, Ctx), 
+	'$lgt_comp_ctx_stack_new_stack'(Ctx, BodyStack, BodyCtx),
+	'$lgt_comp_ctx_exec_ctx'(BodyCtx, BodyExCtx),
+	'$lgt_exec_ctx'(BodyExCtx, Sender, This, Self, MetaCallCtx, BodyStack),
+	'$lgt_tr_clause'((Head :- \+ {'$lgt_member'(Head, Stack)}, BodyStack = [Head| Stack], CoinductiveHead), Ctx, BodyCtx), 
 	assertz('$lgt_pp_coinductive_'(Head, CoinductiveHead)),
-	assertz('$lgt_pp_coinductive_flag_'(Head)),
 	'$lgt_tr_coinductive_directive'(Preds, Ctx).
 
 '$lgt_tr_coinductive_directive'([Pred| _], _) :-
@@ -8678,25 +8681,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_clause'((Head:-Body), TClause, DClause, HeadCtx, BodyCtx) :-
 	'$lgt_pp_coinductive_'(Head, CoinductiveHead),
 	!,
-	functor(Head, Functor, Arity),
-	functor(HeadTemplate, Functor, Arity),
-	functor(CoinductiveHead, CoinductiveFunctor, Arity),
-	functor(CoinductiveHeadTemplate, CoinductiveFunctor, Arity),
-	'$lgt_unify_head_thead_args'(Arity, HeadTemplate, CoinductiveHeadTemplate),
-	'$lgt_comp_ctx_stack'(HeadCtx, HeadStack),
-	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx, HeadStack),
-	(	retract('$lgt_pp_coinductive_flag_'(Head)) ->
-		% the first clause for a coinductive predicate checks the stack of coinductive hypothesis for a match:
-		'$lgt_tr_clause'((CoinductiveHeadTemplate :- {'$lgt_member'(HeadTemplate, HeadStack)}), HeadCtx, BodyCtx)
-	;	% first clause already generated:
-		true
-	),
-	'$lgt_comp_ctx_stack_new_stack'(BodyCtx, BodyStack, NewBodyCtx),
-	'$lgt_comp_ctx_exec_ctx'(NewBodyCtx, BodyExCtx),
-	'$lgt_exec_ctx'(BodyExCtx, Sender, This, Self, MetaCallCtx, BodyStack),
-	% the remaining clauses for a coinductive predicate are modified in order to add the new ancestor goal to the coinductive hypothesis stack:
-	'$lgt_tr_clause'((CoinductiveHead :- \+ {'$lgt_member'(Head, HeadStack)}, BodyStack = [Head| HeadStack], Body), TClause, DClause, HeadCtx, NewBodyCtx).
+	'$lgt_tr_clause'((CoinductiveHead :- Body), TClause, DClause, HeadCtx, BodyCtx).
 
 '$lgt_tr_clause'((Head:-Body), (THead:-'$lgt_nop'(Body), SBody), (THead:-'$lgt_nop'(Body),'$lgt_debugger.head'(Head, 0, ExCtx),DBody), HeadCtx, BodyCtx) :-
 	functor(Head, Functor, Arity),
@@ -8760,20 +8745,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_clause'(Fact, TFact, DFact, HeadCtx, BodyCtx) :-
 	'$lgt_pp_coinductive_'(Fact, CoinductiveFact),
 	!,
-	functor(Fact, Functor, Arity),
-	functor(FactTemplate, Functor, Arity),
-	functor(CoinductiveFact, CoinductiveFunctor, Arity),
-	functor(CoinductiveFactTemplate, CoinductiveFunctor, Arity),
-	'$lgt_unify_head_thead_args'(Arity, FactTemplate, CoinductiveFactTemplate),
-	'$lgt_comp_ctx_stack'(HeadCtx, HeadStack),
-	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, _, _, _, _, HeadStack),
-	(	retract('$lgt_pp_coinductive_flag_'(Fact)) ->
-		% the first clause for a coinductive predicate checks the stack of coinductive hypothesis for a match:
-		'$lgt_tr_clause'((CoinductiveFactTemplate :- {'$lgt_member'(FactTemplate, HeadStack)}), HeadCtx, BodyCtx)
-	;	% first clause already generated:
-		true
-	),
 	'$lgt_tr_clause'(CoinductiveFact, TFact, DFact, HeadCtx, BodyCtx).
 
 '$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_debugger.fact'(Fact, N, ExCtx)), HeadCtx, _) :-
@@ -10538,14 +10509,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_exec_ctx'(ExCtx, Sender, _, Self, _, _),
 	'$lgt_entity_prefix'(Sender, Prefix),
 	TPred = '$lgt_metacall_this'(Pred, Prefix, Sender, Sender, Self).
-
-
-% goal is a call to a local, user-defined coinductive predicate
-
-'$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
-	'$lgt_pp_coinductive_'(Pred, CoinductivePred),
-	!,
-	'$lgt_tr_body'(CoinductivePred, TPred, DPred, Ctx).
 
 
 % goal is a call to a local, user-defined predicate

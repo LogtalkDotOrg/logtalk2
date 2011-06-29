@@ -115,8 +115,9 @@ RELEASE NOTES
     semantics (i.e. the meta-arguments will be called in the context of the
     caller) instead of the usual Prolog module meta-predicate semantics.
 
-    Corrected a bug and simplified the generation of linking clauses for
-    coinductive predicates. Thanks to Feliks Kluzniak for the counter-example
+    Changed the semantics of the coinductive/1 directive to use the same
+    semantics as the coinductive1/1 directive found on the U.T.Dallas
+    coinduction implementation. Thanks to Feliks Kluzniak for the examples
     that exposed the bug.
 
     Refined error checking for the built-in predicates category_property/2,
