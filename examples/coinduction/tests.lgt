@@ -67,4 +67,16 @@
 		X1 = [b, c, a| X1], P1 == [a| X1],
 		X2 = [b, c, d, a| X2], P2 == [a| X2].
 
+	succeeds(coinduction_shared_paths_1) :-
+		bagof(P, shared_paths::path(a, P), [P1, P2, P3, P4]),
+		X1 = [a, b, c, d, e, f| X1], P1 == X1,
+		X2 = [c, d, e, f| X2], P2 == [a, b| X2],
+		X3 = [a, b, c, f| X3], P3 == X3,
+		X4 = [c, f| X4], P4 == [a, b| X4].
+
+	succeeds(coinduction_tangle_1) :-
+		bagof(P, tangle::p(P), [P1, P2]),
+		X1 = [a, b| X1], P1 == X1,
+		X2 = [c, d| X2], P2 == X2.
+
 :- end_object.

@@ -118,7 +118,7 @@ RELEASE NOTES
     Changed the semantics of the coinductive/1 directive to use the same
     semantics as the coinductive1/1 directive found on the U.T.Dallas
     coinduction implementation. Thanks to Feliks Kluzniak for the examples
-    that exposed the bug.
+    that helped clarified the issues with the previous implementation.
 
     Refined error checking for the built-in predicates category_property/2,
     object_property/2, and protocol_property/2, throwing a type_error/2 when
@@ -196,6 +196,9 @@ RELEASE NOTES
     contributed by Joachim Schimpf and with a bug fix for the SWI-Prolog
     implementation of the expand_path/2 predicate (resulting from recent
     changes to the SWI-Prolog absolute_file_name/3 built-in predicate).
+
+    Updated the "coinduction" example, adding some more individual examples
+    by Gopal Gupta and Feliks Kluzniak.
 
     Updated the "xml_parser" contribution in order to workaround portability
     issues with GNU Prolog.

@@ -19,7 +19,9 @@
 			automata,
 			counter,
 			nested,
-			cyclic_paths
+			cyclic_paths,
+			shared_paths,
+			tangle
 		])
 	).
 
