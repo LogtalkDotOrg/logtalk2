@@ -494,58 +494,100 @@ object_property(Obj, Prop) :-
 	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(object_property(Obj, Prop), _)),
 	'$lgt_must_be'(var_or_object_property, Prop, logtalk(object_property(Obj, Prop), _)),
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
-	(	'$lgt_object_flags'(Prop, Flags)
-	;	'$lgt_entity_property_'(Obj, Internal),
-		(	Internal = file_lines(Base, Path, Start, End) ->
-			(	Prop = file(Base, Path)
-			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
-			)
-		;	Prop = Internal
-		)
-	;	(	Flags /\ 64 =:= 64 ->
-			findall(
-				Functor/Arity,
-				((call(Dcl, Predicate, p(p(p)), _, _); call(DDcl, Predicate, p(p(p)))),
-				 functor(Predicate, Functor, Arity)),
-				Predicates)
-		;	findall(
-				Functor/Arity,
-				(call(Dcl, Predicate, p(p(p)), _, _),
-				 functor(Predicate, Functor, Arity)),
-				Predicates)
-		),
-		Prop = public(Predicates)
-	;	(	Flags /\ 64 =:= 64 ->
-			findall(
-				Functor/Arity,
-				((call(Dcl, Predicate, p(p), _, _); call(DDcl, Predicate, p(p))),
-				 functor(Predicate, Functor, Arity)),
-				Predicates)
-		;	findall(
-				Functor/Arity,
-				(call(Dcl, Predicate, p(p), _, _),
-				 functor(Predicate, Functor, Arity)),
-				Predicates)
-		),
-		Prop = protected(Predicates)
-	;	(	Flags /\ 64 =:= 64 ->
-			findall(
-				Functor/Arity,
-				((call(Dcl, Predicate, p, _, _); call(DDcl, Predicate, p)),
-				 functor(Predicate, Functor, Arity)),
-				Predicates)
-		;	findall(
-				Functor/Arity,
-				(call(Dcl, Predicate, p, _, _),
-				 functor(Predicate, Functor, Arity)),
-				Predicates)
-		),
-		Prop = private(Predicates)
-	;	'$lgt_entity_property_declares'(object, Obj, Dcl, DDcl, Flags, Prop)
-	;	'$lgt_entity_property_defines'(object, Obj, Def, DDef, Prop)
-	;	'$lgt_entity_property_includes'(Obj, Prop)
-	;	'$lgt_entity_property_provides'(Obj, Prop)
+	'$lgt_object_property'(Prop, Obj, Dcl, Def, DDcl, DDef, Flags).
+
+
+'$lgt_object_property'(context_switching_calls, _, _, _, _, _, Flags) :-
+	Flags /\ 128 =:= 128.
+'$lgt_object_property'(dynamic_declarations, _, _, _, _, _, Flags) :-
+	Flags /\ 64 =:= 64.
+'$lgt_object_property'(complements, _, _, _, _, _, Flags) :-
+	Flags /\ 32 =:= 32.
+'$lgt_object_property'(events, _, _, _, _, _, Flags) :-
+	Flags /\ 16 =:= 16.
+'$lgt_object_property'(threaded, _, _, _, _, _, Flags) :-
+	Flags /\ 8 =:= 8.
+'$lgt_object_property'(synchronized, _, _, _, _, _, Flags) :-
+	Flags /\ 4 =:= 4.
+'$lgt_object_property'((dynamic), _, _, _, _, _, Flags) :-
+	Flags /\ 2 =:= 2.
+'$lgt_object_property'(static, _, _, _, _, _, Flags) :-
+	Flags /\ 2 =:= 0.
+'$lgt_object_property'(built_in, _, _, _, _, _, Flags) :-
+	Flags /\ 1 =:= 1.
+'$lgt_object_property'(file(Base, Path), Obj, _, _, _, _, _) :-
+	(	'$lgt_entity_property_'(Obj, file_lines(Base, Path, _, _)) ->
+		true
+	;	fail
 	).
+'$lgt_object_property'(lines(Start, End), Obj, _, _, _, _, _) :-
+	(	'$lgt_entity_property_'(Obj, file_lines(_, _, Start, End)),
+	 	Start =\= -1, End =\= -1 ->
+		true
+	;	fail
+	).
+'$lgt_object_property'(info(Info), Obj, _, _, _, _, _) :-
+	(	'$lgt_entity_property_'(Obj, info(Info)) ->
+		true
+	;	fail
+	).
+'$lgt_object_property'(uses(Object, Original, Alias), Obj, _, _, _, _, _) :-
+	(	'$lgt_entity_property_'(Obj, uses(Object, Original, Alias)) ->
+		true
+	;	fail
+	).
+'$lgt_object_property'(use_module(Module, Original, Alias), Obj, _, _, _, _, _) :-
+	(	'$lgt_entity_property_'(Obj, use_module(Module, Original, Alias)) ->
+		true
+	;	fail
+	).
+'$lgt_object_property'(public(Predicates), _, Dcl, _, DDcl, _, Flags) :-
+	(	Flags /\ 64 =:= 64 ->
+		findall(
+			Functor/Arity,
+			((call(Dcl, Predicate, p(p(p)), _, _); call(DDcl, Predicate, p(p(p)))),
+			 functor(Predicate, Functor, Arity)),
+			Predicates)
+	;	findall(
+			Functor/Arity,
+			(call(Dcl, Predicate, p(p(p)), _, _),
+			 functor(Predicate, Functor, Arity)),
+			Predicates)
+	).
+'$lgt_object_property'(protected(Predicates), _, Dcl, _, DDcl, _, Flags) :-
+	(	Flags /\ 64 =:= 64 ->
+		findall(
+			Functor/Arity,
+			((call(Dcl, Predicate, p(p), _, _); call(DDcl, Predicate, p(p))),
+			 functor(Predicate, Functor, Arity)),
+			Predicates)
+	;	findall(
+			Functor/Arity,
+			(call(Dcl, Predicate, p(p), _, _),
+			 functor(Predicate, Functor, Arity)),
+			Predicates)
+	).
+'$lgt_object_property'(private(Predicates), _, Dcl, _, DDcl, _, Flags) :-
+	(	Flags /\ 64 =:= 64 ->
+		findall(
+			Functor/Arity,
+			((call(Dcl, Predicate, p, _, _); call(DDcl, Predicate, p)),
+			 functor(Predicate, Functor, Arity)),
+			Predicates)
+	;	findall(
+			Functor/Arity,
+			(call(Dcl, Predicate, p, _, _),
+			 functor(Predicate, Functor, Arity)),
+			Predicates)
+	).
+'$lgt_object_property'(declares(Predicate, Properties), Obj, Dcl, _, DDcl, _, Flags) :-
+	'$lgt_object_property_declares'(Obj, Dcl, DDcl, Flags, Predicate, Properties).
+'$lgt_object_property'(defines(Predicate, Properties), Obj, _, Def, _, DDef, _) :-
+	'$lgt_object_property_defines'(Obj, Def, DDef, Predicate, Properties).
+'$lgt_object_property'(includes(Predicate, From, Properties), Obj, _, _, _, _, _) :-
+	'$lgt_entity_property_includes'(Obj, Predicate, From, Properties).
+'$lgt_object_property'(provides(Predicate, To, Properties), Obj, _, _, _, _, _) :-
+	'$lgt_entity_property_provides'(Obj, Predicate, To, Properties).
 
 
 
@@ -555,34 +597,68 @@ category_property(Ctg, Prop) :-
 	'$lgt_must_be'(var_or_category_identifier, Ctg, logtalk(category_property(Ctg, Prop), _)),
 	'$lgt_must_be'(var_or_category_property, Prop, logtalk(category_property(Ctg, Prop), _)),
 	'$lgt_current_category_'(Ctg, _, Dcl, Def, _, Flags),
-	(	'$lgt_category_flags'(Prop, Flags)
-	;	'$lgt_entity_property_'(Ctg, Internal),
-		(	Internal = file_lines(Base, Path, Start, End) ->
-			(	Prop = file(Base, Path)
-			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
-			)
-		;	Prop = Internal
-		)
-	;	findall(
-			Functor/Arity,
-			(call(Dcl, Predicate, p(p(p)), _, _, Ctg), functor(Predicate, Functor, Arity)),
-			Predicates),
-		Prop = public(Predicates)
-	;	findall(
-			Functor/Arity,
-			(call(Dcl, Predicate, p(p), _, _, Ctg), functor(Predicate, Functor, Arity)),
-			Predicates),
-		Prop = protected(Predicates)
-	;	findall(
-			Functor/Arity,
-			(call(Dcl, Predicate, p, _, _, Ctg), functor(Predicate, Functor, Arity)),
-			Predicates),
-		Prop = private(Predicates)
-	;	'$lgt_entity_property_declares'(category, Ctg, Dcl, _, Flags, Prop)
-	;	'$lgt_entity_property_defines'(category, Ctg, Def, _, Prop)
-	;	'$lgt_entity_property_includes'(Ctg, Prop)
-	;	'$lgt_entity_property_provides'(Ctg, Prop)
+	'$lgt_category_property'(Prop, Ctg, Dcl, Def, Flags).
+
+
+'$lgt_category_property'(events, _, _, _, Flags) :-
+	Flags /\ 16 =:= 16.
+'$lgt_category_property'(synchronized, _, _, _, Flags) :-
+	Flags /\ 4 =:= 4.
+'$lgt_category_property'((dynamic), _, _, _, Flags) :-
+	Flags /\ 2 =:= 2.
+'$lgt_category_property'(static, _, _, _, Flags) :-
+	Flags /\ 2 =:= 0.
+'$lgt_category_property'(built_in, _, _, _, Flags) :-
+	Flags /\ 1 =:= 1.
+'$lgt_category_property'(file(Base, Path), Ctg, _, _, _) :-
+	(	'$lgt_entity_property_'(Ctg, file_lines(Base, Path, _, _)) ->
+		true
+	;	fail
 	).
+'$lgt_category_property'(lines(Start, End), Ctg, _, _, _) :-
+	(	'$lgt_entity_property_'(Ctg, file_lines(_, _, Start, End)),
+	 	Start =\= -1, End =\= -1 ->
+		true
+	;	fail
+	).
+'$lgt_category_property'(info(Info), Ctg, _, _, _) :-
+	(	'$lgt_entity_property_'(Ctg, info(Info)) ->
+		true
+	;	fail
+	).
+'$lgt_category_property'(uses(Object, Original, Alias), Ctg, _, _, _) :-
+	(	'$lgt_entity_property_'(Ctg, uses(Object, Original, Alias)) ->
+		true
+	;	fail
+	).
+'$lgt_category_property'(use_module(Module, Original, Alias), Ctg, _, _, _) :-
+	(	'$lgt_entity_property_'(Ctg, use_module(Module, Original, Alias)) ->
+		true
+	;	fail
+	).
+'$lgt_category_property'(public(Predicates), Ctg, Dcl, _, _) :-
+	findall(
+		Functor/Arity,
+		(call(Dcl, Predicate, p(p(p)), _, _, Ctg), functor(Predicate, Functor, Arity)),
+		Predicates).
+'$lgt_category_property'(protected(Predicates), Ctg, Dcl, _, _) :-
+	findall(
+		Functor/Arity,
+		(call(Dcl, Predicate, p(p), _, _, Ctg), functor(Predicate, Functor, Arity)),
+		Predicates).
+'$lgt_category_property'(private(Predicates), Ctg, Dcl, _, _) :-
+	findall(
+		Functor/Arity,
+		(call(Dcl, Predicate, p, _, _, Ctg), functor(Predicate, Functor, Arity)),
+		Predicates).
+'$lgt_category_property'(declares(Predicate, Properties), Ctg, Dcl, _, _) :-
+	'$lgt_category_property_declares'(Ctg, Dcl, Predicate, Properties).
+'$lgt_category_property'(defines(Predicate, Properties), Ctg, _, Def, _) :-
+	'$lgt_category_property_defines'(Ctg, Def, Predicate, Properties).
+'$lgt_category_property'(includes(Predicate, From, Properties), Ctg, _, _, _) :-
+	'$lgt_entity_property_includes'(Ctg, Predicate, From, Properties).
+'$lgt_category_property'(provides(Predicate, To, Properties), Ctg, _, _, _) :-
+	'$lgt_entity_property_provides'(Ctg, Predicate, To, Properties).
 
 
 
@@ -592,49 +668,78 @@ protocol_property(Ptc, Prop) :-
 	'$lgt_must_be'(var_or_protocol_identifier, Ptc, logtalk(protocol_property(Ptc, Prop), _)),
 	'$lgt_must_be'(var_or_protocol_property, Prop, logtalk(protocol_property(Ptc, Prop), _)),
 	'$lgt_current_protocol_'(Ptc, _, Dcl, _, Flags),
-	(	'$lgt_protocol_flags'(Prop, Flags)
-	;	'$lgt_entity_property_'(Ptc, Internal),
-		(	Internal = file_lines(Base, Path, Start, End) ->
-			(	Prop = file(Base, Path)
-			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
-			)
-		;	Prop = Internal
-		)
-	;	findall(
-			Functor/Arity,
-			(call(Dcl, Predicate, p(p(p)), _, _, Ptc), functor(Predicate, Functor, Arity)),
-			Predicates),
-		Prop = public(Predicates)
-	;	findall(
-			Functor/Arity,
-			(call(Dcl, Predicate, p(p), _, _, Ptc), functor(Predicate, Functor, Arity)),
-			Predicates),
-		Prop = protected(Predicates)
-	;	findall(
-			Functor/Arity,
-			(call(Dcl, Predicate, p, _, _, Ptc), functor(Predicate, Functor, Arity)),
-			Predicates),
-		Prop = private(Predicates)
-	;	'$lgt_entity_property_declares'(protocol, Ptc, Dcl, _, Flags, Prop)
+	'$lgt_protocol_property'(Prop, Ptc, Dcl, Flags).
+
+
+'$lgt_protocol_property'((dynamic), _, _, Flags) :-
+	Flags /\ 2 =:= 2.
+'$lgt_protocol_property'(static, _, _, Flags) :-
+	Flags /\ 2 =:= 0.
+'$lgt_protocol_property'(built_in, _, _, Flags) :-
+	Flags /\ 1 =:= 1.
+'$lgt_protocol_property'(file(Base, Path), Ptc, _, _) :-
+	(	'$lgt_entity_property_'(Ptc, file_lines(Base, Path, _, _)) ->
+		true
+	;	fail
 	).
+'$lgt_protocol_property'(lines(Start, End), Ptc, _, _) :-
+	(	'$lgt_entity_property_'(Ptc, file_lines(_, _, Start, End)),
+	 	Start =\= -1, End =\= -1 ->
+		true
+	;	fail
+	).
+'$lgt_protocol_property'(info(Info), Ptc, _, _) :-
+	(	'$lgt_entity_property_'(Ptc, info(Info)) ->
+		true
+	;	fail
+	).
+'$lgt_protocol_property'(public(Predicates), Ptc, Dcl, _) :-
+	findall(
+		Functor/Arity,
+		(call(Dcl, Predicate, p(p(p)), _, _, Ptc), functor(Predicate, Functor, Arity)),
+		Predicates).
+'$lgt_protocol_property'(protected(Predicates), Ptc, Dcl, _) :-
+	findall(
+		Functor/Arity,
+		(call(Dcl, Predicate, p(p), _, _, Ptc), functor(Predicate, Functor, Arity)),
+		Predicates).
+'$lgt_protocol_property'(private(Predicates), Ptc, Dcl, _) :-
+	findall(
+		Functor/Arity,
+		(call(Dcl, Predicate, p, _, _, Ptc), functor(Predicate, Functor, Arity)),
+		Predicates).
+'$lgt_protocol_property'(declares(Predicate, Properties), Ptc, Dcl, _) :-
+	'$lgt_protocol_property_declares'(Ptc, Dcl, Predicate, Properties).
 
 
 
-'$lgt_entity_property_declares'(Kind, Entity, Dcl, DDcl, EntityFlags, declares(Functor/Arity, Properties)) :-
-	(	Kind == object ->
-		(	call(Dcl, Predicate, Scope0, Meta, Flags)
-		;	'$lgt_object_flags'(dynamic_declarations, EntityFlags),
-			call(DDcl, Predicate, Scope0),
-			Meta = no,
-			Flags = 2
-		)
-	;	Kind == protocol ->
-		call(Dcl, Predicate, Scope0, Meta, Flags, Entity)
-	;	%Kind == category ->
-		call(Dcl, Predicate, Scope0, Meta, Flags, Entity)
+'$lgt_object_property_declares'(Obj, Dcl, DDcl, EntityFlags, Functor/Arity, Properties) :-
+	(	call(Dcl, Predicate, Scope0, Meta, Flags)
+	;	'$lgt_object_property'(dynamic_declarations, _, _, _, _, _, EntityFlags),
+		call(DDcl, Predicate, Scope0),
+		Meta = no,
+		Flags = 2
 	),
-	'$lgt_scope'(Scope, Scope0),
 	functor(Predicate, Functor, Arity),
+	'$lgt_scope'(Scope, Scope0),
+	'$lgt_entity_property_declares'(Obj, Functor/Arity, Scope, Meta, Flags, Properties).
+
+
+'$lgt_category_property_declares'(Ctg, Dcl, Functor/Arity, Properties) :-
+	call(Dcl, Predicate, Scope0, Meta, Flags, Ctg),
+	functor(Predicate, Functor, Arity),
+	'$lgt_scope'(Scope, Scope0),
+	'$lgt_entity_property_declares'(Ctg, Functor/Arity, Scope, Meta, Flags, Properties).
+
+
+'$lgt_protocol_property_declares'(Ptc, Dcl, Functor/Arity, Properties) :-
+	call(Dcl, Predicate, Scope0, Meta, Flags, Ptc),
+	functor(Predicate, Functor, Arity),
+	'$lgt_scope'(Scope, Scope0),
+	'$lgt_entity_property_declares'(Ptc, Functor/Arity, Scope, Meta, Flags, Properties).
+
+
+'$lgt_entity_property_declares'(Entity, Functor/Arity, Scope, Meta, Flags, Properties) :-
 	(	'$lgt_predicate_property_'(Entity, Functor/Arity, info(Info)) ->
 		Properties0 = [info(Info)]
 	;	Properties0 = []
@@ -674,10 +779,12 @@ protocol_property(Ptc, Prop) :-
 
 
 
-'$lgt_entity_property_defines'(Kind, Entity, Def, DDef, defines(Functor/Arity, Properties)) :-
-	'$lgt_predicate_definition'(Kind, Entity, Def, DDef, Predicate),
+'$lgt_object_property_defines'(Obj, Def, DDef, Functor/Arity, Properties) :-
+	(	call(Def, Predicate, _, _)
+	;	call(DDef, Predicate, _, _)
+	),
 	functor(Predicate, Functor, Arity),
-	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(_,Line,N)) ->
+	(	'$lgt_predicate_property_'(Obj, Functor/Arity, lines_clauses(_,Line,N)) ->
 	 	(	Line =\= -1 ->
 			Properties = [line_count(Line), number_of_clauses(N)]
 		;	Properties = [number_of_clauses(N)]
@@ -686,20 +793,20 @@ protocol_property(Ptc, Prop) :-
 	).
 
 
-'$lgt_predicate_definition'(object, _, Def, DDef, Predicate) :-
-	(	call(Def, Predicate, _, _)
-	;	call(DDef, Predicate, _, _)
+'$lgt_category_property_defines'(Ctg, Def, Functor/Arity, Properties) :-
+	call(Def, Predicate, _, _, Ctg),
+	functor(Predicate, Functor, Arity),
+	(	'$lgt_predicate_property_'(Ctg, Functor/Arity, lines_clauses(_,Line,N)) ->
+	 	(	Line =\= -1 ->
+			Properties = [line_count(Line), number_of_clauses(N)]
+		;	Properties = [number_of_clauses(N)]
+		)
+	;	Properties = []
 	).
 
-'$lgt_predicate_definition'(protocol, Ptc, Def, _, Predicate) :-
-	call(Def, Predicate, _, _, Ptc).
-
-'$lgt_predicate_definition'(category, Ctg, Def, _, Predicate) :-
-	call(Def, Predicate, _, _, Ctg).
 
 
-
-'$lgt_entity_property_includes'(Entity, includes(Functor/Arity, From, Properties)) :-
+'$lgt_entity_property_includes'(Entity, Functor/Arity, From, Properties) :-
 	'$lgt_predicate_property_'(Entity, Functor/Arity, line_clauses_from(Line, N, From)),
 	(	Line =\= -1 ->
 		Properties = [line_count(Line), number_of_clauses(N)]
@@ -708,7 +815,7 @@ protocol_property(Ptc, Prop) :-
 
 
 
-'$lgt_entity_property_provides'(Entity, provides(Functor/Arity, To, Properties)) :-
+'$lgt_entity_property_provides'(Entity, Functor/Arity, To, Properties) :-
 	'$lgt_predicate_property_'(To, Functor/Arity, line_clauses_from(Line, N, Entity)),
 	(	Line =\= -1 ->
 		Properties = [line_count(Line), number_of_clauses(N)]
@@ -5897,55 +6004,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_write_entity_doc'(Entity),
 	'$lgt_save_entity_rclauses',
 	'$lgt_clean_pp_entity_clauses'.
-
-
-
-% '$lgt_object_flags'(?atom, +integer)
-
-'$lgt_object_flags'(context_switching_calls, Flags) :-
-	Flags /\ 128 =:= 128.
-'$lgt_object_flags'(dynamic_declarations, Flags) :-
-	Flags /\ 64 =:= 64.
-'$lgt_object_flags'(complements, Flags) :-
-	Flags /\ 32 =:= 32.
-'$lgt_object_flags'(events, Flags) :-
-	Flags /\ 16 =:= 16.
-'$lgt_object_flags'(threaded, Flags) :-
-	Flags /\ 8 =:= 8.
-'$lgt_object_flags'(synchronized, Flags) :-
-	Flags /\ 4 =:= 4.
-'$lgt_object_flags'((dynamic), Flags) :-
-	Flags /\ 2 =:= 2.
-'$lgt_object_flags'(static, Flags) :-
-	Flags /\ 2 =:= 0.
-'$lgt_object_flags'(built_in, Flags) :-
-	Flags /\ 1 =:= 1.
-
-
-
-% '$lgt_protocol_flags'(?atom, +integer)
-
-'$lgt_protocol_flags'((dynamic), Flags) :-
-	Flags /\ 2 =:= 2.
-'$lgt_protocol_flags'(static, Flags) :-
-	Flags /\ 2 =:= 0.
-'$lgt_protocol_flags'(built_in, Flags) :-
-	Flags /\ 1 =:= 1.
-
-
-
-% '$lgt_category_flags'(?atom, +integer)
-
-'$lgt_category_flags'(events, Flags) :-
-	Flags /\ 16 =:= 16.
-'$lgt_category_flags'(synchronized, Flags) :-
-	Flags /\ 4 =:= 4.
-'$lgt_category_flags'((dynamic), Flags) :-
-	Flags /\ 2 =:= 2.
-'$lgt_category_flags'(static, Flags) :-
-	Flags /\ 2 =:= 0.
-'$lgt_category_flags'(built_in, Flags) :-
-	Flags /\ 1 =:= 1.
 
 
 
