@@ -41,10 +41,10 @@ RELEASE NOTES
     reflective computations. Implemented declares/2, defines/2, includes/3,
     and provides/3 properties for accessing the properties of predicates
     declared and defined within an entity. Declaration properties include
-    line/1, the line number of the predicate scope directive. Definition
-    properties include line/1, the line number of the head of the first clause
-    for the predicate, and clauses/1, the number of clauses for the predicate.
-    Implemented uses/3 and use_module/3 properties.
+    line_count/1, the line number of the predicate scope directive. Definition
+    properties include line_count/1, the line number of the head of the first
+    clause for the predicate, and number_of_clauses/1, the number of clauses
+    for the predicate. Implemented uses/3 and use_module/3 properties.
 
     Added a predicate property, redefined_from/1, allowing querying about the
     object or category that contains a predicate definition that is redefined.

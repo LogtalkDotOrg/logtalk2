@@ -643,7 +643,7 @@ protocol_property(Ptc, Prop) :-
 	'$lgt_append'(Modes, Properties0, Properties1),
 	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(Line,_,_)),
 	 	Line =\= -1 ->
-		Properties2 = [line(Line)| Properties1]
+		Properties2 = [line_count(Line)| Properties1]
 	;	Properties2 = Properties1
 	),
 	(	Flags /\ 32 =:= 32 ->
@@ -679,8 +679,8 @@ protocol_property(Ptc, Prop) :-
 	functor(Predicate, Functor, Arity),
 	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(_,Line,N)) ->
 	 	(	Line =\= -1 ->
-			Properties = [line(Line), clauses(N)]
-		;	Properties = [clauses(N)]
+			Properties = [line_count(Line), number_of_clauses(N)]
+		;	Properties = [number_of_clauses(N)]
 		)
 	;	Properties = []
 	).
@@ -702,8 +702,8 @@ protocol_property(Ptc, Prop) :-
 '$lgt_entity_property_includes'(Entity, includes(Functor/Arity, From, Properties)) :-
 	'$lgt_predicate_property_'(Entity, Functor/Arity, line_clauses_from(Line, N, From)),
 	(	Line =\= -1 ->
-		Properties = [line(Line), clauses(N)]
-	;	Properties = [clauses(N)]
+		Properties = [line_count(Line), number_of_clauses(N)]
+	;	Properties = [number_of_clauses(N)]
 	).
 
 
@@ -711,8 +711,8 @@ protocol_property(Ptc, Prop) :-
 '$lgt_entity_property_provides'(Entity, provides(Functor/Arity, To, Properties)) :-
 	'$lgt_predicate_property_'(To, Functor/Arity, line_clauses_from(Line, N, Entity)),
 	(	Line =\= -1 ->
-		Properties = [line(Line), clauses(N)]
-	;	Properties = [clauses(N)]
+		Properties = [line_count(Line), number_of_clauses(N)]
+	;	Properties = [number_of_clauses(N)]
 	).
 
 
@@ -7911,11 +7911,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	% add the linking clauses from the original predicate to the predicate generated to implement coinduction:
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx, Stack),
-	'$lgt_tr_clause'((Head :- {'$lgt_member'(Head, Stack)}), Ctx, Ctx), 
+	'$lgt_tr_clause'((Head :- {'$lgt_member'(Head, Stack)}), Ctx, Ctx),
 	'$lgt_comp_ctx_stack_new_stack'(Ctx, BodyStack, BodyCtx),
 	'$lgt_comp_ctx_exec_ctx'(BodyCtx, BodyExCtx),
 	'$lgt_exec_ctx'(BodyExCtx, Sender, This, Self, MetaCallCtx, BodyStack),
-	'$lgt_tr_clause'((Head :- \+ {'$lgt_member'(Head, Stack)}, BodyStack = [Head| Stack], CoinductiveHead), Ctx, BodyCtx), 
+	'$lgt_tr_clause'((Head :- \+ {'$lgt_member'(Head, Stack)}, BodyStack = [Head| Stack], CoinductiveHead), Ctx, BodyCtx),
 	assertz('$lgt_pp_coinductive_'(Head, CoinductiveHead)),
 	'$lgt_tr_coinductive_directive'(Preds, Ctx).
 
