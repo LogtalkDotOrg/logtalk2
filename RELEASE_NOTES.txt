@@ -13,12 +13,12 @@ RELEASE NOTES
 =============
 
 
-2.43.0 - June ??, 2011
+2.43.0 - July 5, 2011
 
     Changed error reporting by the Logtalk compiler and runtime. All exception
     terms now use, whenever possible, the error(Error, logtalk(Goal, Entity))
     format. Changed the internal error checking to use, whenever practical,
-    the new '$lgt_must_be'/2-3 predicates.
+    the new '$lgt_must_be'/2-3 internal predicates.
 
     Added an "optimize" flag, whose default value is "on". This flag allows
     the user to turn off existing optimizations for e.g. debugging tasks (the
@@ -104,6 +104,10 @@ RELEASE NOTES
     Corrected a long standing bug where entity flag values set locally using
     the set_logtalk_flag/2 directive would fail to be saved into the entity
     compiled code.
+
+    Corrected a long standing bug when abolish a dynamic predicate in a
+    non-prototype object where the abolish/1 method would succeed without
+    the predicate being actually abolished.
 
     Corrected a bug in setting the correct execution context when calling
     a meta-argument that requires a runtime compilation in the context of
