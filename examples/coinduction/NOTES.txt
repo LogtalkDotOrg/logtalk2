@@ -20,7 +20,7 @@ Prolog compilers. The second issue prevents some coinductive predicates to
 behave as (theoretically) expected.
 
 This folder contains several examples of coinductive predicates, adapted from
-the coinduction papers and from the Feliks Kluzniak's DRA interpreter.
+the coinduction papers and from the Feliks Kluzniak's DRA meta-interpreter.
 
 For more information see:
 

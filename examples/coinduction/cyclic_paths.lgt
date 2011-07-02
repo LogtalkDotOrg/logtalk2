@@ -40,8 +40,7 @@
 
 	arc(a, b).
 	arc(b, c).
-	arc(c, a).
-	arc(c, d).
+	arc(c, a).	arc(c, d).
 	arc(d, a).
 
 :- end_object.
