@@ -80,6 +80,16 @@ X = class
 yes
 
 
+% if we change our mind and abolish the new predicate:
+
+| ?- class::abolish(p2/1).
+yes
+
+| ?- instance::p2(_).
+
+error(existence_error(predicate_declaration,p2/1), logtalk(_,_))) :-
+
+
 % using a prototype, assert three new predicates (the method object_assert/0 
 % asserts the predicate public_predicate/0 from outside the prototype; the 
 % method self_assert/0 asserts the predicate protected_predicate/0 in self; 

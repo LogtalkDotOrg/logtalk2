@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 2.1,
+		version is 2.2,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2011/05/04,
+		date is 2011/07/02,
 		comment is 'Unit tests for the "dynpred" example.']).
 
 	:- discontiguous(succeeds/1).
@@ -44,9 +44,15 @@
 		Solutions == [class].
 
 	succeeds(dynpred_9) :-
+		class::abolish(p2/1).
+
+	throws(dynpred_10, error(existence_error(predicate_declaration,p2/1), logtalk(_,_))) :-
+		instance::p2(_).
+
+	succeeds(dynpred_11) :-
 		prototype::(object_assert, self_assert, this_assert).
 
-	succeeds(dynpred_10) :-
+	succeeds(dynpred_12) :-
 		\+ top::get_default(_),
 		\+ top::get_value(_),
 		\+ middle::get_default(_),
@@ -54,7 +60,7 @@
 		\+ bottom::get_default(_),
 		\+ bottom::get_value(_).
 
-	succeeds(dynpred_11) :-
+	succeeds(dynpred_13) :-
 		top::set_default(1),
 		top::get_default(Default), Default == 1,
 		top::get_value(Default), Default == 1,
@@ -63,7 +69,7 @@
 		bottom::get_default(Default), Default == 1,
 		bottom::get_value(Default), Default == 1.
 
-	succeeds(dynpred_12) :-
+	succeeds(dynpred_14) :-
 		top::set_value(2),
 		top::get_default(Default), Default == 2,
 		top::get_value(Default), Default == 2,
