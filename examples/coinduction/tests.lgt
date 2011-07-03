@@ -5,7 +5,7 @@
 	:- info([
 		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2011/06/24,
+		date is 2011/07/02,
 		comment is 'Unit tests for the "coinduction" example.']).
 
 	:- discontiguous(succeeds/1).
@@ -56,6 +56,8 @@
 		X1 == [a, b, c, d| X1],
 		X2 == [a, b, e| X2].
 
+	:- if(\+ current_logtalk_flag(prolog_dialect, eclipse)).
+
 	succeeds(coinduction_cyclic_paths_1) :-
 		bagof(P, cp1::path(a, P), [P1, P2, P3]),
 		X1 = [b| X1], P1 == [a| X1],
@@ -78,5 +80,7 @@
 		bagof(P, tangle::p(P), [P1, P2]),
 		X1 = [a, b| X1], P1 == X1,
 		X2 = [c, d| X2], P2 == X2.
+
+	:- endif.
 
 :- end_object.
