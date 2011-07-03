@@ -39,6 +39,10 @@
 	succeeds(coinduction_streams_2) :-
 		X = [0, 1, 1, 0| X], streams::bit_stream(X).
 
+	succeeds(coinduction_filter_1) :-
+		L = [0, s(0), s(s(0))| L], filter::filter(L, F),
+		F == [0, s(s(0))| F].
+
 	succeeds(coinduction_lists_1) :-
 		X = [1, 2, 3| X], lists::comember(2, X).
 
