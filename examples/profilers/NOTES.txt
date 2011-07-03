@@ -29,7 +29,11 @@ use the ::/2 message-sending operator at the top-level) by typing:
 	| ?- logtalk << (prolog_statistics:profile(... :: ...)).
 
 Given that prolog_statistics:profile/1 is a meta-predicate, Logtalk will
-compile its argument before calling it.
+compile its argument before calling it. Don't forget, however, to load the
+prolog_statistics module *before* using or compiling calls to the profile/1
+predicate by typing:
+
+	| ?- use_module(library(statistics)).
 
 The profiler support makes no attempt to conceal the internal Logtalk
 compiler/runtime predicates or the generated predicates that implement
