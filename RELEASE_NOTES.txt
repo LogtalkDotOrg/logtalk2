@@ -119,6 +119,12 @@ RELEASE NOTES
     semantics (i.e. the meta-arguments will be called in the context of the
     caller) instead of the usual Prolog module meta-predicate semantics.
 
+    Corrected a bug where the coinduction stacks was not initialized when
+    using the <</2 control construct.
+
+    Updated the built-in debugger command that prints the execution context
+    to also print the meta-call context and the coinduction stack.
+
     Changed the semantics of the coinductive/1 directive to use the same
     semantics as the coinductive1/1 directive found on the U.T.Dallas
     coinduction implementation. Thanks to Feliks Kluzniak for the examples

@@ -3931,7 +3931,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_call_within_context_nv'(Obj, Goal, This) :-
 	(	'$lgt_current_object_'(Obj, Prefix, _, Def, _, _, _, _, DDef, _, Flags) ->
 		(	Flags /\ 128 =:= 128 ->
-			'$lgt_exec_ctx'(ExCtx, Obj, Obj, Obj, [], _),
+			'$lgt_exec_ctx'(ExCtx, Obj, Obj, Obj, [], []),
 			(	% in the most common case we're calling a user defined static predicate:
 				call(Def, Goal, ExCtx, TGoal) ->
 				catch(TGoal, Error, '$lgt_runtime_error_handler'(error(Error, logtalk(Obj<<Goal, This))))
@@ -3939,7 +3939,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			;	call(DDef, Goal, ExCtx, TGoal) ->
 				catch(TGoal, Error, '$lgt_runtime_error_handler'(error(Error, logtalk(Obj<<Goal, This))))
 			;	% in the worst case we need to compile the goal:
-				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx, runtime, _),
+				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx, runtime, []),
 				catch('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx), Error, throw(error(Error, logtalk(Obj<<Goal, This)))),
 				(	'$lgt_debugger.debugging_', '$lgt_debugging_entity_'(Obj) ->
 					catch(DGoal, Error, throw(error(Error, logtalk(Obj<<Goal, This))))
@@ -4900,10 +4900,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	fail.
 
 '$lgt_debugger.do_port_option'(x, _, _, _, ExCtx, _) :-
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _, _),
-	write('  Sender: '), writeq(Sender), nl,
-	write('  This:   '), writeq(This), nl,
-	write('  Self:   '), writeq(Self), nl,
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx, Stack),
+	write('  Sender:            '), writeq(Sender), nl,
+	write('  This:              '), writeq(This), nl,
+	write('  Self:              '), writeq(Self), nl,
+	write('  Meta-call context: '), writeq(MetaCallCtx), nl,
+	write('  Coinduction stack: '), writeq(Stack), nl,
 	fail.
 
 '$lgt_debugger.do_port_option'(e, _, _, Error, _, _) :-
