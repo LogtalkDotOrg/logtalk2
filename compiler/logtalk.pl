@@ -7974,11 +7974,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	% add the linking clauses from the original predicate to the predicate generated to implement coinduction:
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx, Stack),
-	'$lgt_tr_clause'((Head :- {'$lgt_member'(Head, Stack)}), Ctx, Ctx),
 	'$lgt_comp_ctx_stack_new_stack'(Ctx, BodyStack, BodyCtx),
 	'$lgt_comp_ctx_exec_ctx'(BodyCtx, BodyExCtx),
 	'$lgt_exec_ctx'(BodyExCtx, Sender, This, Self, MetaCallCtx, BodyStack),
-	'$lgt_tr_clause'((Head :- \+ {'$lgt_member'(Head, Stack)}, BodyStack = [Head| Stack], CoinductiveHead), Ctx, BodyCtx),
+	(	'$lgt_pl_meta_predicate'('*->'(_, _), _, _) ->
+		% back-end Prolog compiler supports the soft-cut control construct
+		'$lgt_tr_clause'((Head :- '*->'({'$lgt_member'(Head, Stack)}, true); BodyStack = [Head| Stack], CoinductiveHead), Ctx, BodyCtx)
+	;	% without the soft-cut control construct we have to walk the coinduction stack twice 
+		'$lgt_tr_clause'((Head :- {'$lgt_member'(Head, Stack)}), Ctx, Ctx),
+		'$lgt_tr_clause'((Head :- \+ {'$lgt_member'(Head, Stack)}, BodyStack = [Head| Stack], CoinductiveHead), Ctx, BodyCtx)
+	),
 	assertz('$lgt_pp_coinductive_'(Head, CoinductiveHead)),
 	'$lgt_tr_coinductive_directive'(Preds, Ctx).
 

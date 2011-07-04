@@ -128,7 +128,9 @@ RELEASE NOTES
     Changed the semantics of the coinductive/1 directive to use the same
     semantics as the coinductive1/1 directive found on the U.T.Dallas
     coinduction implementation. Thanks to Feliks Kluzniak for the examples
-    that helped clarified the issues with the previous implementation.
+    that helped clarified the issues with the previous implementation. In
+    addition, take advantage of the soft-cut control construct when supported
+    by the back-end Prolog compiler for better performance.
 
     Refined error checking for the built-in predicates category_property/2,
     object_property/2, and protocol_property/2, throwing a type_error/2 when
