@@ -129,6 +129,8 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 %  uncomment the following lines:
 
 /*
+:- if(current_logtalk_flag(prolog_dialect, swi)).
+
 :- initialization((
 	set_logtalk_flag(debug, off),
 	set_logtalk_flag(smart_compilation, off),
@@ -143,6 +145,8 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 	set_logtalk_flag(source_data, on),
 	set_prolog_flag(optimise, off)
 )).
+
+:- endif.
 */
 
 
