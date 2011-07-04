@@ -15,6 +15,7 @@
 			binary,
 			streams,
 			filter,
+			sieve,
 			lists,
 			sorting,
 			automata,

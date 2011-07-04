@@ -43,6 +43,10 @@
 		L = [0, s(0), s(s(0))| L], filter::filter(L, F),
 		F == [0, s(s(0))| F].
 
+	succeeds(coinduction_sieve_1) :-
+		sieve::primes(20, P),
+		P = [2, 3, 5, 7, 11, 13, 17, 19| P].
+
 	succeeds(coinduction_lists_1) :-
 		X = [1, 2, 3| X], lists::comember(2, X).
 
