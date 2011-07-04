@@ -76,8 +76,24 @@ T = [s(0), s(s(0))|T] ;
 T = [0, s(0), s(s(0))|T] ;
 false.
 
-|?- X = [0, 1, 1, 0| X], streams::bit_stream(X).
+| ?- X = [0, 1, 1, 0| X], streams::bit_stream(X).
 X = [0, 1, 1, 0|X] ;
+false.
+
+
+% filtering odd numbers from a list:
+
+| ?- L = [0, s(0), s(s(0))| L], filter::filter(L, F).
+L = [0, s(0), s(s(0))|L],
+F = [0, s(s(0))|F] ;
+false.
+
+
+% using the Sieve of Eratosthenes to find prime numbers:
+
+| ?- sieve::primes(20, P).
+P = [2, 3|_S1], % where
+    _S1 = [5, 7, 11, 13, 17, 19, 2, 3|_S1] ;
 false.
 
 
