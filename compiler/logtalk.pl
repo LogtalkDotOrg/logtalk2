@@ -9806,14 +9806,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
 			'$lgt_tr_module_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
 			TPred0 =.. [Functor| TArgs],
-			TPred = {':'(Module, TPred0)},
+			TPred = ':'(Module, TPred0),
 			'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 			DPred0 =.. [Functor| DArgs],
 			DPred = '$lgt_debugger.goal'(':'(Module, Pred), DPred0, ExCtx)
 		)
 	;	% we're compiling a call to a module predicate
 		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-		TPred = {':'(Module, Pred)},
+		TPred = ':'(Module, Pred),
 		DPred = '$lgt_debugger.goal'(':'(Module, Pred), TPred, ExCtx)
 	).
 
@@ -13861,15 +13861,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	Meta =.. [Functor| MArgs],
 	'$lgt_fix_pred_calls_in_meta_args'(Args, MArgs, TArgs),
 	TPred =.. [Functor| TArgs].
-/*
+
 '$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, Pred), _) :-
 	var(Pred),
 	!.
 
-'$lgt_fix_predicate_calls'(':'(Module1, ':'(Module2, Pred)), ':'(Module1, ':'(Module2, TPred)), _) :-
-	!,												% calls to Prolog module meta-predicates
-	'$lgt_fix_predicate_calls'(':'(Module2, Pred), ':'(Module2, TPred), false).
-
+'$lgt_fix_predicate_calls'(':'(_, ':'(Module, Pred)), TPred, _) :-
+	!,
+	'$lgt_fix_predicate_calls'(':'(Module, Pred), TPred, false).
+/*
 '$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred), _) :-
 	'$lgt_term_template'(Pred, OverridingMeta),
 	catch('$lgt_predicate_property'(':'(Module, Pred), meta_predicate(OriginalMeta)), _, fail),
