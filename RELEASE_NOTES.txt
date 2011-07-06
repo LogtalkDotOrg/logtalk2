@@ -230,6 +230,10 @@ RELEASE NOTES
     Corrected some bugs on the tab triggers for the Gedit Logtalk snippets
     that prevented their use.
 
+    Changed back to using XEP instead of FOP when generating the PDF versions
+    of the User and Reference manuals as FOP truncates the contents of some of
+    the pages. Thanks to Feliks Kluzniak for the bug report.
+
 
 2.42.4 - April 4, 2011
 

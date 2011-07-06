@@ -16,8 +16,8 @@ xslt_proc="xsltproc -path /opt/local/share/xml/xhtml -nonet"
 # xslt_proc=xalan
 # xslt_proc=sabcmd
 
-fo_proc=fop
-#fo_proc=xep
+#fo_proc=fop
+fo_proc=xep
 # fo_proc=xinc
 
 catalog=file:///opt/local/share/xml/xhtml/catalog
@@ -269,7 +269,12 @@ cat -s \
 	> refman.html
 
 java -jar $css2xslfo -c $catalog refman.html -fo refman.fo
-eval $fo_proc -fo refman.fo -pdf refman.pdf
 
-# rm refman.fo refman.html
+if [ "$fo_proc" == "xep" ]; then
+	eval $fo_proc -valid -fo refman.fo -pdf refman.pdf
+else
+	eval $fo_proc -fo refman.fo -pdf refman.pdf
+fi
+
+rm refman.fo refman.html
 rm -f *.section directives/*.section builtins/*.section methods/*.section control/*.section
