@@ -3,9 +3,9 @@
 	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2011/05/04,
+		date is 2011/07/07,
 		comment is 'A simple unit test framework.']).
 
 	:- uses(list, [member/2]).
@@ -26,7 +26,7 @@
 	:- public(('=~=')/2).
 	:- mode('=~='(+float, +float), zero_or_one).
 	:- info(('=~=')/2, [
-		comment is 'Compares two float values for approximate equality using 100*epsilon for the absolute error and, if that fails, 99.999% accuracy for the relative error. Altough handy when writing certain unit tests, the default precision values may not be adequate for all cases.',
+		comment is 'Compares two floats for approximate equality using 100*epsilon for the absolute error and, if that fails, 99.999% accuracy for the relative error. Handy when writing certain unit tests but the default precision values may not be adequate for all cases.',
 		argnames is ['Float1', 'Float2']]).
 
 	:- protected(run_tests/0).
@@ -223,7 +223,7 @@
 		;	catch(abs((Float1 - Float2) / Float2) < 0.00001, _, fail)
 		).
 
-	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap; Dialect == gnu; Dialect == bp; Dialect == cx))).
+	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap; Dialect == gnu; Dialect == b; Dialect == cx))).
 		epsilon(Epsilon) :-
 			Epsilon is epsilon.
 	:- else.
