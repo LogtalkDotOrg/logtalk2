@@ -104,7 +104,7 @@ Name: "{group}\Default settings"; Filename: "%LOGTALKUSER%\settings.lgt"; Compon
 
 Name: "{group}\Web Site"; Filename: "{#MyAppUrl}"; Components: base
 
-Name: "{group}\Logtalk - B-Prolog"; Filename: "{code:GetBPExePath}"; Parameters: "-i ""consult('$LOGTALKHOME/integration/logtalk_bp.pl'), $bp_top_level"""; Comment: "Runs Logtalk with B-Prolog"; WorkingDir: "%CD%"; Components: prolog\bp; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - B-Prolog"; Filename: "{code:GetBPExePath}"; Parameters: "-i ""$LOGTALKHOME/integration/logtalk_bp.pl"""; Comment: "Runs Logtalk with B-Prolog"; WorkingDir: "%CD%"; Components: prolog\bp; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--script ""%LOGTALKHOME%\\integration\\logtalk_cx.pl"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "%CD%"; Components: prolog\cxprolog; Flags: createonlyiffileexists
 
