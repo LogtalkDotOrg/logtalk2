@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
@@ -13,7 +13,7 @@
 # based on a unit test automation script contributed by Parker Jones
 
 print_version() {
-	echo "`basename $0` 0.5"
+	echo "`basename $0` 0.6"
 	exit 0
 }
 
@@ -54,7 +54,7 @@ usage_help()
 	echo "Optional arguments:"
 	echo "  -v print version of `basename $0`"
 	echo "  -p back-end Prolog compiler (default is $backend)"
-	echo "     (possible values are cx, eclipse, gnu, qp, sicstus, swi, xsb, and yap)"
+	echo "     (possible values are b, cx, eclipse, gnu, qp, sicstus, swi, xsb, and yap)"
 	echo "  -m compilation mode (default is $mode)"
 	echo "     (possible values are normal, debug, and all)"
 	echo "  -d name of the sub-directory to store the test results (default is tester_results)"
@@ -75,7 +75,10 @@ do
 	esac
 done
 
-if [ "$p_arg" = "cx" ] ; then
+if [ "$p_arg" = "b" ] ; then
+	prolog='B-Prolog'
+	logtalk="bplgt$extension -g"
+elif [ "$p_arg" = "cx" ] ; then
 	prolog='CxProlog'
 	logtalk="cxlgt$extension --goal"
 elif [ "$p_arg" = "eclipse" ] ; then
