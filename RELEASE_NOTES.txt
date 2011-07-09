@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.43.0 - July 5, 2011
+2.43.0 - July ??, 2011
 
     Changed error reporting by the Logtalk compiler and runtime. All exception
     terms now use, whenever possible, the error(Error, logtalk(Goal, Entity))
@@ -207,9 +207,11 @@ RELEASE NOTES
     the unit test specifications.
 
     Updated the "cc" example with bug fixes and improvements for ECLiPSe
-    contributed by Joachim Schimpf and with a bug fix for the SWI-Prolog
+    contributed by Joachim Schimpf, with a bug fix for the SWI-Prolog
     implementation of the expand_path/2 predicate (resulting from recent
-    changes to the SWI-Prolog absolute_file_name/3 built-in predicate).
+    changes to the SWI-Prolog absolute_file_name/3 built-in predicate),
+    and with a definition for the command_line_arguments/1 predicate for
+    B-Prolog.
 
     Updated the "coinduction" example, adding some more individual examples
     by Gopal Gupta and Feliks Kluzniak.
