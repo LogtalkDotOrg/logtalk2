@@ -623,6 +623,26 @@ callable(Term) :-
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  annotations
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_default_value_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_value_annotation'(Annotation, Functor, Value, Goal) :-
+	?????
+
+
+% '$lgt_default_goal_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_goal_annotation'(Annotation, Functor, LeftGoal, RightGoal) :-
+	?????
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  end!

@@ -11,7 +11,7 @@
 %
 %  configuration file for IF/Prolog 5.3
 %
-%  last updated: May 15, 2011
+%  last updated: July 12, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -642,6 +642,26 @@ callable(Term) :-
 
 '$lgt_assertz_entity_clause'(Clause, _Kind) :-
 	assertz(Clause).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  annotations
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_default_value_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_value_annotation'(_, _, _, _) :-
+	fail.
+
+
+% '$lgt_default_goal_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_goal_annotation'(_, _, _, _) :-
+	fail.
 
 
 

@@ -164,6 +164,9 @@ RELEASE NOTES
     order to make them deterministic for most calls where the second
     argument is bound.
 
+    Added Logtalk compiler support for default annotations, defined in the
+    back-end Prolog compiler config files.
+
     For all config files, renamed the predicate '$lgt_is_proper_list'/1 to
     '$lgt_is_list'/1 and and replaced the old '$lgt_is_list'/1 predicate by
     a new '$lgt_is_list_or_partial_list'/1 predicate.
@@ -197,7 +200,7 @@ RELEASE NOTES
 
     Updated the B-Prolog config file to require version 7.5#4 or later as
     this release fixes some of the bugs on previous versions that show up
-    when using Logtalk.
+    when using Logtalk. Added default annotations for matching clauses.
 
     Added predicates select/4 and selectchk/4 to the library entities "listp",
     "list", and "difflist".

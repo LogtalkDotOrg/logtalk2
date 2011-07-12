@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: June 24, 2011
+%  last updated: July 12, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -857,6 +857,26 @@ user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, ExCtx)) :-
 
 '$lgt_assertz_entity_clause'(Clause, _Kind) :-
 	assertz(Clause).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  annotations
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_default_value_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_value_annotation'(_, _, _, _) :-
+	fail.
+
+
+% '$lgt_default_goal_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_goal_annotation'(_, _, _, _) :-
+	fail.
 
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: June 11, 2011
+%  last updated: June 12, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -578,6 +578,26 @@ setup_call_cleanup(_, _, _) :-
 
 '$lgt_assertz_entity_clause'(Clause, _Kind) :-
 	assertz(Clause).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  annotations
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_default_value_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_value_annotation'(_, _, _, _) :-
+	fail.
+
+
+% '$lgt_default_goal_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_goal_annotation'(_, _, _, _) :-
+	fail.
 
 
 

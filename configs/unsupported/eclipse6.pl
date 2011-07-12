@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: May 15, 2011
+%  last updated: July 12, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -806,6 +806,26 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_assertz_entity_clause'(Clause, _Kind) :-
 	assertz(Clause).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  annotations
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_default_value_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_value_annotation'(_, _, _, _) :-
+	fail.
+
+
+% '$lgt_default_goal_annotation'(?callable, ?atom, ?term, ?term)
+
+'$lgt_default_goal_annotation'(_, _, _, _) :-
+	fail.
 
 
 
