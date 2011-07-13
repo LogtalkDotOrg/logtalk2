@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.10#8
 %
-%  last updated: July 12, 2011
+%  last updated: July 13, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -26,8 +26,6 @@
 :- use_module(library(prolog_sys)).
 :- use_module(library(sort)).
 :- use_module(library(filenames)).
-
-:- include(engine(builtin_exports)).
 
 :- set_prolog_flag(multi_arity_warnings, off).
 
@@ -70,11 +68,7 @@
 	!.
 
 '$lgt_predicate_property'(Pred, built_in) :-
-	functor(Pred, Functor, Arity),
-	builtin_export(_, Functor, Arity, _).
-
-'$lgt_predicate_property'(Pred, built_in) :-
-	lgt_ciao_iso_builtin(Pred).
+	'$lgt_iso_spec_pred'(Pred).
 
 '$lgt_predicate_property'(Pred, static) :-
 	predicate_property(Pred, compiled).
@@ -93,50 +87,6 @@
 	atom_concat('user:', Functor, Functor2),
 	functor(Pred2, Functor2, Arity),
 	predicate_property(Pred2, Prop).
-
-
-lgt_ciao_iso_builtin(write(_)).
-lgt_ciao_iso_builtin(write(_, _)).
-lgt_ciao_iso_builtin(writeq(_)).
-lgt_ciao_iso_builtin(writeq(_, _)).
-lgt_ciao_iso_builtin(write_canonical(_)).
-lgt_ciao_iso_builtin(write_canonical(_, _)).
-lgt_ciao_iso_builtin(write_term(_, _)).
-lgt_ciao_iso_builtin(write_term(_, _, _)).
-
-lgt_ciao_iso_builtin(read(_)).
-lgt_ciao_iso_builtin(read(_, _)).
-lgt_ciao_iso_builtin(read_term(_, _)).
-lgt_ciao_iso_builtin(read_term(_, _, _)).
-
-lgt_ciao_iso_builtin(open(_, _, _, _)).
-lgt_ciao_iso_builtin(close(_, _)).
-lgt_ciao_iso_builtin(stream_property(_, _)).
-
-lgt_ciao_iso_builtin(op(_, _, _)).
-lgt_ciao_iso_builtin(current_op(_, _, _)).
-
-lgt_ciao_iso_builtin(_ \= _).
-lgt_ciao_iso_builtin(once(_)).
-lgt_ciao_iso_builtin(compound(_)).
-lgt_ciao_iso_builtin(sub_atom(_, _, _, _, _)).
-lgt_ciao_iso_builtin(unify_with_occurs_check(_, _)).
-
-lgt_ciao_iso_builtin(char_code(_, _)).
-lgt_ciao_iso_builtin(atom_chars(_, _)).
-lgt_ciao_iso_builtin(number_chars(_, _)).
-lgt_ciao_iso_builtin(get_byte(_)).
-lgt_ciao_iso_builtin(get_byte(_, _)).
-lgt_ciao_iso_builtin(peek_byte(_)).
-lgt_ciao_iso_builtin(peek_byte(_, _)).
-lgt_ciao_iso_builtin(put_byte(_)).
-lgt_ciao_iso_builtin(put_byte(_, _)).
-lgt_ciao_iso_builtin(get_char(_)).
-lgt_ciao_iso_builtin(get_char(_, _)).
-lgt_ciao_iso_builtin(peek_char(_)).
-lgt_ciao_iso_builtin(peek_char(_, _)).
-lgt_ciao_iso_builtin(put_char(_)).
-lgt_ciao_iso_builtin(put_char(_, _)).
 
 
 
