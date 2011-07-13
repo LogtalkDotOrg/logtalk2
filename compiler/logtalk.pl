@@ -850,7 +850,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 
 '$lgt_create_object'(Obj, Rels, Dirs, Clauses) :-
 	(	var(Obj) ->
-		'$lgt_gen_entity_identifier'(0'o, Obj)
+		'$lgt_gen_entity_identifier'(o, Obj)
 	;	true
 	),
 	'$lgt_clean_pp_clauses',
@@ -895,7 +895,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 
 '$lgt_create_category'(Ctg, Rels, Dirs, Clauses) :-
 	(	var(Ctg) ->
-		'$lgt_gen_entity_identifier'(0'c, Ctg)
+		'$lgt_gen_entity_identifier'(c, Ctg)
 	;	true
 	),
 	'$lgt_clean_pp_clauses',
@@ -939,7 +939,7 @@ create_protocol(Ptc, Rels, Dirs) :-
 
 '$lgt_create_protocol'(Ptc, Rels, Dirs) :-
 	(	var(Ptc) ->
-		'$lgt_gen_entity_identifier'(0'p, Ptc)
+		'$lgt_gen_entity_identifier'(p, Ptc)
 	;	true
 	),
 	'$lgt_clean_pp_clauses',
@@ -954,15 +954,16 @@ create_protocol(Ptc, Rels, Dirs) :-
 
 
 
-% '$lgt_gen_entity_identifier'(+char_code, -entity_identifier)
+% '$lgt_gen_entity_identifier'(+char, -entity_identifier)
 %
 % generates a new, unique entity identifier by appending an integer to a base char
 
 '$lgt_gen_entity_identifier'(Base, Id) :-
+	char_code(Base, Code),
 	repeat,
 		'$lgt_next_integer'(1, New),
 		number_codes(New, Codes),
-		atom_codes(Id, [Base| Codes]),
+		atom_codes(Id, [Code| Codes]),
 	\+ '$lgt_current_protocol_'(Id, _, _, _, _),
 	\+ '$lgt_current_object_'(Id, _, _, _, _, _, _, _, _, _, _),
 	\+ '$lgt_current_category_'(Id, _, _, _, _, _),
