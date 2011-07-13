@@ -181,7 +181,8 @@ RELEASE NOTES
 
     Updated the SWI-Prolog integration files in order to hide the source code
     of the Logtalk (::)/2 and (<<)/2 built-in predicates from this compiler
-    debugging tools.
+    debugging tools. Also corrected an index/1 directive for an internal
+    predicate lookup caching predicate.
 
     Updated the SWI-Prolog hooks file in order to support tracing Logtalk
     source code using the SWI-Prolog graphical debugger and using the edit/1

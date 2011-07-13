@@ -71,6 +71,6 @@
 :- index('$lgt_ctg_super_call_same_'(1, 1, 0)).
 :- index('$lgt_ctg_super_call_other_'(1, 1, 0)).
 :- index('$lgt_ctg_call_'(1, 1, 0)).
-:- index('$lgt_db_lookup_cache_'(1, 1, 0, 0, 0, 0, 0)).
+:- index('$lgt_db_lookup_cache_'(1, 1, 0, 0, 0)).
 
 :- include('../compiler/logtalk.pl').
