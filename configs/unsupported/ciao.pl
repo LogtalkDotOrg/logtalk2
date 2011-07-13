@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for Ciao Prolog 1.10#8
+%  configuration file for Ciao Prolog 1.13.1
 %
 %  last updated: July 13, 2011
 %

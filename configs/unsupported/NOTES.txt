@@ -84,16 +84,9 @@ Bin-Prolog 8.x~10.x
 	Updated and tested with help of Arun Majumdar.
 
 
-CIAO Prolog 1.10#8
+CIAO Prolog 1.13.1
 
 	ciao.pl
-	ciao_aux.pl
-
-	The "ciao.pl" file is just a loader file containing two include/1 
-	directives which load the "ciao_aux.pl" and the Logtalk compiler/
-	runtime. You must edit the contents of the file "ciao.pl" to match 
-	your operating system (the include directive arguments are file 
-	paths that differ between operating systems).
 
 	The definition of the predicate '$lgt_predicate_property'/2 in the 
 	file "ciao_aux.pl" is a bit of a hack, but should enable you to run 
