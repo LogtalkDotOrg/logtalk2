@@ -55,7 +55,7 @@
 	'$lgt_ctg_super_call_same'/3, '$lgt_ctg_super_call_same_'/3,
 	'$lgt_ctg_super_call_other'/3, '$lgt_ctg_super_call_other_'/3,
 	'$lgt_ctg_call'/3, '$lgt_ctg_call_'/3,
-	'$lgt_db_lookup_cache_'/7,
+	'$lgt_db_lookup_cache_'/5,
 	'$lgt_hook_term_expansion_'/2, '$lgt_hook_goal_expansion_'/2,
 	'$lgt_threaded_tag_counter_'/1,
 	'$lgt_metacall'/6, '$lgt_metacall'/7
