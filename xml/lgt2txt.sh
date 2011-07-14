@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
