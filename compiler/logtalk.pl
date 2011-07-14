@@ -17903,7 +17903,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_threaded_peek'(Goal, Sender, This, Self) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
-	'$lgt_threaded_peek'(Queue, Goal, Sender, This, Self, []).
+	'$lgt_threaded_peek'(Queue, Goal, Sender, This, Self).
 
 
 

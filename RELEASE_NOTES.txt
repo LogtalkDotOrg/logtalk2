@@ -125,6 +125,9 @@ RELEASE NOTES
     Corrected a bug that prevented using the coinductive/1 directive with a
     list of predicate indicators as argument.
 
+    Corrected a bug in the implementation of the threaded_peek/1 built-in
+    predicate when called from within categories.
+
     Updated the built-in debugger command that prints the execution context
     to also print the meta-call context and the coinduction stack.
 
