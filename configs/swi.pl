@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: July 12, 2011
+%  last updated: July 14, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -938,15 +938,15 @@ user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, ExCtx)) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_default_value_annotation'(?callable, ?atom, ?term, ?term)
+% '$lgt_default_value_annotation'(@callable, -atom, -callable, -callable, -callable)
 
-'$lgt_default_value_annotation'(_, _, _, _) :-
+'$lgt_default_value_annotation'(_, _, _, _, _) :-
 	fail.
 
 
-% '$lgt_default_goal_annotation'(?callable, ?atom, ?term, ?term)
+% '$lgt_default_goal_annotation'(@callable, -atom, -callable, -callable, -callable)
 
-'$lgt_default_goal_annotation'(_, _, _, _) :-
+'$lgt_default_goal_annotation'(_, _, _, _, _) :-
 	fail.
 
 

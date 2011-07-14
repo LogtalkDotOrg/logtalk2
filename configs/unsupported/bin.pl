@@ -11,7 +11,7 @@
 %
 %  configuration file for BinProlog 8.x~10.x
 %
-%  last updated: July 12, 2011
+%  last updated: July 14, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -709,15 +709,15 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_default_value_annotation'(?callable, ?atom, ?term, ?term)
+% '$lgt_default_value_annotation'(@callable, -atom, -callable, -callable, -callable)
 
-'$lgt_default_value_annotation'(_, _, _, _) :-
+'$lgt_default_value_annotation'(_, _, _, _, _) :-
 	fail.
 
 
-% '$lgt_default_goal_annotation'(?callable, ?atom, ?term, ?term)
+% '$lgt_default_goal_annotation'(@callable, -atom, -callable, -callable, -callable)
 
-'$lgt_default_goal_annotation'(_, _, _, _) :-
+'$lgt_default_goal_annotation'(_, _, _, _, _) :-
 	fail.
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.3 or later versions
 %
-%  last updated: July 12, 2011
+%  last updated: July 14, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -687,15 +687,15 @@ setup_call_catcher_cleanup(Setup, Call, Catcher, Cleanup) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_default_value_annotation'(?callable, ?atom, ?term, ?term)
+% '$lgt_default_value_annotation'(@callable, -atom, -callable, -callable, -callable)
 
-'$lgt_default_value_annotation'(_, _, _, _) :-
+'$lgt_default_value_annotation'(_, _, _, _, _) :-
 	fail.
 
 
-% '$lgt_default_goal_annotation'(?callable, ?atom, ?term, ?term)
+% '$lgt_default_goal_annotation'(@callable, -atom, -callable, -callable, -callable)
 
-'$lgt_default_goal_annotation'(_, _, _, _) :-
+'$lgt_default_goal_annotation'(_, _, _, _, _) :-
 	fail.
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.5#4 and later versions
 %
-%  last updated: July 12, 2011
+%  last updated: July 14, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -624,16 +624,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_default_value_annotation'(?callable, ?atom, ?term, ?term)
+% '$lgt_default_value_annotation'(@callable, -atom, -callable, -callable, -callable)
 
-'$lgt_default_value_annotation'(_, _, _, _) :-
+'$lgt_default_value_annotation'(_, _, _, _, _) :-
 	fail.
 
 
-% '$lgt_default_goal_annotation'(?callable, ?atom, ?term, ?term)
+% '$lgt_default_goal_annotation'(@callable, -atom, -callable, -callable, -callable)
 
-'$lgt_default_goal_annotation'('=>'(Head, Body), '=>', Head, Body).
-'$lgt_default_goal_annotation'('?=>'(Head, Body), '?=>', Head, Body).
+'$lgt_default_goal_annotation'('=>'(Left, Right), '=>', Left, Right, Head) :-
+	(	Left = (Head, _) ->
+		true
+	;	Left = Head
+	).
+'$lgt_default_goal_annotation'('?=>'(Left, Right), '?=>', Left, Right, Head) :-
+	(	Left = (Head, _) ->
+		true
+	;	Left = Head
+	).
 
 
 
