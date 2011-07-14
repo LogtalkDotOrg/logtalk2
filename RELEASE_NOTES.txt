@@ -122,6 +122,9 @@ RELEASE NOTES
     Corrected a bug where the coinduction stacks was not initialized when
     using the <</2 control construct.
 
+    Corrected a bug that prevented using the coinductive/1 directive with a
+    list of predicate indicators as argument.
+
     Updated the built-in debugger command that prints the execution context
     to also print the meta-call context and the coinduction stack.
 

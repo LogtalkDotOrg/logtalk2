@@ -32,10 +32,10 @@
 
 % mode operators
 
-:- op(200, fy, +).		% input argument (instantiated)
-:- op(200, fy, ?).		% input/output argument
-:- op(200, fy, @).		% input argument (not modified by the call)
-:- op(200, fy, -).		% output argument (not instantiated)
+:- op(200, fy, (+)).	% input argument (instantiated)
+:- op(200, fy, (?)).	% input/output argument
+:- op(200, fy, (@)).	% input argument (not modified by the call)
+:- op(200, fy, (-)).	% output argument (not instantiated)
 
 
 % bitwise left-shift operator (used for context-switching calls)
@@ -3759,7 +3759,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	).
 
 
-'$lgt_unify_lambda_parameters'(-, _, _, Lambda, This) :-	% catch variables and lists with unbound tails
+'$lgt_unify_lambda_parameters'((-), _, _, Lambda, This) :-	% catch variables and lists with unbound tails
 	(Lambda = _/Parameters>>_; Lambda = Parameters>>_),
 	throw(error(type_error(list, Parameters), logtalk(Lambda, This))).
 
@@ -3772,7 +3772,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % when using currying, the "inner" lambda expressions must be executed in the same context as the "outer"
 % lambda expressions; the same for the "inner" closure; this forces the update of the meta-call context
 
-'$lgt_reduce_lambda_metacall_ctx'(-, _, _).
+'$lgt_reduce_lambda_metacall_ctx'((-), _, _).
 
 '$lgt_reduce_lambda_metacall_ctx'([], _, []).
 
@@ -4793,7 +4793,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_debugger.valid_port_option'(u, call, _) :- !.
 '$lgt_debugger.valid_port_option'(n, _, _) :- !.
 '$lgt_debugger.valid_port_option'(!, _, _) :- !.
-'$lgt_debugger.valid_port_option'(@, _, _) :- !.
+'$lgt_debugger.valid_port_option'((@), _, _) :- !.
 '$lgt_debugger.valid_port_option'(b, _, _) :- !.
 '$lgt_debugger.valid_port_option'(a, _, _) :- !.
 '$lgt_debugger.valid_port_option'('Q', _, _) :- !.
@@ -4802,11 +4802,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_debugger.valid_port_option'(w, _, _) :- !.
 '$lgt_debugger.valid_port_option'(x, _, _) :- !.
 '$lgt_debugger.valid_port_option'(h, _, _) :- !.
-'$lgt_debugger.valid_port_option'(?, _, _) :- !.
-'$lgt_debugger.valid_port_option'(=, _, _) :- !.
-'$lgt_debugger.valid_port_option'(*, _, ' ') :- !.
-'$lgt_debugger.valid_port_option'(+, _, ' ') :- !.
-'$lgt_debugger.valid_port_option'(-, _, +) :- !.
+'$lgt_debugger.valid_port_option'((?), _, _) :- !.
+'$lgt_debugger.valid_port_option'((=), _, _) :- !.
+'$lgt_debugger.valid_port_option'((*), _, ' ') :- !.
+'$lgt_debugger.valid_port_option'((+), _, ' ') :- !.
+'$lgt_debugger.valid_port_option'((-), _, (+)) :- !.
 '$lgt_debugger.valid_port_option'(e, exception, _) :- !.
 
 
@@ -4850,11 +4850,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_debugger.do_port_option'(n, _, _, _, _, true) :-
 	'$lgt_debugger.nodebug'.
 
-'$lgt_debugger.do_port_option'(=, _, _, _, _, _) :-
+'$lgt_debugger.do_port_option'((=), _, _, _, _, _) :-
 	'$lgt_debugger.debugging',
 	fail.
 
-'$lgt_debugger.do_port_option'(+, _, Goal, _, _, _) :-
+'$lgt_debugger.do_port_option'((+), _, Goal, _, _, _) :-
 	(	Goal = (_ :: Pred) ->
 		functor(Pred, Functor, Arity)
 	;	functor(Goal, Functor, Arity)
@@ -4862,14 +4862,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_debugger.spy'(Functor/Arity),
 	fail.
 
-'$lgt_debugger.do_port_option'(-, _, Goal, _, _, true) :-
+'$lgt_debugger.do_port_option'((-), _, Goal, _, _, true) :-
 	(	Goal = (_ :: Pred) ->
 		functor(Pred, Functor, Arity)
 	;	functor(Goal, Functor, Arity)
 	),
 	'$lgt_debugger.nospy'(Functor/Arity).
 
-'$lgt_debugger.do_port_option'(*, _, Goal, _, _, _) :-
+'$lgt_debugger.do_port_option'((*), _, Goal, _, _, _) :-
 	'$lgt_term_template'(Goal, CGoal),
 	write('  Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
 	read(Spypoint),
@@ -4877,7 +4877,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_debugger.spy'(Sender, This, Self, CGoal),
 	fail.
 
-'$lgt_debugger.do_port_option'(/, _, Goal, _, _, _) :-
+'$lgt_debugger.do_port_option'((/), _, Goal, _, _, _) :-
 	'$lgt_term_template'(Goal, CGoal),
 	write('  Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
 	read(Spypoint),
@@ -4886,9 +4886,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	fail.
 
 '$lgt_debugger.do_port_option'(!, Port, Goal, Error, ExCtx, Action) :-
-	'$lgt_debugger.do_port_option'(@, Port, Goal, Error, ExCtx, Action).
+	'$lgt_debugger.do_port_option'((@), Port, Goal, Error, ExCtx, Action).
 
-'$lgt_debugger.do_port_option'(@, _, _, _, _, _) :-
+'$lgt_debugger.do_port_option'((@), _, _, _, _, _) :-
 	write('  ?- '),
 	read(Goal),
 	once(Goal),
@@ -4963,7 +4963,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	write('      ? - help (prints this list of options)'), nl,
 	fail.
 
-'$lgt_debugger.do_port_option'(?, Port, Goal, Error, ExCtx, Action) :-
+'$lgt_debugger.do_port_option'((?), Port, Goal, Error, ExCtx, Action) :-
 	'$lgt_debugger.do_port_option'(h, Port, Goal, Error, ExCtx, Action).
 
 
@@ -8003,18 +8003,21 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	atom_concat('_coinductive_', Functor, CoinductiveFunctor),
 	functor(CoinductiveHead, CoinductiveFunctor, Arity),
 	'$lgt_unify_head_thead_args'(Arity, Head, CoinductiveHead),
-	% add the linking clauses from the original predicate to the predicate generated to implement coinduction:
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx, Stack),
-	'$lgt_comp_ctx_stack_new_stack'(Ctx, BodyStack, BodyCtx),
+	% add the linking clauses from the original predicate to the predicate generated to implement coinduction
+	'$lgt_comp_ctx_mode'(Ctx, Mode),
+	'$lgt_comp_ctx_mode'(HeadCtx, Mode),
+	'$lgt_comp_ctx_mode'(BodyCtx, Mode),
+	'$lgt_comp_ctx_exec_ctx'(HeadCtx, HeadExCtx),
+	'$lgt_exec_ctx'(HeadExCtx, Sender, This, Self, MetaCallCtx, HeadStack),
+	'$lgt_comp_ctx_stack_new_stack'(HeadCtx, BodyStack, BodyCtx),
 	'$lgt_comp_ctx_exec_ctx'(BodyCtx, BodyExCtx),
 	'$lgt_exec_ctx'(BodyExCtx, Sender, This, Self, MetaCallCtx, BodyStack),
 	(	'$lgt_pl_meta_predicate'('*->'(_, _), _, _) ->
 		% back-end Prolog compiler supports the soft-cut control construct
-		'$lgt_tr_clause'((Head :- '*->'({'$lgt_member'(Head, Stack)}, true); BodyStack = [Head| Stack], CoinductiveHead), Ctx, BodyCtx)
+		'$lgt_tr_clause'((Head :- '*->'({'$lgt_member'(Head, HeadStack)}, true); BodyStack = [Head| HeadStack], CoinductiveHead), HeadCtx, BodyCtx)
 	;	% without the soft-cut control construct we have to walk the coinduction stack twice 
-		'$lgt_tr_clause'((Head :- {'$lgt_member'(Head, Stack)}), Ctx, Ctx),
-		'$lgt_tr_clause'((Head :- \+ {'$lgt_member'(Head, Stack)}, BodyStack = [Head| Stack], CoinductiveHead), Ctx, BodyCtx)
+		'$lgt_tr_clause'((Head :- {'$lgt_member'(Head, HeadStack)}), HeadCtx, HeadCtx),
+		'$lgt_tr_clause'((Head :- \+ {'$lgt_member'(Head, HeadStack)}, BodyStack = [Head| HeadStack], CoinductiveHead), HeadCtx, BodyCtx)
 	),
 	assertz('$lgt_pp_coinductive_'(Head, CoinductiveHead)),
 	'$lgt_tr_coinductive_directive'(Preds, Ctx).
@@ -15124,12 +15127,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_built_in_method'(current_predicate(_), p(p(p)), no, 1) :- !.
 '$lgt_built_in_method'(predicate_property(_, _), p(p(p)), no, 1) :- !.
 % database methods
-'$lgt_built_in_method'(abolish(_), p(p(p)), abolish(::), 1) :- !.
-'$lgt_built_in_method'(asserta(_), p(p(p)), asserta(::), 1) :- !.
-'$lgt_built_in_method'(assertz(_), p(p(p)), assertz(::), 1) :- !.
-'$lgt_built_in_method'(clause(_, _), p(p(p)), clause(::, *), 1) :- !.
-'$lgt_built_in_method'(retract(_), p(p(p)), retract(::), 1) :- !.
-'$lgt_built_in_method'(retractall(_), p(p(p)), retractall(::), 1) :- !.
+'$lgt_built_in_method'(abolish(_), p(p(p)), abolish((::)), 1) :- !.
+'$lgt_built_in_method'(asserta(_), p(p(p)), asserta((::)), 1) :- !.
+'$lgt_built_in_method'(assertz(_), p(p(p)), assertz((::)), 1) :- !.
+'$lgt_built_in_method'(clause(_, _), p(p(p)), clause((::), *), 1) :- !.
+'$lgt_built_in_method'(retract(_), p(p(p)), retract((::)), 1) :- !.
+'$lgt_built_in_method'(retractall(_), p(p(p)), retractall((::)), 1) :- !.
 % term expansion methods
 '$lgt_built_in_method'(expand_term(_, _), p(p(p)), no, 1) :- !.
 '$lgt_built_in_method'(expand_goal(_, _), p(p(p)), no, 1) :- !.
@@ -15723,10 +15726,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % '$lgt_pred_arg_instantiation_mode'(@nonvar)
 
-'$lgt_pred_arg_instantiation_mode'(?).					% unspecified, can be input, output or both input and output
-'$lgt_pred_arg_instantiation_mode'(+).					% instantiated on predicate call, can be further instantiated by the predicate call
-'$lgt_pred_arg_instantiation_mode'(-).					% non-instantiated (i.e. a variable) on predicate call
-'$lgt_pred_arg_instantiation_mode'(@).					% not modified (i.e. not further instantiated) by the predicate call
+'$lgt_pred_arg_instantiation_mode'((?)).			   % unspecified, can be input, output or both input and output
+'$lgt_pred_arg_instantiation_mode'((+)).			   % instantiated on predicate call, can be further instantiated by the predicate call
+'$lgt_pred_arg_instantiation_mode'((-)).			   % non-instantiated (i.e. a variable) on predicate call
+'$lgt_pred_arg_instantiation_mode'((@)).			   % not modified (i.e. not further instantiated) by the predicate call
 
 
 
