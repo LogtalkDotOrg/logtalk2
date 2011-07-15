@@ -205,7 +205,7 @@ RELEASE NOTES
     the incompatible changes to absolute_file_name/2 and open/3-4 introduced
     on version 4.1.0.
 
-    Updated the B-Prolog config file to require version 7.5#4 or later as
+    Updated the B-Prolog config file to require version 7.5#5 or later as
     this release fixes some of the bugs on previous versions that show up
     when using Logtalk. Added default annotations for matching clauses.
 

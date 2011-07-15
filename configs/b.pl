@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for B-Prolog 7.5#4 and later versions
+%  configuration file for B-Prolog 7.5#5 and later versions
 %
 %  last updated: July 14, 2011
 %
