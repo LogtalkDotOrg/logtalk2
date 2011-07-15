@@ -81,6 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/man/man1/logtalk_backend_select.1.gz
 /usr/local/share/man/man1/logtalk_user_setup.1.gz
 /usr/local/share/man/man1/logtalk_version_select.1.gz
+/usr/local/share/man/man1/lplgt.1.gz
 /usr/local/share/man/man1/qplgt.1.gz
 /usr/local/share/man/man1/sicstuslgt.1.gz
 /usr/local/share/man/man1/swilgt.1.gz

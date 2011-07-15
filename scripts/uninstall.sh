@@ -57,6 +57,7 @@ rm -f lgt2xml
 rm -f lgt2txt
 rm -f logtalk_version_select
 rm -f logtalk_backend_select
+rm -f lplgt
 rm -f qplgt
 rm -f sicstuslgt
 rm -f swilgt
@@ -76,6 +77,7 @@ rm -f lgt2xml.1.gz
 rm -f logtalk_backend_select.1.gz
 rm -f logtalk_user_setup.1.gz
 rm -f logtalk_version_select.1.gz
+rm -f lplgt.1.gz
 rm -f qplgt.1.gz
 rm -f sicstuslgt.1.gz
 rm -f swilgt.1.gz

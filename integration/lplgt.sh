@@ -75,4 +75,4 @@ echo
 
 export LOGTALK_STARTUP_DIRECTORY=`pwd`
 
-exec lprolog.sh "qcompile('logtalk_lean.pl')" $1 $2 $3 $4 $5 $6 $7 $8
+exec lprolog.sh "qcompile('$LOGTALKHOME/integration/logtalk_lean.pl')" $1 $2 $3 $4 $5 $6 $7 $8

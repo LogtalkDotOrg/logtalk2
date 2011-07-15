@@ -171,7 +171,7 @@ setup_call_cleanup(_, _, _) :-
 %
 % back-end Prolog compiler supported features (that are compatible with Logtalk)
 
-'$lgt_prolog_feature'(prolog_dialect, lprolog).
+'$lgt_prolog_feature'(prolog_dialect, lean).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	current_prolog_flag(version_data, lprolog(Major, Minor, Patch, _)).
 '$lgt_prolog_feature'(prolog_compatible_version, '@>='((2, 16, 6))).
