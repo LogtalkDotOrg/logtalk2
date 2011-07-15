@@ -74,6 +74,7 @@ ln -sf ../share/logtalk/integration/bplgt.sh bplgt
 ln -sf ../share/logtalk/integration/cxlgt.sh cxlgt
 ln -sf ../share/logtalk/integration/eclipselgt.sh eclipselgt
 ln -sf ../share/logtalk/integration/gplgt.sh gplgt
+ln -sf ../share/logtalk/integration/lplgt.sh lplgt
 ln -sf ../share/logtalk/integration/qplgt.sh qplgt
 ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
@@ -97,6 +98,7 @@ echo "* B-Prolog (version 7.5#5 or later):     bplgt"
 echo "* CxProlog (version 0.97.5 or later):    cxlgt"
 echo "* ECLiPSe (version 6.0#141 or later):    eclipselgt"
 echo "* GNU Prolog (version 1.4.0 or later):   gplgt"
+echo "* Lean Prolog (version 2.16.10 or later) lplgt"
 echo "* Qu-Prolog (version 8.12 or later):     qplgt"
 echo "* SICStus Prolog (versions 3.12.x, 4.x): sicstuslgt"
 echo "* SWI-Prolog (version 5.8.0 or later):   swilgt"

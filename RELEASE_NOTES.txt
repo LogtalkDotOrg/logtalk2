@@ -15,6 +15,8 @@ RELEASE NOTES
 
 2.43.0 - July ??, 2011
 
+    Added experimental support for Lean Prolog.
+
     Changed error reporting by the Logtalk compiler and runtime. All exception
     terms now use, whenever possible, the error(Error, logtalk(Goal, Entity))
     format. Changed the internal error checking to use, whenever practical,

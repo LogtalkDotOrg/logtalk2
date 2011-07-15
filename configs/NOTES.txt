@@ -164,6 +164,13 @@ GNU Prolog 1.4.0 and later versions
 	compilation of source files.
 
 
+Lean Prolog 2.16.10 and later versions
+
+    lean.pl
+
+    The support for this Prolog compiler is still experimental.
+
+
 Qu-Prolog 8.12 and later versions
 
 	qp.pl
