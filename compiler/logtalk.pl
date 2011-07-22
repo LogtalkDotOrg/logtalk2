@@ -5560,7 +5560,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		open(Source, read, Input, [alias('$lgt_input')]),
 		OpenError,
 		'$lgt_compiler_open_stream_error_handler'(OpenError)),
-	% look for an enconding/1 directive that, when present, must be the first term on a source file
+	% look for an encoding/1 directive that, when present, must be the first term on a source file
 	catch(
 		'$lgt_read_term'(Input, Term, [singletons(Singletons)]),
 		InputError,

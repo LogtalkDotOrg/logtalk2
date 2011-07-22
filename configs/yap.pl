@@ -476,7 +476,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 % '$lgt_startup_directory'(-atom)
 %
-% returns the Logtalk startup directory; fails if unknwon 
+% returns the Logtalk startup directory 
 
 '$lgt_startup_directory'(Directory) :-
 	(	environ('LOGTALK_STARTUP_DIRECTORY', Directory) ->
@@ -487,7 +487,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 % '$lgt_user_directory'(-atom)
 %
-% returns the Logtalk user directory; fails if unknwon
+% returns the Logtalk user directory; fails if unknown
 
 '$lgt_user_directory'(Directory) :-
 	environ('LOGTALKUSER', Directory).

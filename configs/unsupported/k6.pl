@@ -340,7 +340,7 @@ setup_call_cleanup(_, _, _) :-
 
 % '$lgt_startup_directory'(-atom)
 %
-% returns the Logtalk startup directory; fails if unknwon 
+% returns the Logtalk startup directory 
 
 '$lgt_startup_directory'(Directory) :-
 	getenv('LOGTALK_STARTUP_DIRECTORY', String),
@@ -350,7 +350,7 @@ setup_call_cleanup(_, _, _) :-
 
 % '$lgt_user_directory'(-atom)
 %
-% returns the Logtalk user directory; fails if unknwon
+% returns the Logtalk user directory; fails if unknown
 
 '$lgt_user_directory'(Directory) :-
 	getenv('LOGTALKUSER', String),

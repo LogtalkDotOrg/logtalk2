@@ -362,7 +362,7 @@
 
 % '$lgt_startup_directory'(-atom)
 %
-% returns the Logtalk startup directory; fails if unknwon 
+% returns the Logtalk startup directory 
 
 '$lgt_startup_directory'(Directory) :-
 	(	environ('LOGTALK_STARTUP_DIRECTORY', Directory) ->
@@ -373,7 +373,7 @@
 
 % '$lgt_user_directory'(-atom)
 %
-% returns the Logtalk user directory; fails if unknwon
+% returns the Logtalk user directory; fails if unknown
 
 '$lgt_user_directory'(Directory) :-
 	environ('LOGTALKUSER', Directory).

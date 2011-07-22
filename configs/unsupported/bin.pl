@@ -447,7 +447,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_startup_directory'(-atom)
 %
-% returns the Logtalk startup directory; fails if unknwon 
+% returns the Logtalk startup directory 
 
 '$lgt_startup_directory'(Directory) :-
 	(	unix_getenv('LOGTALK_STARTUP_DIRECTORY', Directory) ->
@@ -458,7 +458,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_user_directory'(-atom)
 %
-% returns the Logtalk user directory; fails if unknwon
+% returns the Logtalk user directory; fails if unknown
 
 '$lgt_user_directory'(Directory) :-
 	unix_getenv('LOGTALKUSER', Directory).
