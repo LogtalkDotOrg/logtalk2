@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: July 14, 2011
+%  last updated: July 22, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -415,7 +415,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 		true
 	;	Directory2 = Directory
 	),
-	absolute_file_name(Directory2, Path),
+	'$lgt_expand_path'(Directory2, Path),
 	file_exists(Path),
 	file_property(Path, type(directory)).
 
