@@ -1,5 +1,4 @@
-
-% this is a single-line comment
+:- encoding(Encoding).	% this is a single-line comment
 
 /*
 this is
@@ -18,9 +17,9 @@ comment
 
 
 :- initialization(Goal).
-:- encoding(Encoding).
 :- op(Precedence, Associativity, Operator).
 :- ensure_loaded(File).
+:- include(File).
 :- set_prolog_flag(Flag, Value).
 :- set_logtalk_flag(Flag, Value).
 
@@ -305,7 +304,7 @@ comment
 
 	term_input_output :-
 		read(Term),
-		read_term(Term),
+		read_term(Stream, Term, Options),
 		write(Term),
 		write(Term),
 		write_canonical(Term),

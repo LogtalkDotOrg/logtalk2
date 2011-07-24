@@ -174,7 +174,7 @@ class LogtalkLexer(RegexLexer):
             (r'(public|protected|private)(?=[(])', Keyword, 'root'),
             # Other directives
             (r'e(n(coding|sure_loaded)|xport)(?=[(])', Keyword, 'root'),
-            (r'in(fo|itialization)(?=[(])', Keyword, 'root'),
+            (r'in(clude|itialization|fo)(?=[(])', Keyword, 'root'),
             (r'(dynamic|synchronized|threaded)[.]', Keyword, 'root'),
             (r'(alias|d(ynamic|iscontiguous)|m(eta_(non_terminal|predicate)|ode|ultifile)|s(et_(logtalk|prolog)_flag|ynchronized))(?=[(])', Keyword, 'root'),
             (r'op(?=[(])', Keyword, 'root'),

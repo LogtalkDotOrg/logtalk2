@@ -38,6 +38,7 @@ comment
 :- encoding(Encoding).
 :- op(Precedence, Associativity, Operator).
 :- ensure_loaded(File).
+:- include(File).
 :- set_prolog_flag(Flag, Value).
 :- set_logtalk_flag(Flag, Value).
 

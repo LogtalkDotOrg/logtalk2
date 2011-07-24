@@ -95,6 +95,7 @@ implements
 implements_protocol
 imports
 imports_category
+include
 info
 initialization
 instantiates

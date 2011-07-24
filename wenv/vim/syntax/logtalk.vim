@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	May 07, 2011
+" Last Change:	July 24, 2011
 
 
 " Quit when a syntax file was already loaded:
@@ -106,6 +106,7 @@ syn match	logtalkDirTag		":- threaded\."
 " Prolog directives
 
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- ensure_loaded("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
+syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- include("     	matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- set_prolog_flag("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
 
 

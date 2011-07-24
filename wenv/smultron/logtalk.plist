@@ -16,6 +16,7 @@
 			<string>end_category</string>
 			<string>end_object</string>
 			<string>end_protocol</string>
+			<string>include</string>
 			<string>info</string>
 			<string>initialization</string>
 			<string>object</string>

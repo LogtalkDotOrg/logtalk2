@@ -51,6 +51,7 @@ op(, , ).
 initialization().
 encoding().
 ensure_loaded().
+include().
 synchronized(/).
 synchronized.
 threaded.

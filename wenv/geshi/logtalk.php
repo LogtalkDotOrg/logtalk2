@@ -12,6 +12,8 @@
  *
  * CHANGES
  * -------
+ * 2011/07/24 (1.1.6)
+ *  -  Added syntax coloring of include/1
  * 2011/01/18 (1.1.5)
  *  -  Added syntax coloring of meta_non_terminal/1
  * 2011/01/18 (1.1.4)
@@ -77,7 +79,7 @@ $language_data = array(
         // Directives (with arguments)
         1 => array(
             // file directives
-            'encoding', 'ensure_loaded',
+            'encoding', 'ensure_loaded', 'include',
             // flag directives
             'set_logtalk_flag', 'set_prolog_flag',
             // entity opening directives

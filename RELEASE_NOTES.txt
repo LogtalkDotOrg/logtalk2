@@ -241,6 +241,9 @@ RELEASE NOTES
     Updated the Inno Setup GUI Windows installer script in order to allow full
     installation by non-admin users.
 
+    Added syntax coloring support for the ISO Prolog directive include/1 to
+    all supported text editors and syntax highlighters.
+
     Corrected some bugs on the tab triggers for the Gedit Logtalk snippets
     that prevented their use.
 
