@@ -370,7 +370,10 @@ setup_call_cleanup(_, _, _) :-
 % returns the Logtalk startup directory 
 
 '$lgt_startup_directory'(Directory) :-
-	getenv('LOGTALK_STARTUP_DIRECTORY', Directory).
+	(	getenv('LOGTALK_STARTUP_DIRECTORY', Directory) ->
+		true
+	;	working_directory(Directory, Directory)
+	).
 
 
 % '$lgt_user_directory'(-atom)
