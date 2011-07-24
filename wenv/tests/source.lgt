@@ -317,7 +317,7 @@ comment
 
 	logic_and_control :-
 		\+ Goal,
-		call(Goal)
+		call(Goal),
 		once(Goal),
 		ignore(Goal),
 		true,
