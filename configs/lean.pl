@@ -287,7 +287,13 @@ setup_call_cleanup(_, _, _) :-
 % expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
-	absolute_file_name(Path, ExpandedPath).
+	(	\+ atom_concat('/', _, Path),
+		\+ atom_concat('$', _, Path),
+		working_directory(Current, Current),
+		atom_concat(Current, '/', ExpandedPath0),
+		atom_concat(ExpandedPath0, Path, ExpandedPath)
+	;	absolute_file_name(Path, ExpandedPath)
+	).
 
 
 % '$lgt_file_exists'(+atom)
@@ -295,7 +301,10 @@ setup_call_cleanup(_, _, _) :-
 % see if a file exist in the current directory
 
 '$lgt_file_exists'(File) :-
-	exists_file(File).
+	working_directory(Path0, Path0),
+	atom_concat(Path0, '/', Path1),
+	atom_concat(Path1, File, Path),
+	exists_file(Path).
 
 
 % '$lgt_delete_file'(+atom)
@@ -303,7 +312,10 @@ setup_call_cleanup(_, _, _) :-
 % deletes a file in the current directory
 
 '$lgt_delete_file'(File) :-
-	delete_file(File).
+	working_directory(Path0, Path0),
+	atom_concat(Path0, '/', Path1),
+	atom_concat(Path1, File, Path),
+	delete_file(Path).
 
 
 % '$lgt_directory_exists'(+atom)
