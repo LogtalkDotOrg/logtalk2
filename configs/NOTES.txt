@@ -164,7 +164,7 @@ GNU Prolog 1.4.0 and later versions
 	compilation of source files.
 
 
-Lean Prolog 2.17.9 and later versions
+Lean Prolog 2.18.2 and later versions
 
     lean.pl
 
