@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.43.0 - July ??, 2011
+2.43.0 - July 31, 2011
 
     Added experimental support for Lean Prolog.
 
@@ -46,7 +46,8 @@ RELEASE NOTES
     line_count/1, the line number of the predicate scope directive. Definition
     properties include line_count/1, the line number of the head of the first
     clause for the predicate, and number_of_clauses/1, the number of clauses
-    for the predicate. Implemented uses/3 and use_module/3 properties.
+    for the predicate. Also implemented experimental uses/3 and use_module/3
+    properties.
 
     Added a predicate property, redefined_from/1, allowing querying about the
     object or category that contains a predicate definition that is redefined.
@@ -145,8 +146,7 @@ RELEASE NOTES
 
     Refined error checking for the built-in predicates category_property/2,
     object_property/2, and protocol_property/2, throwing a type_error/2 when
-    the second argument is neither a variable or a callable term. Added an
-    info/1 entity property.
+    the second argument is neither a variable or a callable term.
 
     When compiling a module as an object, warn instead of throwing an error
     when compiling a call to a built-in predicate used as a query.

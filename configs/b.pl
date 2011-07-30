@@ -166,7 +166,7 @@
 '$lgt_prolog_feature'(prolog_dialect, b).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	current_prolog_flag(version_data, bp(Major, Minor, Patch, _)).
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((7,5,4))).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((7,5,5))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
