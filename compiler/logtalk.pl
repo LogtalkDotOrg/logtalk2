@@ -6261,7 +6261,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_save_global_op_table' :-
 	current_op(Pr, Spec, Op),
-		asserta('$lgt_pp_global_op_'(Pr, Spec, Op)),
+		assertz('$lgt_pp_global_op_'(Pr, Spec, Op)),
 	fail.
 
 '$lgt_save_global_op_table'.
@@ -6299,7 +6299,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_save_file_op_table' :-
 	current_op(Pr, Spec, Op),
-		asserta('$lgt_pp_file_op_'(Pr, Spec, Op)),
+		assertz('$lgt_pp_file_op_'(Pr, Spec, Op)),
 	fail.
 
 '$lgt_save_file_op_table'.
@@ -6334,11 +6334,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_assert_entity_operators'(Pr, Spec, [Op| Ops], Scope) :-
 	!,
-	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op, Scope)),
+	assertz('$lgt_pp_entity_op_'(Pr, Spec, Op, Scope)),
 	'$lgt_assert_entity_operators'(Pr, Spec, Ops, Scope).
 
 '$lgt_assert_entity_operators'(Pr, Spec, Op, Scope) :-
-	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op, Scope)).
+	assertz('$lgt_pp_entity_op_'(Pr, Spec, Op, Scope)).
 
 
 
@@ -6956,6 +6956,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	% remember we are compiling a module
 	assertz('$lgt_pp_module_'(Module)),
 	'$lgt_report_compiling_entity'(module, Module),
+	'$lgt_save_file_op_table',
 	% assume static module/object
 	'$lgt_tr_object_identifier'(Module),
 	'$lgt_split_operators_and_predicates'(Exports, Preds, Ops),
@@ -6963,8 +6964,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		'$lgt_member'(Op, Ops),
 		'$lgt_tr_file_directive'(Op, Ctx)),
 	% make the export list public predicates
-	'$lgt_tr_directive'((public), Preds, Ctx),
-	'$lgt_save_file_op_table'.
+	'$lgt_tr_directive'((public), Preds, Ctx).
 
 
 % set_logtalk_flag/1 entity directive

@@ -130,6 +130,9 @@ RELEASE NOTES
     Corrected a bug in the implementation of the threaded_peek/1 built-in
     predicate when called from within categories.
 
+    Corrected a bug when compiling a Prolog module as an object when the
+    module/2 directive is used to export operator declarations.
+
     Updated the built-in debugger command that prints the execution context
     to also print the meta-call context and the coinduction stack.
 
