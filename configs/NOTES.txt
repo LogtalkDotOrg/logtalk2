@@ -287,10 +287,13 @@ SWI Prolog 5.8.0 and later versions
 	objects and categories.
 
 	Logtalk doesn't rely on the SWI-Prolog auto-loading mechanism for library
-	predicates. Calls of these library predicates within objects and categories
-	must be explicitly qualified (you may also use use_module/2 directives).
-	Set the Logtalk "misspelt" and "portability" flags to "warning" in order
-	to detect unqualified calls to library predicates.
+	predicates. Calls of these predicates within objects and categories must
+	be explicitly qualified or implicit qualified by listing the predicates
+	in use_module/2 directives). You may also set the Logtalk "portability"
+	and "misspelt" compiler flags to "warning" in order to detect unqualified
+	calls to library predicates. The module libraries should be loaded prior
+	to compilation of object and categories containing calls to the library
+	predicates.
 
 
 XSB 3.3 and later versions
