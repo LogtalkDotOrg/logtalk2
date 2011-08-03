@@ -11,7 +11,7 @@
 %
 %  configuration file for Lean Prolog 2.18.2 and later versions
 %
-%  last updated: July 30, 2011
+%  last updated: August 3, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -220,7 +220,11 @@ setup_call_cleanup(_, _, _) :-
 '$lgt_default_flag'(context_switching_calls, allow).
 % directories compilation flags:
 '$lgt_default_flag'(altdirs, off).
-'$lgt_default_flag'(tmpdir, 'lgt_tmp/').
+'$lgt_default_flag'(tmpdir, TmpDir) :-
+	(	getenv('COMSPEC', _) ->		% Windows systems define this environment variable...
+		TmpDir = 'lgt_tmp/'
+	;	TmpDir = '.lgt_tmp/'		% ... but not POSIX systems
+	).
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 % other compilation flags:
 '$lgt_default_flag'(report, on).
