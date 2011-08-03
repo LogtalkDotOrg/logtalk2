@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: July 22, 2011
+%  last updated: August 3, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -36,6 +36,7 @@
 		dynamic('$lgt_current_category_'/6), hide_predicate('$lgt_current_category_'/6),
 		dynamic('$lgt_current_object_'/11), hide_predicate('$lgt_current_object_'/11),
 		dynamic('$lgt_entity_property_'/2), hide_predicate('$lgt_entity_property_'/2),
+		dynamic('$lgt_predicate_property_'/3), hide_predicate('$lgt_predicate_property_'/3),
 		dynamic('$lgt_implements_protocol_'/3), hide_predicate('$lgt_implements_protocol_'/3),
 		dynamic('$lgt_imports_category_'/3), hide_predicate('$lgt_imports_category_'/3),
 		dynamic('$lgt_instantiates_class_'/3), hide_predicate('$lgt_instantiates_class_'/3),
@@ -44,7 +45,7 @@
 		dynamic('$lgt_extends_object_'/3), hide_predicate('$lgt_extends_object_'/3),
 		dynamic('$lgt_extends_category_'/3), hide_predicate('$lgt_extends_category_'/3),
 		dynamic('$lgt_complemented_object_'/4), hide_predicate('$lgt_complemented_object_'/4),
-		dynamic('$lgt_loaded_file_'/2), hide_predicate('$lgt_loaded_file_'/2),
+		dynamic('$lgt_loaded_file_'/3), hide_predicate('$lgt_loaded_file_'/3),
 		dynamic('$lgt_debugging_entity_'/1), hide_predicate('$lgt_debugging_entity_'/1),
 		dynamic('$lgt_debugger.debugging_'/0), hide_predicate('$lgt_debugger.debugging_'/0),
 		dynamic('$lgt_debugger.tracing_'/0), hide_predicate('$lgt_debugger.tracing_'/0),
