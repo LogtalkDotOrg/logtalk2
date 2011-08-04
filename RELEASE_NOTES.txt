@@ -19,6 +19,12 @@ RELEASE NOTES
     wrapper predicates for the bagof/3 and setof/3 built-in methods whenever
     the goal argument may use the ^/2 existential quantifier.
 
+    Added support for the "^" meta-predicate meta-argument mode specifier
+    suggested by Jan Wielemaker and found on SWI-Prolog 5.11.25. This mode
+    specifier is useful when defining wrappers for the bagof/3 and setof/3
+    built-in methods whenever the goal argument may use the ^/2 existential
+    quantifier.
+
 
 2.43.0 - July 31, 2011
 

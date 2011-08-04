@@ -8327,6 +8327,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	;	Arg == (/) -> TArg = Arg				% predicate indicator
 	;	Arg = [N], integer(N) -> TArg = Arg		% list of goals/closures
 	;	Arg == [/] -> TArg = Arg				% list of predicate indicators
+	;	Arg == (^) -> TArg = Arg				% goal with possible existential variables qualification
 	;	TArg = (*)								% non meta-arguments (e.g. instantiation modes) to Logtalk notation
 	),
 	'$lgt_tr_module_meta_predicate_directives_args'(Args, TArgs).
@@ -10791,6 +10792,14 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_tr_meta_arg'((0), Arg, Ctx, TArg, DArg) :-
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
+
+'$lgt_tr_meta_arg'((^), Arg, Ctx, TArg, DArg) :-
+	(	Arg = Vars^Arg0 ->
+		'$lgt_tr_body'(Arg0, TArg0, DArg0, Ctx),
+		TArg = Vars^TArg0,
+		DArg = Vars^DArg0
+	;	'$lgt_tr_body'(Arg, TArg, DArg, Ctx)
+	).
 
 '$lgt_tr_meta_arg'([0], [], _, [], []) :- !.
 '$lgt_tr_meta_arg'([0], [Arg| Args], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
@@ -15208,10 +15217,10 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_built_in_method'(sender(_), p, no, 1) :- !.
 '$lgt_built_in_method'(this(_), p, no, 1) :- !.
 % all solutions methods
-'$lgt_built_in_method'(bagof(_, _, _), p, bagof(*, 0, *), 1) :- !.
+'$lgt_built_in_method'(bagof(_, _, _), p, bagof(*, ^, *), 1) :- !.
 '$lgt_built_in_method'(findall(_, _, _), p, findall(*, 0, *), 1) :- !.
 '$lgt_built_in_method'(forall(_, _), p, forall(0, 0), 1) :- !.
-'$lgt_built_in_method'(setof(_, _, _), p, setof(*, 0, *), 1) :- !.
+'$lgt_built_in_method'(setof(_, _, _), p, setof(*, ^, *), 1) :- !.
 
 
 '$lgt_lgt_meta_predicate_call_n_args'(1, _) :-
@@ -15733,6 +15742,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	;	Arg == (/)						% predicate indicator
 	;	Arg = [N], integer(N), N >= 0	% list of goals/closures
 	;	Arg == [/]						% list of predicate indicators
+	;	Arg == (^)						% goal with possible existential variables qualification
 	)),
 	'$lgt_valid_meta_predicate_template_args'(Args).
 
