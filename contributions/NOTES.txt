@@ -28,13 +28,6 @@ iso8601.lgt
 	resulting XML file into (X)HTML or PDF documentation. Your 
 	feedback is appreciated.
 
-pddl_parser
-	Contributed by: Robert Sasak
-
-	This is a partial implementation of a parser for PDDL 3.0 files.
-	See http://artax.karlin.mff.cuni.cz/~sasar5am/pddl/ for the
-	original Prolog version.
-
 verdi_neruda
 	Contributed by: Victor Lagerkvist
 
