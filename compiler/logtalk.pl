@@ -2035,7 +2035,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 43, 0)).
+current_logtalk_flag(version, version(2, 43, 1)).
 
 
 
@@ -3810,7 +3810,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	':'(Module, Goal).
 
 '$lgt_metacall'(Goal, MetaCallCtx, Prefix, Sender, This, Self) :-
-	(	\+ '$lgt_member'(Goal, MetaCallCtx) ->
+	(	\+ '$lgt_member'(Goal, MetaCallCtx),
+	 	\+ '$lgt_member'(_^Goal, MetaCallCtx) ->
 		'$lgt_metacall_this'(Goal, Prefix, Sender, This, Self)
 	;	'$lgt_metacall_sender'(Goal, Sender, This, [])
 	).
@@ -9493,10 +9494,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % built-in meta-predicates
 
-'$lgt_tr_body'(bagof(Term, Goal, List), bagof(Term, TGoal, List), '$lgt_debugger.goal'(bagof(Term, Goal, List), bagof(Term, DGoal, List), ExCtx), Ctx) :-
+'$lgt_tr_body'(bagof(Term, QGoal, List), TPred, '$lgt_debugger.goal'(bagof(Term, QGoal, List), DPred, ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_comp_ctx'(Ctx, Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode, Stack),
+	(	var(QGoal), '$lgt_member_var'(QGoal, MetaVars) ->
+		'$lgt_comp_ctx'(Ctx2, Head, Sender, This, Self, Prefix, [Goal| MetaVars], MetaCallCtx, ExCtx, Mode, Stack),
+		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx2)
+	;	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx)
+	),
+	TPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), bagof(Term, Vars^TGoal, List)),
+	DPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), bagof(Term, Vars^DGoal, List)).
 
 '$lgt_tr_body'(findall(Term, Goal, List), findall(Term, TGoal, List), '$lgt_debugger.goal'(findall(Term, Goal, List), findall(Term, DGoal, List), ExCtx), Ctx) :-
 	!,
@@ -9509,10 +9516,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_tr_body'(Test, TTest, DTest, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(setof(Term, Goal, List), setof(Term, TGoal, List), '$lgt_debugger.goal'(setof(Term, Goal, List), setof(Term, DGoal, List), ExCtx), Ctx) :-
+'$lgt_tr_body'(setof(Term, QGoal, List), TPred, '$lgt_debugger.goal'(setof(Term, QGoal, List), DPred, ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_comp_ctx'(Ctx, Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode, Stack),
+	(	var(QGoal), '$lgt_member_var'(QGoal, MetaVars) ->
+		'$lgt_comp_ctx'(Ctx2, Head, Sender, This, Self, Prefix, [Goal| MetaVars], MetaCallCtx, ExCtx, Mode, Stack),
+		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx2)
+	;	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx)
+	),
+	TPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), setof(Term, Vars^TGoal, List)),
+	DPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), setof(Term, Vars^DGoal, List)).
 
 
 % multi-threading meta-predicates
@@ -10638,7 +10651,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx'(Ctx, Head, _, _, _, Prefix, _, _, ExCtx, _, _),
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	(	'$lgt_pp_synchronized_'(Pred, _),
-		\+ functor(Head, Functor, Arity) ->			% not a recursive call
+		\+ functor(Head, Functor, Arity) ->
+		% not a recursive call
 		atom_concat(TFunctor, '__sync', STFunctor)
 	;	STFunctor = TFunctor
 	),
@@ -10649,6 +10663,22 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		true
 	;	assertz('$lgt_pp_calls_predicate_'(Functor, Arity, STFunctor, TArity))
 	).
+
+
+
+% '$lgt_decompose_existentially_quantified_goal'(@callable, -term, -callable)
+%
+% decompose a ^/2 goal (used with bagof/3 and setof/3)
+
+'$lgt_decompose_existentially_quantified_goal'(Goal, [], Goal) :-
+	var(Goal),
+	!.
+
+'$lgt_decompose_existentially_quantified_goal'(Var^Term, [Var| Vars], Goal) :-
+	!,
+	'$lgt_decompose_existentially_quantified_goal'(Term, Vars, Goal).
+
+'$lgt_decompose_existentially_quantified_goal'(Goal, [], Goal).
 
 
 

@@ -15,7 +15,9 @@ RELEASE NOTES
 
 2.43.1 - August ??, 2011
 
-
+    Lifted a long-standing limitation that prevented the user definition of
+    wrapper predicates for the bagof/3 and setof/3 built-in methods whenever
+    the goal argument may use the ^/2 existential quantifier.
 
 
 2.43.0 - July 31, 2011
