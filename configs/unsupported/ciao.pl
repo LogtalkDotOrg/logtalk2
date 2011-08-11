@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for Ciao Prolog 1.13.1
+%  configuration file for Ciao Prolog 1.14.0
 %
-%  last updated: July 14, 2011
+%  last updated: August 11, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -26,6 +26,7 @@
 :- use_module(library(prolog_sys)).
 :- use_module(library(sort)).
 :- use_module(library(filenames)).
+:- use_module(library(terms_vars)).
 
 :- set_prolog_flag(multi_arity_warnings, off).
 
@@ -47,8 +48,10 @@
 
 % '$lgt_iso_predicate'(?callable).
 
-'$lgt_iso_predicate'(_) :-
-	fail.
+'$lgt_iso_predicate'(term_variables(_, _)).
+
+term_variables(Term, Variables) :-
+	varsbag(Term, Variables, []).
 
 
 
