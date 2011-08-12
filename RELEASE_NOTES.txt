@@ -25,6 +25,11 @@ RELEASE NOTES
     built-in methods whenever the goal argument may use the ^/2 existential
     quantifier.
 
+    Corrected a bug when compiling calls to Prolog proprietary built-in meta-
+    predicates where the Logtalk compiler could attempt to process non meta-
+    arguments as goals. This bug only manifested itself with some back-end
+    Prolog compilers such as ECLiPSe.
+
 
 2.43.0 - July 31, 2011
 

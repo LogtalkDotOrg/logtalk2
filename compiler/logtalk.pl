@@ -2465,7 +2465,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, _),
-			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
+			'$lgt_goal_meta_vars'(Head, Meta, MetaVars),
 			'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, MetaVars, _, ExCtx, runtime, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_entity_'(Obj) ->
@@ -2546,7 +2546,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, _),
-			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
+			'$lgt_goal_meta_vars'(Head, Meta, MetaVars),
 			'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, MetaVars, _, ExCtx, runtime, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_entity_'(Obj) ->
@@ -3181,7 +3181,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 			(	'$lgt_term_template'(Pred, GPred),									% construct predicate template
 				'$lgt_entity_template'(Obj, GObj),									% construct object template
 				'$lgt_entity_template'(Sender, GSender),							% construct "sender" template
-				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),						% construct list of the meta-variables
+				'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),						% construct list of the meta-variables
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),			% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->								% lookup definition
 				asserta(('$lgt_send_to_self_'(GObj, GPred, GSender) :- !, GCall)),	% cache lookup result
@@ -3241,7 +3241,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		(	Scope = p(p(_)) ->															% check public scope
 			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
 				'$lgt_entity_template'(Obj, GObj),										% construct object template
-				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),							% construct list of the meta-variables
+				'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),							% construct list of the meta-variables
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),				% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
 				GGCall = '$lgt_guarded_method_call'(GObj, GPred, GSender, GCall),
@@ -3345,7 +3345,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		(	Scope = p(p(_)) ->															% check public scope
 			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
 				'$lgt_entity_template'(Obj, GObj),										% construct object template
-				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),							% construct list of the meta-variables
+				'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),							% construct list of the meta-variables
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),				% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
 				asserta(('$lgt_send_to_obj_ne_'(GObj, GPred, GSender) :- !, GCall)),	% cache lookup result
@@ -8799,7 +8799,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
-	'$lgt_pred_meta_vars'(Head, MetaVars),
+	'$lgt_head_meta_vars'(Head, MetaVars),
 	'$lgt_comp_ctx_meta_vars'(HeadCtx, MetaVars),
 	'$lgt_tr_head'(Head, THead, HeadCtx),
 	'$lgt_comp_ctx_meta_vars'(BodyCtx, MetaVars),
@@ -8812,7 +8812,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_debugger.head'(Head, N, ExCtx),DBody), HeadCtx, BodyCtx) :-
 	!,
-	'$lgt_pred_meta_vars'(Head, MetaVars),
+	'$lgt_head_meta_vars'(Head, MetaVars),
 	'$lgt_comp_ctx_meta_vars'(HeadCtx, MetaVars),
 	'$lgt_tr_head'(Head, THead, HeadCtx),
 	'$lgt_comp_ctx_meta_vars'(BodyCtx, MetaVars),
@@ -10623,9 +10623,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % goal is a call to a dynamic predicate within a category
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_debugger.goal'(Pred, TPred, ExCtx), Ctx) :-
-	'$lgt_pp_category_'(_, _, _, _, _, _),		% we're compiling a category
+	'$lgt_pp_category_'(_, _, _, _, _, _),
 	functor(Pred, Functor, Arity),
-	'$lgt_pp_dynamic_'(Functor, Arity),			% which declares the predicate dynamic
+	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	TPred = '$lgt_call_this'(Pred, ExCtx).
@@ -10645,7 +10645,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	TPred = '$lgt_metacall_this'(Pred, Prefix, Sender, Sender, Self).
 
 
-% goal is a call to a local, user-defined predicate
+% goal is a call to a local user-defined predicate
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_debugger.goal'(Pred, TPred, ExCtx), Ctx) :-
 	functor(Pred, Functor, Arity),
@@ -10774,7 +10774,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 
 
-% '$lgt_tr_meta_args'(@list, @list, +term, -list, -list)
+% '$lgt_tr_meta_args'(@list, @list, +compilation_context, -list, -list)
 %
 % translates the meta-arguments contained in the list of arguments of a
 % call to a meta-predicate (assumes Logtalk meta-predicate notation)
@@ -10782,9 +10782,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_meta_args'([], [], _, [], []).
 
 '$lgt_tr_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
-	'$lgt_tr_meta_arg'(MArg, Arg, Ctx, TArg0, DArg0),
-	'$lgt_fix_predicate_calls'(TArg0, TArg, false),
-	'$lgt_fix_predicate_calls'(DArg0, DArg, false),
+	'$lgt_tr_meta_arg'(MArg, Arg, Ctx, TArg, DArg),
 	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
@@ -10828,8 +10826,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_tr_module_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
 	'$lgt_tr_module_meta_arg'(MArg, Arg, Ctx, TArg0, DArg0),
-	'$lgt_fix_predicate_calls'(TArg0, TArg, false),
-	'$lgt_fix_predicate_calls'(DArg0, DArg, false),
 	'$lgt_tr_module_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
@@ -11540,12 +11536,12 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 
 
-% '$lgt_pred_meta_vars'(+callable, -list)
+% '$lgt_head_meta_vars'(+callable, -list)
 %
-% constructs a list of all variables that occur
-% in a position corresponding to a meta-argument
+% constructs a list of all variables that occur in a position corresponding
+% to a meta-argument in the head of clause being compiled
 
-'$lgt_pred_meta_vars'(Pred, MetaVars) :-
+'$lgt_head_meta_vars'(Pred, MetaVars) :-
 	'$lgt_term_template'(Pred, Meta),
 	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		Pred =.. [_| Args],
@@ -11554,24 +11550,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	;	MetaVars = []
 	).
 
-
-
-% '$lgt_pred_meta_vars'(+callable, +callable, -list)
-%
-% constructs a list of all variables that occur
-% in a position corresponding to a meta-argument
-
-'$lgt_pred_meta_vars'(Pred, Meta, MetaVars) :-
-	(	Meta == no ->
-		MetaVars = []
-	;	Pred =.. [_| Args],
-		Meta =.. [_| MArgs],
-		'$lgt_extract_meta_vars'(Args, MArgs, MetaVars)
-	).
-
-
-
-% '$lgt_extract_meta_vars'(+list, +list, -list)
 
 '$lgt_extract_meta_vars'([], [], []).
 
@@ -11583,6 +11561,21 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_extract_meta_vars'([_| Args], [_| MArgs], MetaVars) :-
 	'$lgt_extract_meta_vars'(Args, MArgs, MetaVars).
+
+
+
+% '$lgt_goal_meta_vars'(+callable, +callable, -list)
+%
+% constructs a list of all variables that occur in a
+% position corresponding to a meta-argument in a goal
+
+'$lgt_goal_meta_vars'(Pred, Meta, MetaVars) :-
+	(	Meta == no ->
+		MetaVars = []
+	;	Pred =.. [_| Args],
+		Meta =.. [_| MArgs],
+		'$lgt_extract_meta_vars'(Args, MArgs, MetaVars)
+	).
 
 
 
@@ -13960,7 +13953,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_fix_predicate_calls'(':'(_, ':'(Module, Pred)), TPred, _) :-
 	!,
 	'$lgt_fix_predicate_calls'(':'(Module, Pred), TPred, false).
-/*
+
 '$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred), _) :-
 	'$lgt_term_template'(Pred, OverridingMeta),
 	catch('$lgt_predicate_property'(':'(Module, Pred), meta_predicate(OriginalMeta)), _, fail),
@@ -13969,7 +13962,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		Meta = OverridingMeta
 	;	Meta = OriginalMeta
 	),
-	!,												% calls to Prolog module meta-predicates
+	!,
+	% fixing a call to a Prolog module meta-predicate:
 	Pred =.. [Functor| Args],
 	Meta =.. [Functor| MArgs],
 	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
@@ -13979,7 +13973,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred), _) :-
 	!,
 	'$lgt_fix_predicate_calls'(Pred, TPred, false).
-*/
+
 '$lgt_fix_predicate_calls'(Pred, Pred, _).
 
 
@@ -18398,11 +18392,11 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		),
 		'$lgt_entity_template'(Obj, GObj),
 		'$lgt_term_template'(Pred, GPred),
-		'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),
+		'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),
 		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, GMetaVars, []),
 		call(Def, GPred, GExCtx, GCall, DefCtn),
 		!,
-		% found the predicate definition; use it only if it's safe
+		% predicate definition found; use it only if it's safe
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
 		(	Meta == no ->
 			% cache only normal predicates
