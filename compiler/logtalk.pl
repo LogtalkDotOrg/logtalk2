@@ -10825,7 +10825,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_module_meta_args'([], [], _, [], []).
 
 '$lgt_tr_module_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
-	'$lgt_tr_module_meta_arg'(MArg, Arg, Ctx, TArg0, DArg0),
+	'$lgt_tr_module_meta_arg'(MArg, Arg, Ctx, TArg, DArg),
 	'$lgt_tr_module_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
