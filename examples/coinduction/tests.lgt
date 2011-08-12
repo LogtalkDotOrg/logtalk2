@@ -5,7 +5,7 @@
 	:- info([
 		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2011/07/02,
+		date is 2011/08/12,
 		comment is 'Unit tests for the "coinduction" example.']).
 
 	:- discontiguous(succeeds/1).
@@ -88,6 +88,13 @@
 		bagof(P, tangle::p(P), [P1, P2]),
 		X1 = [a, b| X1], P1 == X1,
 		X2 = [c, d| X2], P2 == X2.
+
+	succeeds(coinduction_train_1) :-
+		bagof((X, R), train::driver(s0, s0, s0, X, R), [(X1, R1), (X2, R2)]),
+		XS1 = [down, in, out, exit, raise, approach, up, lower| XS1], X1 == [approach, lower| XS1],
+		RS1 = [(down, _), (in, _), (out, _), (exit, _), (raise, _), (approach, _), (up, _), (lower, 1.0)| RS1], R1 = [(approach, 0), (lower, 1.0)| RS1],
+		XS2 = [lower, down, in, out, exit, raise, up, approach| XS2], X2 == [approach| XS2],
+		RS2 = [(lower, 1.0), (down, _), (in, _), (out, _), (exit, _), (raise, _), (up, _), (approach, 0)| RS2], R2 = [(approach, 0)| RS2].
 
 	:- endif.
 
