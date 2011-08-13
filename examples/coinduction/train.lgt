@@ -6,9 +6,9 @@
 	:- object(train).
 
 		:- info([
-			version is 0.2,
-			author is 'Gopal Gupta et al. Adapted to Logtalk by Paulo Moura.',
-			date is 2010/07/23,
+			version is 0.3,
+			author is 'Neda Saeedloei and Gopal Gupta. Adapted to Logtalk by Paulo Moura.',
+			date is 2011/08/12,
 			comment is 'Timed automata example.']).
 
 		:- initialization(init_clocks).
@@ -83,9 +83,9 @@
 	:- object(train).
 	
 		:- info([
-			version is 0.2,
-			author is 'Gopal Gupta et al. Adapted to Logtalk by Paulo Moura.',
-			date is 2010/07/23,
+			version is 0.3,
+			author is 'Neda Saeedloei and Gopal Gupta. Adapted to Logtalk by Paulo Moura.',
+			date is 2011/08/12,
 			comment is 'Timed automata example.']).
 
 		:- initialization(init_clocks).
