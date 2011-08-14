@@ -140,8 +140,10 @@
 :- multifile('$lgt_static_binding_entity_'/1).		% '$lgt_static_binding_entity_'(Entity)
 :- dynamic('$lgt_static_binding_entity_'/1).
 
-:- dynamic('$lgt_obj_static_binding_cache_'/4).		% '$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call)
-:- dynamic('$lgt_ctg_static_binding_cache_'/4).		% '$lgt_ctg_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
+:- dynamic('$lgt_send_to_obj_static_binding_cache_'/4).		% '$lgt_send_to_obj_static_binding_cache_'(Obj, Pred, Sender, Call)
+:- dynamic('$lgt_ctg_call_static_binding_cache_'/4).		% '$lgt_ctg_call_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
+:- dynamic('$lgt_obj_super_call_static_binding_cache_'/4).	% '$lgt_obj_super_call_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
+:- dynamic('$lgt_ctg_super_call_static_binding_cache_'/4).	% '$lgt_ctg_super_call_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
 
 
 % lookup caches for messages to an object, messages to self, and super calls
@@ -2953,13 +2955,13 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % adds a new database lookup cache entry (when an update goal is not needed)
 
 '$lgt_add_db_lookup_cache_entry'(Obj, Head, Scope, Type, Sender, THead) :-
-	'$lgt_entity_template'(Obj, GObj),
+	'$lgt_term_template'(Obj, GObj),
 	'$lgt_term_template'(Head, GHead),
 	'$lgt_term_template'(THead, GTHead),
 	'$lgt_unify_head_thead_args'(GHead, GTHead),
 	(	(Scope = p(p(p)), Type == (dynamic)) ->
 		asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, true))
-	;	'$lgt_entity_template'(Sender, GSender),
+	;	'$lgt_term_template'(Sender, GSender),
 		asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, true))
 	).
 
@@ -2970,7 +2972,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % adds a new database lookup cache entry
 
 '$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, Scope, Type, Sender, THead, DDef, NeedsUpdate) :-
-	'$lgt_entity_template'(Obj, GObj),
+	'$lgt_term_template'(Obj, GObj),
 	'$lgt_term_template'(Head, GHead),
 	'$lgt_term_template'(THead, GTHead),
 	'$lgt_unify_head_thead_args'(GHead, GTHead),
@@ -2982,12 +2984,12 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		arg(3, UClause, UTHead),
 		(	(Scope = p(p(p)), Type == (dynamic)) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, UClause))
-		;	'$lgt_entity_template'(Sender, GSender),
+		;	'$lgt_term_template'(Sender, GSender),
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, UClause))
 		)
 	;	(	(Scope = p(p(p)), Type == (dynamic)) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, true))
-		;	'$lgt_entity_template'(Sender, GSender),
+		;	'$lgt_term_template'(Sender, GSender),
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, true))
 		)
 	).
@@ -3179,8 +3181,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->									% lookup declaration
 		(	(Scope = p(_); Sender = SCtn) ->										% check scope
 			(	'$lgt_term_template'(Pred, GPred),									% construct predicate template
-				'$lgt_entity_template'(Obj, GObj),									% construct object template
-				'$lgt_entity_template'(Sender, GSender),							% construct "sender" template
+				'$lgt_term_template'(Obj, GObj),									% construct object template
+				'$lgt_term_template'(Sender, GSender),							% construct "sender" template
 				'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),						% construct list of the meta-variables
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),			% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->								% lookup definition
@@ -3240,7 +3242,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->										% lookup declaration
 		(	Scope = p(p(_)) ->															% check public scope
 			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
-				'$lgt_entity_template'(Obj, GObj),										% construct object template
+				'$lgt_term_template'(Obj, GObj),										% construct object template
 				'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),							% construct list of the meta-variables
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),				% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
@@ -3253,8 +3255,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 			)
 		;	Sender = SCtn ->															% check scope container
 			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
-				'$lgt_entity_template'(Obj, GObj),										% construct object template
-				'$lgt_entity_template'(Sender, GSender),								% construct "sender" template
+				'$lgt_term_template'(Obj, GObj),										% construct object template
+				'$lgt_term_template'(Sender, GSender),									% construct "sender" template
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _, []),
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
 				GGCall = '$lgt_guarded_method_call'(GObj, GPred, GSender, GCall),
@@ -3344,7 +3346,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->										% lookup declaration
 		(	Scope = p(p(_)) ->															% check public scope
 			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
-				'$lgt_entity_template'(Obj, GObj),										% construct object template
+				'$lgt_term_template'(Obj, GObj),										% construct object template
 				'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),							% construct list of the meta-variables
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),				% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
@@ -3356,8 +3358,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 			)
 		;	Sender = SCtn ->															% check scope container
 			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
-				'$lgt_entity_template'(Obj, GObj),										% construct object template
-				'$lgt_entity_template'(Sender, GSender),								% construct "sender" template
+				'$lgt_term_template'(Obj, GObj),										% construct object template
+				'$lgt_term_template'(Sender, GSender),									% construct "sender" template
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _, []),
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
 				asserta(('$lgt_send_to_obj_ne_'(GObj, GPred, GSender) :- !, GCall)),	% cache lookup result
@@ -3418,8 +3420,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_obj_super_call_same'(Super, Pred, ExCtx) :-
 	(	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _),
 		'$lgt_term_template'(Pred, GPred),											% construct predicate template
-		'$lgt_entity_template'(This, GThis),										% construct "this" template
-		'$lgt_entity_template'(Self, GSelf),										% construct "self" template
+		'$lgt_term_template'(This, GThis),											% construct "this" template
+		'$lgt_term_template'(Self, GSelf),											% construct "self" template
 		'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _),
 		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->						% lookup definition
 		asserta(('$lgt_obj_super_call_same_'(Super, GPred, GExCtx) :- !, GCall)),	% cache lookup result
@@ -3448,10 +3450,11 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx) :-
 	(	'$lgt_current_category_'(Ctg, _, _, Def, _, _),
+		'$lgt_term_template'(Ctg, GCtg),											% construct category template
 		'$lgt_term_template'(Pred, GPred),											% construct predicate template
 		call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->							% lookup definition
-		asserta(('$lgt_ctg_super_call_same_'(Ctg, GPred, GExCtx) :- !, GCall)),		% cache lookup result
-		GPred = Pred, GExCtx = ExCtx,												% unify message arguments
+		asserta(('$lgt_ctg_super_call_same_'(GCtg, GPred, GExCtx) :- !, GCall)),	% cache lookup result
+		GCtg = Ctg, GPred = Pred, GExCtx = ExCtx,									% unify message arguments
 		call(GCall)																	% call inherited definition
 	;	% closed-world assumption
 		fail
@@ -3497,8 +3500,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		call(Dcl, Pred, Scope, _, _, SCtn, _) ->
 		(	(Scope = p(_); This = SCtn) ->													% check scope
 			(	'$lgt_term_template'(Pred, GPred),											% construct predicate template
-				'$lgt_entity_template'(This, GThis),										% construct "this" template
-				'$lgt_entity_template'(Self, GSelf),										% construct "self" template
+				'$lgt_term_template'(This, GThis),											% construct "this" template
+				'$lgt_term_template'(Self, GSelf),											% construct "self" template
 				'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _),
 				call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->						% lookup definition
 				asserta(('$lgt_obj_super_call_other_'(Super, GPred, GExCtx) :- !, GCall)),	% cache lookup result
@@ -3558,10 +3561,11 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	(	'$lgt_current_category_'(Ctg, _, Dcl, Def, _, _),
 		call(Dcl, Pred, Scope, _, _, _) ->
 		(	Scope = p(_) ->																	% check scope
-			(	'$lgt_term_template'(Pred, GPred),											% construct predicate template
+			(	'$lgt_term_template'(Ctg, GCtg),											% construct category template
+				'$lgt_term_template'(Pred, GPred),											% construct predicate template
 				call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->							% lookup definition
-				asserta(('$lgt_ctg_super_call_other_'(Ctg, GPred, GExCtx) :- !, GCall)),	% cache lookup result
-				GPred = Pred, GExCtx = ExCtx,												% unify message arguments
+				asserta(('$lgt_ctg_super_call_other_'(GCtg, GPred, GExCtx) :- !, GCall)),	% cache lookup result
+				GCtg = Ctg, GPred = Pred, GExCtx = ExCtx,									% unify message arguments
 				call(GCall)																	% call inherited definition
 			;	% closed-world assumption
 				fail
@@ -3990,8 +3994,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	(	'$lgt_current_object_'(This, _, _, _, _, _, _, _, _, Rnm, _),
 		call(Dcl, Alias, _, _, _, _, _) ->
 		(	'$lgt_term_template'(Alias, GAlias),							% construct predicate template
-			'$lgt_entity_template'(This, GThis),							% construct "this" template
-			'$lgt_entity_template'(Self, GSelf),							% construct "self" template
+			'$lgt_term_template'(This, GThis),								% construct "this" template
+			'$lgt_term_template'(Self, GSelf),								% construct "self" template
 			call(Rnm, Ctg, GPred, GAlias),
 			'$lgt_imports_category_'(GThis, Ctg, _),
 			'$lgt_current_category_'(Ctg, _, _, Def, _, _),
@@ -5692,7 +5696,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		true
 	;	atom(Obj) ->
 		assertz('$lgt_pp_referenced_object_'(Obj))
-	;	'$lgt_entity_template'(Obj, Template),
+	;	'$lgt_term_template'(Obj, Template),
 		assertz('$lgt_pp_referenced_object_'(Template))
 	).
 
@@ -9817,7 +9821,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 			true
 		;	Pred = Alias
 		),
-		'$lgt_ctg_static_binding_cache'(Ctg, Pred, ExCtx, TPred) ->
+		'$lgt_ctg_call_static_binding_cache'(Ctg, Pred, ExCtx, TPred) ->
 		true
 	;	% must resort to dynamic binding
 		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _),
@@ -11867,7 +11871,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_object_identifier'(Obj) :-
-	'$lgt_entity_template'(Obj, GObj),
+	'$lgt_term_template'(Obj, GObj),
 	'$lgt_add_referenced_object'(GObj),
 	'$lgt_construct_object_functors'(GObj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
 	'$lgt_tr_entity_flags'(object, Flags),
@@ -11882,7 +11886,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_category_identifier'(Ctg) :-
-	'$lgt_entity_template'(Ctg, GCtg),
+	'$lgt_term_template'(Ctg, GCtg),
 	'$lgt_add_referenced_category'(GCtg),
 	'$lgt_construct_category_functors'(GCtg, Prefix, Dcl, Def, Rnm),
 	'$lgt_tr_entity_flags'(category, Flags),
@@ -12091,7 +12095,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	throw(type_error(object, Obj)).
 
 '$lgt_tr_complements_category'([Obj| _], Ctg, _, _, _) :-
-	'$lgt_entity_template'(Obj, Ctg),
+	'$lgt_term_template'(Obj, Ctg),
 	throw(permission_error(complement, self, Obj)).
 
 '$lgt_tr_complements_category'([Obj| Objs], Ctg, Dcl, Def, Rnm) :-
@@ -13875,12 +13879,12 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
 
 '$lgt_fix_predicate_calls'('$lgt_send_to_obj_'(Obj, Pred, This), TPred, _) :-
-	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call),
+	'$lgt_send_to_obj_static_binding_cache'(Obj, Pred, This, Call),
 	!,
 	TPred = '$lgt_guarded_method_call'(Obj, Pred, This, Call).
 
 '$lgt_fix_predicate_calls'('$lgt_send_to_obj_ne_'(Obj, Pred, This), TPred, _) :-
-	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call),
+	'$lgt_send_to_obj_static_binding_cache'(Obj, Pred, This, Call),
 	!,
 	TPred = Call.
 
@@ -15332,21 +15336,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_ctg_parameter'(This, Ctg, Arg, Value) :-
 	'$lgt_imports_category_'(This, Ctg, _), !,
 	arg(Arg, Ctg, Value).
-
-
-
-% '$lgt_entity_template'(@callable, -callable)
-%
-% constructs a template for an entity identifier;
-% (which, in most cases, is an atom)
-
-'$lgt_entity_template'(Term, Term) :-
-	atom(Term),
-	!.
-
-'$lgt_entity_template'(Term, Template) :-
-	functor(Term, Functor, Arity),
-	functor(Template, Functor, Arity).
 
 
 
@@ -18345,10 +18334,10 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 
 
-% '$lgt_obj_static_binding_cache'(@object_identifier, @callable, @object_identifier -callable)
+% '$lgt_send_to_obj_static_binding_cache'(@object_identifier, @callable, @object_identifier -callable)
 
-'$lgt_obj_static_binding_cache'(Obj, Pred, Sender, Call) :-
-	(	'$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call) ->
+'$lgt_send_to_obj_static_binding_cache'(Obj, Pred, Sender, Call) :-
+	(	'$lgt_send_to_obj_static_binding_cache_'(Obj, Pred, Sender, Call) ->
 		true
 	;	'$lgt_static_binding_entity_'(Obj),
 		'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
@@ -18359,7 +18348,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		;	% Type == (dynamic)
 			Obj = DclCtn
 		),
-		'$lgt_entity_template'(Obj, GObj),
+		'$lgt_term_template'(Obj, GObj),
 		'$lgt_term_template'(Pred, GPred),
 		'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),
 		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, GMetaVars, []),
@@ -18369,7 +18358,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
 		(	Meta == no ->
 			% cache only normal predicates
-			assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
+			assertz('$lgt_send_to_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
 			Obj = GObj, Pred = GPred, Sender = GSender, Call = GCall
 		;	% meta-predicates cannot be cached as they require translation of the meta-arguments
 			Meta =.. [PredFunctor| MArgs],
@@ -18411,29 +18400,30 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 
 
-% '$lgt_ctg_static_binding_cache'(@category_identifier, @callable, @execution_context -callable)
+% '$lgt_ctg_call_static_binding_cache'(@category_identifier, @callable, @execution_context -callable)
 
-'$lgt_ctg_static_binding_cache'(Ctg, Pred, ExCtx, Call) :-
-	(	'$lgt_ctg_static_binding_cache_'(Ctg, Pred, ExCtx, Call) ->
+'$lgt_ctg_call_static_binding_cache'(Ctg, Pred, ExCtx, Call) :-
+	(	'$lgt_ctg_call_static_binding_cache_'(Ctg, Pred, ExCtx, Call) ->
 		true
 	;	'$lgt_static_binding_entity_'(Ctg),
 		'$lgt_current_category_'(Ctg, _, Dcl, Def, _, _),
 		call(Dcl, Pred, _, _, Flags, DclCtn), !,
 		Flags /\ 2 =:= 0,
+		'$lgt_term_template'(Ctg, GCtg),
 		'$lgt_term_template'(Pred, GPred),
 		call(Def, GPred, GExCtx, GCall, DefCtn), !,
 		'$lgt_safe_static_binding_paths'(Ctg, DclCtn, DefCtn),
-		assertz('$lgt_ctg_static_binding_cache_'(Ctg, GPred, GExCtx, GCall)),
-		Pred = GPred, ExCtx = GExCtx, Call = GCall
+		assertz('$lgt_ctg_call_static_binding_cache_'(GCtg, GPred, GExCtx, GCall)),
+		Ctg = GCtg, Pred = GPred, ExCtx = GExCtx, Call = GCall
 	).
 
 
 
-% '$lgt_safe_static_binding_paths'(@object_identifier, @object_identifier, @object_identifier)
+% '$lgt_safe_static_binding_paths'(@entity_identifier, @entity_identifier, @entity_identifier)
 %
-% all entities in the inheritance-chain (from the object receiving the message
-% to both the declaration container and the definition container) should be
-% static-binding entities but this is not currently checked
+% all entities in the inheritance-chain (from the entity that's the starting
+% point to both the declaration container and the definition container)
+% should be static-binding entities but this is not currently checked
 
 '$lgt_safe_static_binding_paths'(_, _, _).
 
