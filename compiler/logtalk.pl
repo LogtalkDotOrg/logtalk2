@@ -372,7 +372,7 @@ Obj<<Goal :-
 
 '$lgt_runtime_error_handler'(error(existence_error(goal_thread, TGoal), _, Sender)) :-
 	functor(TGoal, TFunctor, TArity),
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, _, _, Functor/Arity),
+	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, _, _, Functor/Arity),
 	functor(Goal, Functor, Arity),
 	'$lgt_unify_head_thead_args'(Arity, Goal, TGoal),
 	arg(TArity, TGoal, ExCtx),
@@ -410,27 +410,27 @@ Obj<<Goal :-
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% Ciao
 	atom_concat('user:', TFunctor, ModTFunctor),
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, _, Functor/Arity),
 	functor(Goal, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-									% K-Prolog and YAP 5.1 or later
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, _, Functor/Arity),
 	functor(Goal, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-							% SICStus Prolog 4.x
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, _, Functor/Arity),
 	functor(Goal, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% Quintus, SICStus Prolog 3.x
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, _, Functor/Arity),
 	functor(Goal, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _, _)) :-						% XSB
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, _, Functor/Arity),
 	functor(Goal, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
@@ -441,7 +441,7 @@ Obj<<Goal :-
 '$lgt_runtime_error_handler'(error(Error, Context)) :-																	% SWI-Prolog
 	nonvar(Context),
 	Context = context(TFunctor/TArity, _),
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, _, Functor/Arity),
 	functor(Goal, Functor, Arity),
 	throw(error(Error, logtalk(Goal, Entity))).
 
@@ -4195,9 +4195,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_logtalk._dcl'(decompile_predicate_indicators(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(decompile_predicate_indicators(_, _, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(decompile_predicate_indicators(_, _, _, _), p(p(p)), no, 0).
-% deprecated
-'$lgt_logtalk._dcl'(decompile_predicate_head(_, _, _, _), p(p(p)), no, 0).
-'$lgt_logtalk._dcl'(decompile_predicate_indicator(_, _, _, _), p(p(p)), no, 0).
 
 
 '$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags, logtalk, logtalk) :-
@@ -4229,9 +4226,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_logtalk._def'(decompile_predicate_heads(THeads, Heads), _, '$lgt_decompile_predicate_heads'(THeads, Heads)).
 '$lgt_logtalk._def'(decompile_predicate_heads(THeads, Entity, Heads), _, '$lgt_decompile_predicate_heads'(THeads, Entity, Heads)).
 '$lgt_logtalk._def'(decompile_predicate_heads(THeads, Entity, Type, Heads), _, '$lgt_decompile_predicate_heads'(THeads, Entity, Type, Heads)).
-% deprecated
-'$lgt_logtalk._def'(decompile_predicate_indicator(TPI, Entity, Type, PI), _, '$lgt_decompile_predicate_indicator'(TPI, Entity, Type, PI)).
-'$lgt_logtalk._def'(decompile_predicate_head(THead, Entity, Type, Head), _, '$lgt_decompile_predicate_head'(THead, Entity, Type, Head)).
 
 
 '$lgt_logtalk._def'(Pred, ExCtx, Call, logtalk) :-
@@ -7201,17 +7195,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_flatten_list'(Preds, Preds2),
 	'$lgt_tr_discontiguous_directive'(Preds2).
 
-
-'$lgt_tr_directive'(metapredicate, Preds, Ctx) :-	% deprecated directive name
-	(	'$lgt_compiler_flag'(report, off) ->
-		true
-	;	'$lgt_report_warning_in_new_line',
-		'$lgt_inc_compile_warnings_counter',
-		write('%         WARNING!  Deprecated directive: metapredicate/1 (use meta_predicate/1 instead)'), nl,
-		'$lgt_pp_entity'(Type, Entity, _, _, _),
-		'$lgt_report_warning_full_context'(Type, Entity)
-	),
-	'$lgt_tr_directive'((meta_predicate), Preds, Ctx).
 
 '$lgt_tr_directive'((meta_predicate), Preds, _) :-
 	'$lgt_flatten_list'(Preds, Preds2),
@@ -14975,13 +14958,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 
 
-% deprecated
-
-'$lgt_decompile_predicate_head'(THead, Entity, Type, Head) :-
-	'$lgt_decompile_predicate_heads'(THead, Entity, Type, _, Head).
-
-
-
 % '$lgt_compile_predicate_indicators'(+list(predicate_indicator), ?entity_identifier, -list(predicate_indicator))
 % '$lgt_compile_predicate_indicators'(+predicate_indicator, ?entity_identifier, -predicate_indicator)
 %
@@ -15115,13 +15091,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_decompile_predicate_indicators'(TPIs, Entity, PIs) :-
 	'$lgt_decompile_predicate_indicators'(TPIs, Entity, _, PIs).
-
-
-
-% deprecated
-
-'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity) :-
-	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, Type, Functor/Arity).
 
 
 
@@ -15280,8 +15249,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_lgt_predicate_directive'(synchronized, N) :-
 	N >= 1.
 '$lgt_lgt_predicate_directive'((dynamic), N) :-
-	N >= 1.
-'$lgt_lgt_predicate_directive'(metapredicate, N) :-		% deprecated Logtalk directive
 	N >= 1.
 '$lgt_lgt_predicate_directive'((meta_predicate), N) :-	% Logtalk directive
 	N >= 1.
