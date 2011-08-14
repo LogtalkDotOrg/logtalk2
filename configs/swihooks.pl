@@ -14,7 +14,7 @@
 %  make/0, and to improve usability when using the XPCE profiler and XPCE
 %  graphical debugger
 %
-%  last updated: May 11, 2011
+%  last updated: August 13, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -94,6 +94,7 @@ user:prolog_predicate_name(user:'$lgt_obj_super_call_other_'(_, _, _), '^^/2 (ca
 user:prolog_predicate_name(user:'$lgt_ctg_super_call_same_'(_, _, _), '^^/2 (cached; from ctg; same pred)') :- !.
 user:prolog_predicate_name(user:'$lgt_ctg_super_call_other_'(_, _, _), '^^/2 (cached; from ctg; diff pred)') :- !.
 user:prolog_predicate_name(user:'$lgt_ctg_call_'(_, _, _), ':/1 (cached)') :- !.
+user:prolog_predicate_name(user:'$lgt_call_in_this'(_, _), 'call/1') :- !.
 
 user:prolog_predicate_name(user:'$lgt_send_to_obj'(_, _, _), '::/2 (not cached; event-aware)') :- !.
 user:prolog_predicate_name(user:'$lgt_send_to_obj_ne'(_, _, _), '::/2 (not cached; not event-aware)') :- !.
@@ -328,6 +329,7 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_body'(^^Msg, _, '$lgt_ctg_super_call_other_'(_, Msg, _), TermPos, TermPos) :- !.
 
 '$lgt_swi_unify_clause_body'(:Msg, _, '$lgt_ctg_call_'(_, Msg, _), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Goal, _, '$lgt_call_in_this'(Goal, _), TermPos, TermPos) :- !.
 
 '$lgt_swi_unify_clause_body'(call(Goal), Entity, call(TGoal), TermPos0, TermPos) :- !,
 	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
@@ -555,6 +557,7 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 :- '$set_predicate_attribute'('$lgt_ctg_super_call_other_'/3, trace, 1).
 :- '$set_predicate_attribute'('$lgt_ctg_call'/3, trace, 1).
 :- '$set_predicate_attribute'('$lgt_ctg_call_'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_call_in_this'/2, trace, 1).
 
 :- '$set_predicate_attribute'('$lgt_metacall'/6, trace, 1).
 :- '$set_predicate_attribute'('$lgt_metacall'/7, trace, 1).

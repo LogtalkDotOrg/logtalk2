@@ -4012,12 +4012,11 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 
 
-% '$lgt_call_this'(+callable, +execution_context)
+% '$lgt_call_in_this'(+callable, +object_identifier)
 %
 % calls a dynamic predicate in "this" from within a category at runtime
 
-'$lgt_call_this'(Pred, ExCtx) :-
-	'$lgt_exec_ctx_this'(ExCtx, This),
+'$lgt_call_in_this'(Pred, This) :-
 	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
 	(	% the object definition may include some initial clauses for the dynamic predicate:
 		call(Def, Pred, ExCtx, TPred) ->
@@ -10612,7 +10611,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	TPred = '$lgt_call_this'(Pred, ExCtx).
+	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_exec_ctx'(ExCtx, _, This, _, _, _),
+	TPred = '$lgt_call_in_this'(Pred, This).
 
 
 % goal is a call to a user-defined predicate in sender (i.e. a meta-argument)
