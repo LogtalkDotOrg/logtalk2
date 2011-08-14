@@ -16173,6 +16173,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % '$lgt_lgt_built_in'(?callable)
 
 '$lgt_lgt_built_in'(_ :: _).
+'$lgt_lgt_built_in'(_ << _).
 
 '$lgt_lgt_built_in'(forall(_, _)).
 '$lgt_lgt_built_in'(retractall(_)).
