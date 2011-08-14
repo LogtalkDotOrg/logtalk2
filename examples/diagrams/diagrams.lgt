@@ -60,7 +60,7 @@
 	:- public(library/2).
 	:- mode(library(+atom, +list), one).
 	:- info(library/2, [
-		comment is 'Creates a diagram for all entities in a library using default options.',
+		comment is 'Creates a diagram for all entities in a library using the specified options.',
 		argnames is ['Library', 'Options']]).
 
 	:- public(library/1).
