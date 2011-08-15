@@ -3416,6 +3416,10 @@ current_logtalk_flag(version, version(2, 43, 1)).
 %
 % runtime processing of an object "super" call when the arguments have already
 % been type-checked; generates a cache entry to speed up future calls
+%
+% we need to pass "self" when looking for the inherited predicate definition in
+% order to be able to select the correct "super" clauses for those cases where
+% "this" both instantiates and specializes other objects
 
 '$lgt_obj_super_call_same'(Super, Pred, ExCtx) :-
 	(	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _),
@@ -3493,6 +3497,10 @@ current_logtalk_flag(version, version(2, 43, 1)).
 %
 % runtime processing of an object "super" call when the arguments have already
 % been type-checked; generates a cache entry to speed up future calls
+%
+% we need to pass "self" when looking for the inherited predicate definition in
+% order to be able to select the correct "super" clauses for those cases where
+% "this" both instantiates and specializes other objects
 
 '$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx) :-
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _),
@@ -3981,25 +3989,23 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % call the predicate that generates the missing cache entry
 
 '$lgt_ctg_call_'(Dcl, Pred, ExCtx) :-
-	'$lgt_call_ctg_pred_nv'(Dcl, Pred, ExCtx).
+	'$lgt_ctg_call_nv'(Dcl, Pred, ExCtx).
 
 
 
-% '$lgt_call_ctg_pred_nv'(+atom, +callable, +execution_context)
+% '$lgt_ctg_call_nv'(+atom, +callable, +execution_context)
 %
 % calls a category predicate directly, without using the message sending mechanism
 
-'$lgt_call_ctg_pred_nv'(Dcl, Alias, ExCtx) :-
-	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _),
+'$lgt_ctg_call_nv'(Dcl, Alias, ExCtx) :-
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	(	'$lgt_current_object_'(This, _, _, _, _, _, _, _, _, Rnm, _),
 		call(Dcl, Alias, _, _, _, _, _) ->
 		(	'$lgt_term_template'(Alias, GAlias),							% construct predicate template
 			'$lgt_term_template'(This, GThis),								% construct "this" template
-			'$lgt_term_template'(Self, GSelf),								% construct "self" template
-			call(Rnm, Ctg, GPred, GAlias),
-			'$lgt_imports_category_'(GThis, Ctg, _),
-			'$lgt_current_category_'(Ctg, _, _, Def, _, _),
-			'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _),
+			call(Rnm, GCtg, GPred, GAlias),
+			'$lgt_imports_category_'(GThis, GCtg, _),
+			'$lgt_current_category_'(GCtg, _, _, Def, _, _),
 			call(Def, GPred, GExCtx, GCall, _) ->
 			asserta(('$lgt_ctg_call_'(Dcl, GAlias, GExCtx) :- !, GCall)),	% cache lookup result
 			GAlias = Alias, GExCtx = ExCtx,									% unify message arguments
@@ -6251,7 +6257,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	assertz(('$lgt_obj_super_call_other_'(Super, Pred, ExCtx) :- '$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx))),
 	assertz(('$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx) :- '$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx))),
 	assertz(('$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx) :- '$lgt_ctg_super_call_other_nv'(Ctg, Pred, ExCtx))),
-	assertz(('$lgt_ctg_call_'(Dcl, Pred, ExCtx) :- '$lgt_call_ctg_pred_nv'(Dcl, Pred, ExCtx))).
+	assertz(('$lgt_ctg_call_'(Dcl, Pred, ExCtx) :- '$lgt_ctg_call_nv'(Dcl, Pred, ExCtx))).
 
 
 
@@ -13026,7 +13032,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_category_extends_def_clauses' :-
 	'$lgt_pp_category_'(Ctg, _, _, Def, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_extends_category_'(Ctg, Ctg2, _)),		% necessary for parameter passing
+	% when working with parametric categories, we must connect the descendant parameters
+	% with the parent parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_extends_category_'(Ctg, Ctg2, _)),
 	'$lgt_pp_extended_category_'(Ctg2, _, _, Def2, _),
 	Lookup =.. [Def2, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_predicate_alias_'(Ctg2, _, _) ->
@@ -13230,7 +13238,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_prototype_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_imports_category_'(Obj, Ctg, _)),			% necessary for parameter passing
+	% when working with parametric entities, we must connect the object parameters
+	% with the category parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_imports_category_'(Obj, Ctg, _)),
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_predicate_alias_'(Ctg, _, _) ->
@@ -13255,7 +13265,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_prototype_extends_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_extends_object_'(Obj, Parent, _)),			% necessary for parameter passing
+	% when working with parametric prototypes, we must connect the descendant parameters
+	% with the parent parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_extends_object_'(Obj, Parent, _)),
 	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	'$lgt_exec_ctx_this_rest'(PExCtx, Parent, Ctx),
 	Lookup =.. [PDef, Pred, PExCtx, Call, Ctn],
@@ -13286,7 +13298,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_prototype_super_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_extends_object_'(Obj, Parent, _)),			% necessary for parameter passing
+	% when working with parametric prototypes, we must connect the descendant parameters
+	% with the parent parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_extends_object_'(Obj, Parent, _)),
 	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	'$lgt_exec_ctx_this_rest'(PExCtx, Parent, Ctx),
 	Lookup =.. [PDef, Pred, PExCtx, Call, Ctn],
@@ -13500,7 +13514,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_ic_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_imports_category_'(Obj, Ctg, _)),			% necessary for parameter passing
+	% when working with parametric entities, we must connect the object parameters
+	% with the category parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_imports_category_'(Obj, Ctg, _)),
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_predicate_alias_'(Ctg, _, _) ->
@@ -13525,7 +13541,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_ic_hierarchy_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_instantiates_class_'(Obj, Class, _)),		% necessary for parameter passing
+	% when working with parametric objects, we must connect the instance parameters
+	% with the class parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_instantiates_class_'(Obj, Class, _)),
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
 	'$lgt_exec_ctx_this_rest'(CExCtx, Class, Ctx),
 	Lookup =.. [CIDef, Pred, CExCtx, Call, Ctn],
@@ -13568,7 +13586,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_ic_category_idef_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_imports_category_'(Obj, Ctg, _)),			% necessary for parameter passing
+	% when working with parametric entities, we must connect the object parameters
+	% with the category parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_imports_category_'(Obj, Ctg, _)),
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	'$lgt_exec_ctx_this'(ExCtx, Obj),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
@@ -13595,7 +13615,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_ic_hierarchy_idef_clauses' :-
 	'$lgt_pp_object_'(Class, _, _, _, _, _, CIDef, _, _, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_specializes_class_'(Class, Super, _)),		% necessary for parameter passing
+	% when working with parametric objects, we must connect the class parameters
+	% with the superclass parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_specializes_class_'(Class, Super, _)),
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
 	'$lgt_exec_ctx_this_rest'(SExCtx, Super, Ctx),
 	Lookup =.. [SIDef, Pred, SExCtx, Call, Ctn],
@@ -13627,11 +13649,17 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_ic_super_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_instantiates_class_'(Obj, Class, _)),		% necessary for parameter passing
+	% when working with parametric objects, we must connect the instance parameters
+	% with the class parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_instantiates_class_'(Obj, Class, _)),
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
+	% we can ignore class self-instantiation, which is often used in reflective designs:
+	Class \= Obj,
 	'$lgt_exec_ctx_this_rest'(CExCtx, Class, Ctx),
 	Lookup =.. [CIDef, Pred, CExCtx, Call, Ctn],
 	'$lgt_exec_ctx_this_rest'(OExCtx, Obj, Ctx),
+	% the following restriction allows us to distinguish the two "super" clauses that
+	% are generated when an object both instantiates and specializes other objects:
 	'$lgt_exec_ctx'(OExCtx, _, Obj, Obj, _, _),
 	(	'$lgt_pp_predicate_alias_'(Class, _, _) ->
 		Head =.. [OSuper, Alias, OExCtx, Call, Ctn],
@@ -13646,7 +13674,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_gen_ic_super_clauses' :-
 	'$lgt_pp_object_'(Class, _, _, _, CSuper, _, _, _, _, Rnm, _),
-	'$lgt_pp_entity_runtime_clause_'('$lgt_specializes_class_'(Class, Super, _)),		% necessary for parameter passing
+	% when working with parametric objects, we must connect the class parameters
+	% with the superclass parameters:
+	'$lgt_pp_entity_runtime_clause_'('$lgt_specializes_class_'(Class, Super, _)),
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
 	'$lgt_exec_ctx_this_rest'(SExCtx, Super, Ctx),
 	Lookup =.. [SIDef, Pred, SExCtx, Call, Ctn],
@@ -18353,7 +18383,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		call(Def, GPred, GExCtx, GCall, DefCtn),
 		!,
 		% predicate definition found; use it only if it's safe
-		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
+		'$lgt_safe_static_binding_paths'(Obj, DclCtn, DefCtn),
 		(	Meta == no ->
 			% cache only normal predicates
 			assertz('$lgt_send_to_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
@@ -18421,9 +18451,11 @@ current_logtalk_flag(version, version(2, 43, 1)).
 %
 % all entities in the inheritance-chain (from the entity that's the starting
 % point to both the declaration container and the definition container)
-% should be static-binding entities but this is not currently checked
+% should be static-binding entities but this is only partially checked
 
-'$lgt_safe_static_binding_paths'(_, _, _).
+'$lgt_safe_static_binding_paths'(_, DclEntity, DefEntity) :-
+	'$lgt_static_binding_entity_'(DclEntity),
+	'$lgt_static_binding_entity_'(DefEntity).
 
 
 
