@@ -39,6 +39,11 @@ RELEASE NOTES
     the cache entry could be more specific than necessary when working with
     parametric categories.
 
+    Improved caching of "super" calls from within prototypes. Previously, all
+    cached entries would be specialized by the value of "self" in order to
+    properly deal with the special cases where an object both instantiates and
+    specializes other objects.
+
 
 2.43.0 - July 31, 2011
 

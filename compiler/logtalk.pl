@@ -3417,8 +3417,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % runtime processing of an object "super" call when the arguments have already
 % been type-checked; generates a cache entry to speed up future calls
 %
-% we need to pass "self" when looking for the inherited predicate definition in
-% order to be able to select the correct "super" clauses for those cases where
+% we may need to pass "self" when looking for the inherited predicate definition
+% in order to be able to select the correct "super" clauses for those cases where
 % "this" both instantiates and specializes other objects
 
 '$lgt_obj_super_call_same'(Super, Pred, ExCtx) :-
@@ -3426,7 +3426,10 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		'$lgt_term_template'(Pred, GPred),											% construct predicate template
 		'$lgt_term_template'(This, GThis),											% construct "this" template
 		'$lgt_term_template'(Self, GSelf),											% construct "self" template
-		'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _),
+		(	'$lgt_extends_object_'(GThis, _, _) ->
+			true
+		;	'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _)
+		),
 		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->						% lookup definition
 		asserta(('$lgt_obj_super_call_same_'(Super, GPred, GExCtx) :- !, GCall)),	% cache lookup result
 		GPred = Pred, GExCtx = ExCtx,												% unify message arguments
@@ -3498,8 +3501,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % runtime processing of an object "super" call when the arguments have already
 % been type-checked; generates a cache entry to speed up future calls
 %
-% we need to pass "self" when looking for the inherited predicate definition in
-% order to be able to select the correct "super" clauses for those cases where
+% we may need to pass "self" when looking for the inherited predicate definition
+% in order to be able to select the correct "super" clauses for those cases where
 % "this" both instantiates and specializes other objects
 
 '$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx) :-
@@ -3510,7 +3513,10 @@ current_logtalk_flag(version, version(2, 43, 1)).
 			(	'$lgt_term_template'(Pred, GPred),											% construct predicate template
 				'$lgt_term_template'(This, GThis),											% construct "this" template
 				'$lgt_term_template'(Self, GSelf),											% construct "self" template
-				'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _),
+				(	'$lgt_extends_object_'(GThis, _, _) ->
+					true
+				;	'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _)
+				),
 				call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->						% lookup definition
 				asserta(('$lgt_obj_super_call_other_'(Super, GPred, GExCtx) :- !, GCall)),	% cache lookup result
 				GPred = Pred, GExCtx = ExCtx,												% unify message arguments
