@@ -11475,17 +11475,15 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	Head \= _::_,		% predicates
 	'$lgt_term_template'(Pred, Head),			% "super" call to the predicate being redefined
 	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
-		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
-		'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _),
 		TPred = '$lgt_obj_super_call_same_'(Super, Pred, ExCtx)
 	;	'$lgt_pp_category_'(Ctg, _, _, _, _, _),
-		'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx, _, _),
 		TPred = '$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx)
 	).
 
-'$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% "super" call to a predicate other than the one being redefined
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+'$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% "super" call to a predicate other than the one being
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),		% redefined or to a predicate only know at runtime
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		(	var(Pred) ->
 			TPred = '$lgt_obj_super_call_other'(Super, Pred, ExCtx)
