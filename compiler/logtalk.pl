@@ -8030,8 +8030,53 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	assertz('$lgt_pp_coinductive_'(Head, CoinductiveHead)),
 	'$lgt_tr_coinductive_directive'(Preds, Ctx).
 
+'$lgt_tr_coinductive_directive'([Pred| Preds], Ctx) :-
+	'$lgt_valid_coinductive_template'(Pred, Functor, Arity, Head, TestHead),
+	!,
+	atom_concat('_coinductive_', Functor, CoinductiveFunctor),
+	functor(CoinductiveHead, CoinductiveFunctor, Arity),
+	'$lgt_unify_head_thead_args'(Arity, Head, CoinductiveHead),
+	% add the linking clauses from the original predicate to the predicate generated to implement coinduction
+	'$lgt_comp_ctx_mode'(Ctx, Mode),
+	'$lgt_comp_ctx_mode'(HeadCtx, Mode),
+	'$lgt_comp_ctx_mode'(BodyCtx, Mode),
+	'$lgt_comp_ctx_exec_ctx'(HeadCtx, HeadExCtx),
+	'$lgt_exec_ctx'(HeadExCtx, Sender, This, Self, MetaCallCtx, HeadStack),
+	'$lgt_comp_ctx_stack_new_stack'(HeadCtx, BodyStack, BodyCtx),
+	'$lgt_comp_ctx_exec_ctx'(BodyCtx, BodyExCtx),
+	'$lgt_exec_ctx'(BodyExCtx, Sender, This, Self, MetaCallCtx, BodyStack),
+	(	'$lgt_pl_meta_predicate'('*->'(_, _), _, _) ->
+		% back-end Prolog compiler supports the soft-cut control construct
+		'$lgt_tr_clause'((Head :- '*->'({'$lgt_member'(TestHead, HeadStack)}, true); BodyStack = [TestHead| HeadStack], CoinductiveHead), HeadCtx, BodyCtx)
+	;	% without the soft-cut control construct we have to walk the coinduction stack twice 
+		'$lgt_tr_clause'((Head :- {'$lgt_member'(TestHead, HeadStack)}), HeadCtx, HeadCtx),
+		'$lgt_tr_clause'((Head :- \+ {'$lgt_member'(TestHead, HeadStack)}, BodyStack = [TestHead| HeadStack], CoinductiveHead), HeadCtx, BodyCtx)
+	),
+	assertz('$lgt_pp_coinductive_'(Head, CoinductiveHead)),
+	'$lgt_tr_coinductive_directive'(Preds, Ctx).
+
 '$lgt_tr_coinductive_directive'([Pred| _], _) :-
 	throw(type_error(predicate_indicator, Pred)).
+
+
+'$lgt_valid_coinductive_template'(Pred, Functor, Arity, Head, TestHead) :-
+	'$lgt_must_be'(callable, Pred),
+	functor(Pred, Functor, Arity),
+	functor(Head, Functor, Arity),
+	Pred =.. [Functor| PredArgs],
+	Head =.. [Functor| HeadArgs],
+	'$lgt_map_coinductive_template_args'(PredArgs, HeadArgs, TestHeadArgs),
+	TestHead =.. [Functor| TestHeadArgs].
+
+
+'$lgt_map_coinductive_template_args'([], [], []).
+
+'$lgt_map_coinductive_template_args'([(+)| PredArgs], [Arg| HeadArgs], [Arg| TestHeadArgs]) :-
+	!,
+	'$lgt_map_coinductive_template_args'(PredArgs, HeadArgs, TestHeadArgs).
+
+'$lgt_map_coinductive_template_args'([_| PredArgs], [_| HeadArgs], TestHeadArgs) :-
+	'$lgt_map_coinductive_template_args'(PredArgs, HeadArgs, TestHeadArgs).
 
 
 
