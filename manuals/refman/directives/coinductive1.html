@@ -25,25 +25,31 @@
 
 <pre>coinductive(Functor/Arity)
 coinductive((Functor1/Arity1, Functor2/Arity2, ...))
-coinductive([Functor1/Arity1, Functor2/Arity2, ...])</pre>
+coinductive([Functor1/Arity1, Functor2/Arity2, ...])
+
+coinductive(Template)
+coinductive((Template1, Template2, ...))
+coinductive([Template1, Template2, ...])</pre>
 
 <p>
-This is an <strong>experimental</strong> directive, used for declaring coinductive predicates. Requires a back-end Prolog compiler with minimal support for cyclic terms. The current implementation of coinduction allows the generation of only the basic cycles.
+This is an <strong>experimental</strong> directive, used for declaring coinductive predicates. Requires a back-end Prolog compiler with minimal support for cyclic terms. The current implementation of coinduction allows the generation of only the basic cycles. Use a predicate indicator as argument when all the coinductive predicate arguments are relevant for coinductive success. Use a template when only some coinductive predicate arguments (represented by a "<code>+</code>") should be considered when testing for coinductive success (represent the arguments that should be disregarded by a "<code>-</code>").
 </p>
 
 <h4>Template and modes</h4>
 
-<pre>coinductive(+predicate_indicator_term)</pre>
+<pre>coinductive(+predicate_indicator_term)
+coinductive(+coinductive_predicate_template_term)</pre>
 
 
 <h4>Examples</h4>
 
-<pre>:- coinductive(comember/2).</pre>
+<pre>:- coinductive(comember/2).
+:- coinductive(controller(+,+,+,-,-)).</pre>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: Julho 4, 2011</span>
+		<span>Last updated on: August 16, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="annotation1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="discontiguous1.html">next</a></span><br/>

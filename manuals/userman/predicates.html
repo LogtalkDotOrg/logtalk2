@@ -355,9 +355,9 @@ When a clause of a multifile predicate is a rule, its body is compiled within th
 <h3 id="predicates_coinductive">Coinductive directive</h3>
 
 <p>
-A predicate can be declared <em>coinductive</em> by using the <a title="Consult reference manual" href="../refman/directives/coinductive1.html"><code>coinductive/1</code></a> directive:
+A predicate can be declared <em>coinductive</em> by using the <a title="Consult reference manual" href="../refman/directives/coinductive1.html"><code>coinductive/1</code></a> directive. For example:
 </p>
-<pre>:- coinductive(Functor/Arity).</pre>
+<pre>:- coinductive(comember/2).</pre>
 <p>
 Logtalk support for coinductive predicates is experimental and requires a back-end Prolog compiler with minimal support for cyclic terms.
 </p>
@@ -770,7 +770,7 @@ Currently, there is no clean workaround for calling non-standard Prolog built-in
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: August 11, 2011</span>
+		<span>Last updated on: August 16, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>

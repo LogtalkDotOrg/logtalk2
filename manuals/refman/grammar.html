@@ -616,7 +616,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		</dl>
 		<dl>
 			<dt>coinductive_directive ::=</dt>
-				<dd>"<code>:- coinductive(</code>" predicate_indicator_term "<code>).</code>" |</dd>
+				<dd>"<code>:- coinductive(</code>" predicate_indicator_term | coinductive_predicate_template_term "<code>).</code>" |</dd>
 		</dl>
 		<dl>
 			<dt>predicate_indicator_term ::=</dt>
@@ -679,6 +679,34 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dl>
 			<dt>non_terminal_indicator_alias_list ::=</dt>
 				<dd>"<code>[</code>" non_terminal_indicator_alias_sequence "<code>]</code>"</dd>
+		</dl>
+		<dl>
+			<dt>coinductive_predicate_template_term ::=</dt>
+				<dd>coinductive_predicate_template |</dd>
+				<dd>coinductive_predicate_template_sequence |</dd>
+				<dd>coinductive_predicate_template_list</dd>
+		</dl>
+		<dl>
+			<dt>coinductive_predicate_template_sequence ::=</dt>
+				<dd>coinductive_predicate_template |</dd>
+				<dd>coinductive_predicate_template "<code>,</code>" coinductive_predicate_template_sequence</dd>
+		</dl>
+		<dl>
+			<dt>coinductive_predicate_template_list ::=</dt>
+				<dd>"<code>[</code>" coinductive_predicate_template_sequence "<code>]</code>"</dd>
+		</dl>
+		<dl>
+			<dt>coinductive_predicate_template ::=</dt>
+				<dd><em>atom</em> "<code>(</code>" coinductive_mode_terms "<code>)</code>"</dd>
+		</dl>
+		<dl>
+			<dt>coinductive_mode_terms ::=</dt>
+				<dd>coinductive_mode_term |</dd>
+				<dd>coinductive_mode_terms "<code>,</code>" coinductive_mode_terms</dd>
+		</dl>
+		<dl>
+			<dt>coinductive_mode_term ::=</dt>
+				<dd>"<code>+</code>" | "<code>-</code>"</dd>
 		</dl>
 		<dl>
 			<dt>predicate_mode_term ::=</dt>
@@ -1011,7 +1039,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: August 4, 2011</span>
+		<span>Last updated on: August 16, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
