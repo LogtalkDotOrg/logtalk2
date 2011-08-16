@@ -6,36 +6,22 @@
 	:- object(train).
 
 		:- info([
-			version is 0.3,
+			version is 0.4,
 			author is 'Neda Saeedloei and Gopal Gupta. Adapted to Logtalk by Paulo Moura.',
-			date is 2011/08/12,
+			date is 2011/08/16,
 			comment is 'Timed automata example.']).
 
-		:- initialization(init_clocks).
-
-		init_clocks :-
-			setval(wall_clock, 0),
-			setval(train_clock, 0),
-     		setval(gate_clock, 0),
-			setval(controller_clock, 0).
-
 		:- public(driver/5).
-		:- coinductive(driver/5).
-	
-		driver(S0, S1, S2, [X| Rest], [(X,T)| R]) :-
-			getval(wall_clock, T),
-			getval(train_clock, T0),
-			getval(controller_clock, T1),
-			getval(gate_clock, T2),
+			driver(S0, S1, S2, [X| Rest], [(X,T)| R]) :-
+				driver(S0, S1, S2, [X| Rest], [(X,T)| R], 0, 0, 0, 0).
+
+		:- coinductive(driver(+,+,+,+,+,-,-,-,-)).
+			driver(S0, S1, S2, [X| Rest], [(X,T)| R], T, T0, T1, T2) :-
 			train(S0, X, S00, T, T0, T00),
 			gate(S1, X, S10, T, T1, T10),
 			controller(S2, X, S20, T, T2, T20),
 			ic:(TA > T),
-			setval(wall_clock, TA),
-			setval(train_clock, T00),
-			setval(controller_clock, T10),
-    		setval(gate_clock, T20),
-			driver(S00, S10, S20, Rest, R).
+			driver(S00, S10, S20, Rest, R, TA, T00, T10, T20).
 
 		train(s0, approach, s1, T1, _T2, T3) :-
 			ic:(T3 =:= T1).
@@ -76,7 +62,7 @@
 
 	:- end_object.
 
-:- elif((current_logtalk_flag(prolog_dialect, swi); current_logtalk_flag(prolog_dialect, yap))).
+:- elif((current_logtalk_flag(prolog_dialect, Dialect), (Dialect = sicstus; Dialect = swi; Dialect = yap))).
 
 	:- use_module(library(clpr), []).
 	
@@ -88,31 +74,17 @@
 			date is 2011/08/12,
 			comment is 'Timed automata example.']).
 
-		:- initialization(init_clocks).
-
-		init_clocks :-
-			nb_setval(wall_clock, 0),
-			nb_setval(train_clock, 0),
-     		nb_setval(gate_clock, 0),
-			nb_setval(controller_clock, 0).
-
 		:- public(driver/5).
-		:- coinductive(driver/5).
-	
-		driver(S0, S1, S2, [X| Rest], [(X,T)| R]) :-
-			b_getval(wall_clock, T),
-			b_getval(train_clock, T0),
-			b_getval(controller_clock, T1),
-			b_getval(gate_clock, T2),
+			driver(S0, S1, S2, [X| Rest], [(X,T)| R]) :-
+				driver(S0, S1, S2, [X| Rest], [(X,T)| R], 0, 0, 0, 0).
+
+		:- coinductive(driver(+,+,+,+,+,-,-,-,-)).
+			driver(S0, S1, S2, [X| Rest], [(X,T)| R], T, T0, T1, T2) :-
 			train(S0, X, S00, T, T0, T00),
 			gate(S1, X, S10, T, T1, T10),
 			controller(S2, X, S20, T, T2, T20),
 			clpr:{TA > T},
-			b_setval(wall_clock, TA),
-			b_setval(train_clock, T00),
-			b_setval(controller_clock, T10),
-    		b_setval(gate_clock, T20),
-			driver(S00, S10, S20, Rest, R).
+			driver(S00, S10, S20, Rest, R, TA, T00, T10, T20).
 	
 		train(s0, approach, s1, T1, _T2, T3) :-
 			clpr:{T3 = T1}.

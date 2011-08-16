@@ -5,7 +5,7 @@
 		:- write_depth(10, 10).
 	:- endif.
 
-	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == eclipse; Dialect == swi; Dialect == yap))).
+	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == eclipse; Dialect == sicstus; Dialect == swi; Dialect == yap))).
 		:- initialization(logtalk_load([pta, train])).
 	:- endif.
 

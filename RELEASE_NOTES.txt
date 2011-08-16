@@ -15,6 +15,11 @@ RELEASE NOTES
 
 2.43.1 - August ??, 2011
 
+    Added experimental support for using a predicate template as argument to
+    the coinductive/1 directive. This template allows the specification of
+    which arguments are meaningful for coinductive success. Based on similar
+    functionality found on on Feliks Kluzniak's DRA meta-interpreter.
+
     Lifted a long-standing limitation that prevented the user definition of
     wrapper predicates for the bagof/3 and setof/3 built-in methods whenever
     the goal argument may use the ^/2 existential quantifier.
@@ -43,6 +48,10 @@ RELEASE NOTES
     cached entries would be specialized by the value of "self" in order to
     properly deal with the special cases where an object both instantiates and
     specializes other objects.
+
+    Updated the "coinduction" example, taking advantage of the enhanced
+    coinductive/1 directive and broadening the number of individual examples
+    that can be run using SICStus Prolog.
 
 
 2.43.0 - July 31, 2011

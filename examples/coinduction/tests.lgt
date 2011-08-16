@@ -43,10 +43,6 @@
 		L = [0, s(0), s(s(0))| L], filter::filter(L, F),
 		F == [0, s(s(0))| F].
 
-	succeeds(coinduction_sieve_1) :-
-		sieve::primes(20, P),
-		P = [2, 3, 5, 7, 11, 13, 17, 19| P].
-
 	succeeds(coinduction_lists_1) :-
 		X = [1, 2, 3| X], lists::comember(2, X).
 
@@ -65,6 +61,10 @@
 		X2 == [a, b, e| X2].
 
 	:- if(\+ current_logtalk_flag(prolog_dialect, eclipse)).
+
+	succeeds(coinduction_sieve_1) :-
+		sieve::primes(20, P),
+		P = [2, 3, 5, 7, 11, 13, 17, 19| P].
 
 	succeeds(coinduction_cyclic_paths_1) :-
 		bagof(P, cp1::path(a, P), [P1, P2, P3]),
@@ -89,12 +89,14 @@
 		X1 = [a, b| X1], P1 == X1,
 		X2 = [c, d| X2], P2 == X2.
 
+	:- if(current_object(train)).
 	succeeds(coinduction_train_1) :-
 		bagof((X, R), train::driver(s0, s0, s0, X, R), [(X1, R1), (X2, R2)]),
 		XS1 = [down, in, out, exit, raise, approach, up, lower| XS1], X1 == [approach, lower| XS1],
 		RS1 = [(down, _), (in, _), (out, _), (exit, _), (raise, _), (approach, _), (up, _), (lower, 1.0)| RS1], R1 = [(approach, 0), (lower, 1.0)| RS1],
 		XS2 = [lower, down, in, out, exit, raise, up, approach| XS2], X2 == [approach| XS2],
 		RS2 = [(lower, 1.0), (down, _), (in, _), (out, _), (exit, _), (raise, _), (up, _), (approach, 0)| RS2], R2 = [(approach, 0)| RS2].
+	:- endif.
 
 	:- endif.
 

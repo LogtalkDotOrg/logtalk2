@@ -27,7 +27,7 @@
 
 	:- end_object.
 
-:- elif((current_logtalk_flag(prolog_dialect, swi); current_logtalk_flag(prolog_dialect, yap))).
+:- elif((current_logtalk_flag(prolog_dialect, Dialect), (Dialect = sicstus; Dialect = swi; Dialect = yap))).
 
 	:- use_module(library(clpr), []).
 
