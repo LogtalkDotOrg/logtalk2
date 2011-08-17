@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: August 14, 2011
+%  last updated: August 17, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -58,8 +58,6 @@
 		dynamic('$lgt_static_binding_entity_'/1), hide_predicate('$lgt_static_binding_entity_'/1),
 		dynamic('$lgt_send_to_obj_static_binding_cache_'/4), hide_predicate('$lgt_send_to_obj_static_binding_cache_'/4),
 		dynamic('$lgt_ctg_call_static_binding_cache_'/4), hide_predicate('$lgt_ctg_call_static_binding_cache_'/4),
-		dynamic('$lgt_obj_super_call_static_binding_cache_'/4), hide_predicate('$lgt_obj_super_call_static_binding_cache_'/4),
-		dynamic('$lgt_ctg_super_call_static_binding_cache_'/4), hide_predicate('$lgt_ctg_super_call_static_binding_cache_'/4),
 		dynamic('$lgt_pp_warnings_top_argument_'/1), hide_predicate('$lgt_pp_warnings_top_argument_'/1),
 		dynamic('$lgt_pp_comp_warnings_counter_'/1), hide_predicate('$lgt_pp_comp_warnings_counter_'/1),
 		dynamic('$lgt_pp_load_warnings_counter_'/1), hide_predicate('$lgt_pp_load_warnings_counter_'/1),

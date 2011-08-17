@@ -58,8 +58,6 @@
 :- thread_shared('$lgt_static_binding_entity_'/1).
 :- thread_shared('$lgt_send_to_obj_static_binding_cache_'/4).
 :- thread_shared('$lgt_ctg_call_static_binding_cache_'/4).
-:- thread_shared('$lgt_obj_super_call_static_binding_cache_'/4).
-:- thread_shared('$lgt_ctg_super_call_static_binding_cache_'/4).
 
 % lookup caches for messages to an object, messages to self, and super calls
 :- thread_shared('$lgt_send_to_obj_'/3).

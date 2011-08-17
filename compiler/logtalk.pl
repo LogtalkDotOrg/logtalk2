@@ -142,8 +142,6 @@
 
 :- dynamic('$lgt_send_to_obj_static_binding_cache_'/4).		% '$lgt_send_to_obj_static_binding_cache_'(Obj, Pred, Sender, Call)
 :- dynamic('$lgt_ctg_call_static_binding_cache_'/4).		% '$lgt_ctg_call_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
-:- dynamic('$lgt_obj_super_call_static_binding_cache_'/4).	% '$lgt_obj_super_call_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
-:- dynamic('$lgt_ctg_super_call_static_binding_cache_'/4).	% '$lgt_ctg_super_call_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
 
 
 % lookup caches for messages to an object, messages to self, and super calls
