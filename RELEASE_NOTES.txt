@@ -61,6 +61,8 @@ RELEASE NOTES
     coinductive/1 directive and broadening the number of individual examples
     that can be run using SICStus Prolog.
 
+    Added a parser for PDDL 3.0 files, contributed by Robert Sasak.
+
 
 2.43.0 - July 31, 2011
 

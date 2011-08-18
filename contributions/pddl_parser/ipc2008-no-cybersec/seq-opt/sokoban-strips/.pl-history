@@ -1,0 +1,251 @@
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+{loader}.
+end_of_file.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning).
+{loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+apropos(concat_atom/3).
+help(concat_atom/3).
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(code_prefix, '.'), set_logtalk_flag(optimize, off), set_prolog_flag(optimise, off).
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+gtrace, test.
+end_of_file.
+set_logtalk_flag(code_prefix, '.'), set_logtalk_flag(optimize, off), set_prolog_flag(optimise, off).
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+gtrace, test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+help(name/2).
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+end_of_file.
+{tester}.
+tests::run.
+end_of_file.
+{tester}.
+end_of_file.
+{tester}.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+set_logtalk_flag(portability, warning), {loader}.
+[test_validate_input].
+test.
+end_of_file.
+{tester}.
+end_of_file.
+{tester}.
+run::tests.
+tests::run.
+end_of_file.
+{tester}.
+end_of_file.
+{tester}.
+os::expand_path('$LOGTALK_STARTUP_DIRECTORY/ipc2008-no-cybersec/seq-opt/elevators-strips/', Path).
+pwd.
+os::expand_path('$LOGTALK_STARTUP_DIRECTORY/ipc2008-no-cybersec/seq-opt/elevators-strips', Path).
+os::expand_path('$LOGTALK_STARTUP_DIRECTORY', P).
+end_of_file.
+os::expand_path('$LOGTALK_STARTUP_DIRECTORY', P).
+{tester}.
+end_of_file.
+{tester}.
+end_of_file.
+{tester}.
+end_of_file.
+{tester}.
+end_of_file.
+{tester}.
+end_of_file.
+{tester}.
+end_of_file.
+{tester}.
+end_of_file.

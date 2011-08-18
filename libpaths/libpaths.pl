@@ -95,6 +95,7 @@ logtalk_library_path(operators, examples('operators/')).
 logtalk_library_path(parametric, examples('parametric/')).
 logtalk_library_path(people, examples('people/')).
 logtalk_library_path(philosophers, threads('philosophers/')).
+logtalk_library_path(pddl_parser, contributions('pddl_parser/')).
 logtalk_library_path(poem, examples('poem/')).
 logtalk_library_path(points, examples('points/')).
 logtalk_library_path(polygons, examples('polygons/')).
