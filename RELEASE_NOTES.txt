@@ -53,6 +53,10 @@ RELEASE NOTES
     on predicate scope directives during the compilation of the entities that
     contain the directives.
 
+    Added a "streamvars" library object, derived from the existing "assignvars"
+    library category, featuring support for adding and retrieving terms (which
+    may be variables) from a "stream" variable.
+
     Updated the "coinduction" example, taking advantage of the enhanced
     coinductive/1 directive and broadening the number of individual examples
     that can be run using SICStus Prolog.
