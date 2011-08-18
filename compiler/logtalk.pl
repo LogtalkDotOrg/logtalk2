@@ -7407,6 +7407,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	!,
 	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
+	op(Priority, Spec, Operators),
 	'$lgt_assert_entity_operators'(Priority, Spec, Operators, (public)),
 	'$lgt_tr_public_directive'(Preds).
 
@@ -7446,6 +7447,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	!,
 	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
+	op(Priority, Spec, Operators),
 	'$lgt_assert_entity_operators'(Priority, Spec, Operators, protected),
 	'$lgt_tr_protected_directive'(Preds).
 
@@ -7485,6 +7487,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	!,
 	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
+	op(Priority, Spec, Operators),
 	'$lgt_assert_entity_operators'(Priority, Spec, Operators, private),
 	'$lgt_tr_private_directive'(Preds).
 

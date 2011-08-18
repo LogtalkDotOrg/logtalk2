@@ -49,6 +49,10 @@ RELEASE NOTES
     properly deal with the special cases where an object both instantiates and
     specializes other objects.
 
+    Updated the Logtalk compiler to activate any operator declarations found
+    on predicate scope directives during the compilation of the entities that
+    contain the directives.
+
     Updated the "coinduction" example, taking advantage of the enhanced
     coinductive/1 directive and broadening the number of individual examples
     that can be run using SICStus Prolog.
