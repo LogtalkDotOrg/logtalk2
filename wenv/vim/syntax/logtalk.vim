@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	July 24, 2011
+" Last Change:	August 18, 2011
 
 
 " Quit when a syntax file was already loaded:
@@ -365,8 +365,14 @@ syn region	logtalkBlockComment	start="/\*"	end="\*/"	fold
 syn match	logtalkLineComment	"%.*"
 
 
+" Logtalk conditional compilation folding
+
+syn region logtalkEntity transparent fold keepend start=":- if(" end=":- endif\." contains=ALL
+
+
 " Logtalk entity folding
 
+syn region logtalkEntity transparent fold keepend start=":- if(" end=":- endif\." contains=ALL
 syn region logtalkEntity transparent fold keepend start=":- object(" end=":- end_object\." contains=ALL
 syn region logtalkEntity transparent fold keepend start=":- protocol(" end=":- end_protocol\." contains=ALL
 syn region logtalkEntity transparent fold keepend start=":- category(" end=":- end_category\." contains=ALL

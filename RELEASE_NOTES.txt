@@ -41,7 +41,7 @@ RELEASE NOTES
     Removed support for the long deprecated Logtalk metapredicate/1 directive.
 
     Corrected a performance bug when caching calls to category predicates where
-    the cache entry could be more specific than necessary when working with
+    the cached entries could be more specific than necessary when working with
     parametric categories.
 
     Improved caching of "super" calls from within prototypes. Previously, all
@@ -62,6 +62,9 @@ RELEASE NOTES
     that can be run using SICStus Prolog.
 
     Added a parser for PDDL 3.0 files, contributed by Robert Sasak.
+
+    Updated the Kate, TextMate, and Vim support, adding code folding for the
+    conditional compilation directives.
 
 
 2.43.0 - July 31, 2011

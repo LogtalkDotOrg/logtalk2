@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="2.9" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="2.10" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -157,10 +157,12 @@
 
 			<context name = "directive" attribute = "Directive" lineEndContext = "#stay" >
 				<!-- Conditional compilation directives -->
-				<RegExpr String = "\b(el)?if(?=[(])" attribute = "Directive" context = "#pop"/>
-				<RegExpr String = "\be(lse|ndif)[.]" attribute = "Directive" context = "#pop" />
+				<RegExpr String = "\bif(?=[(])" attribute = "Directive" context = "#pop" beginRegion = "CC" />
+				<RegExpr String = "\bendif[.]" attribute = "Directive" context = "#pop" endRegion = "CC" />
+				<RegExpr String = "\belif(?=[(])" attribute = "Directive" context = "#pop"/>
+				<RegExpr String = "\belse[.]" attribute = "Directive" context = "#pop" />
 				<!-- Entity directives -->
-				<RegExpr String = "\b(category|object|protocol)(?=[(])" attribute = "Directive" context = "entityrelations" beginRegion = "Entity"/>
+				<RegExpr String = "\b(category|object|protocol)(?=[(])" attribute = "Directive" context = "entityrelations" beginRegion = "Entity" />
 				<RegExpr String = "\bend_(category|object|protocol)[.]" attribute = "Directive" context = "#pop" endRegion = "Entity" />
 				<RegExpr String = "\bmodule(?=[(])" attribute = "Directive" context = "#pop"/>
  				<!-- Predicate scope directives -->
