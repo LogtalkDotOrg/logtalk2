@@ -477,7 +477,9 @@ function YAPExePath: String;
 var
   Home: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\YAP\Prolog\', 'home', Home) then
+  if RegQueryStringValue(HKLM, 'Software\YAP\Prolog64\', 'home', Home) then
+    Result := Home + '\bin\yap.exe'
+  else if RegQueryStringValue(HKLM, 'Software\YAP\Prolog\', 'home', Home) then
     Result := Home + '\bin\yap.exe'
   else
     Result := 'prolog_compiler_not_installed'

@@ -63,8 +63,10 @@ RELEASE NOTES
 
     Added a parser for PDDL 3.0 files, contributed by Robert Sasak.
 
-    Updated the Kate, TextMate, and Vim support, adding code folding for the
-    conditional compilation directives.
+    Added code folding support for conditional compilation blocks to the Kate,
+    TextMate, and Vim text editors.
+
+    Updated the Windows installer in order to detect YAP 64 bits versions.
 
 
 2.43.0 - July 31, 2011
