@@ -364,15 +364,20 @@ syn match	logtalkOperator		"\."
 syn region	logtalkBlockComment	start="/\*"	end="\*/"	fold
 syn match	logtalkLineComment	"%.*"
 
+syn cluster	logtalkComment		contains=logtalkBlockComment,logtalkLineComment
+
 
 " Logtalk conditional compilation folding
 
-syn region logtalkEntity transparent fold keepend start=":- if(" end=":- endif\." contains=ALL
+syn region logtalkIfContainer transparent keepend extend start=":- if(" end=":- endif\." containedin=ALLBUT,@logtalkComment contains=NONE
+syn region logtalkIf transparent fold keepend start=":- if(" end=":- \(else\.\|elif(\)"ms=s-1,me=s-1 contained containedin=logtalkIfContainer nextgroup=logtalkElseIf,logtalkElse contains=TOP
+syn region logtalkElseIf transparent fold keepend start=":- elif(" end=":- \(else\.\|elif(\)"ms=s-1,me=s-1 contained containedin=logtalkIfContainer nextgroup=logtalkElseIf,logtalkElse contains=TOP
+syn region logtalkElse transparent fold keepend start=":- else\." end=":- endif\." contained containedin=logtalkIfContainer contains=TOP
+
 
 
 " Logtalk entity folding
 
-syn region logtalkEntity transparent fold keepend start=":- if(" end=":- endif\." contains=ALL
 syn region logtalkEntity transparent fold keepend start=":- object(" end=":- end_object\." contains=ALL
 syn region logtalkEntity transparent fold keepend start=":- protocol(" end=":- end_protocol\." contains=ALL
 syn region logtalkEntity transparent fold keepend start=":- category(" end=":- end_category\." contains=ALL
@@ -398,6 +403,11 @@ if version >= 508 || !exists("did_logtalk_syn_inits")
 
 	HiLink	logtalkOpenEntityDir	Normal
 	HiLink	logtalkOpenEntityDirTag	PreProc
+
+	HiLink	logtalkIfContainer	PreProc
+	HiLink	logtalkIf		PreProc
+	HiLink	logtalkElseIf		PreProc
+	HiLink	logtalkElse		PreProc
 
 	HiLink	logtalkEntity		Normal
 
