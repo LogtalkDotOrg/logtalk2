@@ -59,7 +59,8 @@ RELEASE NOTES
 
     Updated the "coinduction" example, taking advantage of the enhanced
     coinductive/1 directive and broadening the number of individual examples
-    that can be run using SICStus Prolog.
+    that can be run using SICStus Prolog. Added a model checking example, using
+    coinduction, coroutining, and constraints, contributed by Neda Saeedloei.
 
     Added a parser for PDDL 3.0 files, contributed by Robert Sasak.
 

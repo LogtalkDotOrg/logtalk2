@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2011/08/12,
+		date is 2011/08/20,
 		comment is 'Unit tests for the "coinduction" example.']).
 
 	:- discontiguous(succeeds/1).
@@ -96,6 +96,14 @@
 		RS1 = [(down, _), (in, _), (out, _), (exit, _), (raise, _), (approach, _), (up, _), (lower, 1.0)| RS1], R1 = [(approach, 0), (lower, 1.0)| RS1],
 		XS2 = [lower, down, in, out, exit, raise, up, approach| XS2], X2 == [approach| XS2],
 		RS2 = [(lower, 1.0), (down, _), (in, _), (out, _), (exit, _), (raise, _), (up, _), (approach, 0)| RS2], R2 = [(approach, 0)| RS2].
+	:- endif.
+
+	:- if(current_object(cotrain)).
+	succeeds(coinduction_cotrain_1) :-
+		cotrain::comain(A, B, C),
+		A = [approach, in, out, exit| A],
+		B = [approach, exit| B],
+		C = [lower, raise| C].
 	:- endif.
 
 	:- endif.

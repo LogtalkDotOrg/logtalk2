@@ -231,6 +231,20 @@ R = [ (approach, 0)|_S2], % where
 false.
 
 
+% timed automata coroutining example:
+
+| ?- cotrain::comain(A, B, C).
+A = [approach, in, out, exit|A],
+B = [approach, exit|B],
+C = [lower, raise|C] ;
+false.
+
+| ?- cotrain::test_max(M, N, R).
+R = [ (approach, 0), (lower, 1.0), (down, _G3563), (in, _G3569), (out, _G3575), (exit, _G3581), (raise, _G3587), (up, _G3593)],
+{_G3600>0.0, M= ... + ... + _G3625+_G3622+_G3619+_G3616+_G3600, _G3635>0.0, N= ... + ... + _G3619+_G3616-_G3635, ... - ... - _G3616+_G3635< -0.0, _G3697>0.0, _G3706= ... + ..., ... > ..., ..., ...} ;
+false.
+
+
 % finding the cyclic paths in graphs:
 
 ?- cp1::path(a, Path).
