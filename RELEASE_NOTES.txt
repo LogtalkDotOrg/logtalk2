@@ -64,8 +64,9 @@ RELEASE NOTES
 
     Added a parser for PDDL 3.0 files, contributed by Robert Sasak.
 
-    Added code folding support for conditional compilation blocks to the Kate,
-    TextMate, and Vim text editors.
+    Added code folding support to the SubEthaEdit text editor. Added code
+    folding support for conditional compilation blocks to the Kate, Vim,
+    and TextMate text editors.
 
     Updated the Windows installer in order to detect YAP 64 bits versions.
 

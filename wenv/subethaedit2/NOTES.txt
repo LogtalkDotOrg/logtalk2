@@ -10,8 +10,8 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 This directory contains the Logtalk.mode bundle, which provides syntax 
-highlighting, code completion, and entity index for editing Logtalk
-source files with the SubEthaEdit 2.x text editor:
+highlighting, code folding, code completion, and entity index for editing
+Logtalk source files with the SubEthaEdit 2.x text editor:
 
 	http://www.codingmonkeys.de/subethaedit/
 
