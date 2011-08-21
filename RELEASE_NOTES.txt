@@ -20,6 +20,9 @@ RELEASE NOTES
     which arguments are meaningful for coinductive success. Based on similar
     functionality found on on Feliks Kluzniak's DRA meta-interpreter.
 
+    Improved support for debugging coinductive predicates when using the
+    Logtalk built-in debugger.
+
     Lifted a long-standing limitation that prevented the user definition of
     wrapper predicates for the bagof/3 and setof/3 built-in methods whenever
     the goal argument may use the ^/2 existential quantifier.
