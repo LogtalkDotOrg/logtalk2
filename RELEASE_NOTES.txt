@@ -53,6 +53,10 @@ RELEASE NOTES
     on predicate scope directives during the compilation of the entities that
     contain the directives.
 
+    Improved the performance of coinductive predicates when using back-end
+    Prolog compilers such as SICStus Prolog that don't provide the soft-cut
+    control construct but provide the soft-cut built-in meta-predicate (if/3).
+
     Added a "streamvars" library object, derived from the existing "assignvars"
     library category, featuring support for adding and retrieving terms (which
     may be variables) from a "stream" variable.

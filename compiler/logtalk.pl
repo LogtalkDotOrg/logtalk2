@@ -3180,7 +3180,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		(	(Scope = p(_); Sender = SCtn) ->										% check scope
 			(	'$lgt_term_template'(Pred, GPred),									% construct predicate template
 				'$lgt_term_template'(Obj, GObj),									% construct object template
-				'$lgt_term_template'(Sender, GSender),							% construct "sender" template
+				'$lgt_term_template'(Sender, GSender),								% construct "sender" template
 				'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),						% construct list of the meta-variables
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),			% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->								% lookup definition
@@ -8020,6 +8020,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	(	'$lgt_pl_meta_predicate'('*->'(_, _), _, _) ->
 		% back-end Prolog compiler supports the soft-cut control construct
 		'$lgt_tr_clause'((Head :- '*->'({'$lgt_member'(TestHead, HeadStack)}, true); BodyStack = [TestHead| HeadStack], CoinductiveHead), HeadCtx, BodyCtx)
+	;	'$lgt_pl_meta_predicate'(if(_, _, _), _, _) ->
+		% back-end Prolog compiler supports the if/3 soft-cut built-in meta-predicate
+		'$lgt_tr_clause'((Head :- if({'$lgt_member'(TestHead, HeadStack)}, true, (BodyStack = [TestHead| HeadStack], CoinductiveHead))), HeadCtx, BodyCtx)
 	;	% without the soft-cut control construct we have to walk the coinduction stack twice 
 		'$lgt_tr_clause'((Head :- {'$lgt_member'(TestHead, HeadStack)}), HeadCtx, HeadCtx),
 		'$lgt_tr_clause'((Head :- \+ {'$lgt_member'(TestHead, HeadStack)}, BodyStack = [TestHead| HeadStack], CoinductiveHead), HeadCtx, BodyCtx)
@@ -12504,7 +12507,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 
 
-% '$lgt_add_def_clause'(+callable, -callable, +atom, +integer, +nonvar)
+% '$lgt_add_def_clause'(+callable, +atom, +integer, -callable, +nonvar)
 %
 % adds a "def clause" (used to translate a predicate call) and returns
 % the translated clause head
