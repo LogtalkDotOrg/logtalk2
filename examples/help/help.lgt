@@ -2,9 +2,9 @@
 :- object(help).
 
 	:- info([
-		version is 0.5,
+		version is 0.6,
 		author is 'Paulo Moura',
-		date is 2010/11/24,
+		date is 2011/08/21,
 		comment is 'Command-line help for Logtalk built-in control constructs, predicates, non-terminals, and methods.']).
 
 	:- initialization((nl, write('For help on Logtalk, type help::help.'), nl)).
@@ -89,6 +89,7 @@
 	built_in_directive(dynamic, 1, '/manuals/refman/directives/', 'dynamic1.html').
 	built_in_directive(info, 2, '/manuals/refman/directives/', 'info2.html').
 	built_in_directive(meta_predicate, 1, '/manuals/refman/directives/', 'meta_predicate1.html').
+	built_in_directive(meta_non_terminal, 1, '/manuals/refman/directives/', 'meta_non_terminal1.html').
 	built_in_directive(mode, 2, '/manuals/refman/directives/', 'mode2.html').
 	built_in_directive(multifile, 1, '/manuals/refman/directives/', 'multifile1.html').
 	built_in_directive(op, 3, '/manuals/refman/directives/', 'op3.html').
@@ -203,7 +204,8 @@
 	control((<<), 2, '/manuals/refman/control/', 'context2.html').
 	control((:), 1, '/manuals/refman/control/', 'direct1.html').
 
-	built_in_non_terminal(call, 1, '/manuals/refman/methods/', 'call1.html').
+	built_in_non_terminal(call, N, '/manuals/refman/methods/', 'call1.html') :-
+		N > 0.
 
 	:- public(library/0).
 	:- mode(library, one).

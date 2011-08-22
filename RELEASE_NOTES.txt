@@ -69,6 +69,9 @@ RELEASE NOTES
     that can be run using SICStus Prolog. Added a model checking example, using
     coinduction, coroutining, and constraints, contributed by Neda Saeedloei.
 
+    Added missing entries for the meta_non_terminal/1 directive and for the
+    call//N non-terminal to the "help" example.
+
     Added a parser for PDDL 3.0 files, contributed by Robert Sasak.
 
     Added code folding support to the SubEthaEdit text editor. Added code
