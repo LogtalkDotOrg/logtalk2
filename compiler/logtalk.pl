@@ -1600,7 +1600,7 @@ logtalk_compile(Files, Flags) :-
 		 '$lgt_check_source_files'(Files),
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_compile_files'(Files, Flags),
-		 '$lgt_report_warning_numbers'(logtalk_compile(Files, Flags)),
+		 '$lgt_report_warning_numbers'(logtalk_compile(Files, Flags), Flags),
 		 '$lgt_clear_compiler_flags'),
 		error(Error, _),
 		('$lgt_clear_compiler_flags',
@@ -1652,11 +1652,13 @@ logtalk_compile(Files, Flags) :-
 	).
 
 
-'$lgt_report_warning_numbers'(Term) :-
-	(	retract('$lgt_pp_warnings_top_argument_'(Term)),				% if top compilation/loading goal then
+'$lgt_report_warning_numbers'(Goal, Flags) :-
+	(	retract('$lgt_pp_warnings_top_argument_'(Goal)),				% if top compilation/loading goal then
 		retract('$lgt_pp_comp_warnings_counter_'(CCounter)),			% report compilation and loading warnings
 		retract('$lgt_pp_load_warnings_counter_'(LCounter)) ->
 		(	'$lgt_compiler_flag'(report, off) ->
+			true
+		;	'$lgt_member'(report(off), Flags) ->
 			true
 		;	(	CCounter + LCounter =:= 0 ->							% no warnings
 				write('% (0 warnings)'), nl
@@ -1932,7 +1934,7 @@ logtalk_load(Files, Flags) :-
 		 '$lgt_check_source_files'(Files),
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_load_files'(Files, Flags),
-		 '$lgt_report_warning_numbers'(logtalk_load(Files, Flags))),
+		 '$lgt_report_warning_numbers'(logtalk_load(Files, Flags), Flags)),
 		error(Error, _),
 		('$lgt_clear_compiler_flags',
 		 '$lgt_clean_pp_clauses',
