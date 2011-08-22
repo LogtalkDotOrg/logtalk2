@@ -11,7 +11,7 @@
 %
 %  configuration file for Lean Prolog 2.18.2 and later versions
 %
-%  last updated: August 20, 2011
+%  last updated: August 22, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -158,13 +158,20 @@ setup_call_cleanup(_, _, _) :-
 '$lgt_pl_meta_predicate'(find_while(_, _, _, _), find_while(*, *, 0, *), predicate).
 '$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, 0, *, *), predicate).
 '$lgt_pl_meta_predicate'(foreach(_, _), foreach(0, 0), predicate).
+'$lgt_pl_meta_predicate'(init_engine(_, _, _, _), init_engine(*, *, 0, *), predicate).
 '$lgt_pl_meta_predicate'(linda_client(_, _, _,_ , _), linda_client(*, *, *, *, 0), predicate).
 '$lgt_pl_meta_predicate'(mbg(_), mbg([0]), predicate).
+'$lgt_pl_meta_predicate'(new_engine(_, _, _), new_engine(*, 0, *), predicate).
 '$lgt_pl_meta_predicate'(nth_answer(_, _), nth_answer(*, 0), predicate).
 '$lgt_pl_meta_predicate'(tell_agent_at(_, _), tell_agent_at(*, 0), predicate).
 '$lgt_pl_meta_predicate'(time(_), time(0), predicate).
 '$lgt_pl_meta_predicate'(time(_, _), time(0, *), predicate).
 '$lgt_pl_meta_predicate'(topcall(_), topcall(0), predicate).
+
+% workaround for built-in meta-predicates with non-standard templates
+'$lgt_pl_meta_predicate'(to_engine(_, _, _), to_engine(*, *, 0), predicate).
+to_engine(Engine, Var, Goal) :-
+	to_engine(Engine, (Var :- Goal)).
 
 
 
