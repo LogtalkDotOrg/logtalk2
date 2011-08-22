@@ -14,5 +14,5 @@
 
 :- set_prolog_flag(redefined, off).
 :- cl('$LOGTALKHOME/configs/b.pl').
-:- cl('$LOGTALKHOME/compiler/logtalk.pl').
 :- cl('$LOGTALKUSER/libpaths/libpaths.pl').
+:- cl('$LOGTALKHOME/compiler/logtalk.pl').

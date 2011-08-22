@@ -13,5 +13,5 @@
 
 
 :- compile('$LOGTALKHOME/configs/eclipse6iso.pl').
-:- compile('$LOGTALKHOME/integration/logtalk_comp_eclipse.pl').
 :- compile('$LOGTALKUSER/libpaths/libpaths.pl').
+:- compile('$LOGTALKHOME/integration/logtalk_comp_eclipse.pl').

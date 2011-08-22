@@ -13,5 +13,5 @@
 
 
 :- include('$LOGTALKHOME/configs/lean.pl').
-:- include('$LOGTALKHOME/compiler/logtalk.pl').
 :- include('$LOGTALKUSER/libpaths/libpaths.pl').
+:- include('$LOGTALKHOME/compiler/logtalk.pl').

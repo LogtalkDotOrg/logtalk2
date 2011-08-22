@@ -78,6 +78,10 @@ RELEASE NOTES
     folding support for conditional compilation blocks to the Kate, Vim,
     and TextMate text editors.
 
+    Updated the integration scripts in order to load the library paths file
+    before loading the Logtalk compiler/runtime. This change aims to simplify
+    loading of library and example files from the settings files.
+
     Updated the Windows installer in order to detect YAP 64 bits versions.
 
 

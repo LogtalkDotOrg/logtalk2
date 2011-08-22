@@ -15,7 +15,7 @@
 :- initialization((
 	set_prolog_flag(suspicious_warning, off),
 	consult('$LOGTALKHOME/configs/gnu.pl'),
-	consult('$LOGTALKHOME/integration/logtalk_comp_gp.pl'),
 	consult('$LOGTALKUSER/libpaths/libpaths.pl'),
+	consult('$LOGTALKHOME/integration/logtalk_comp_gp.pl'),
 	set_prolog_flag(suspicious_warning, on)
 )).

@@ -22,6 +22,15 @@
 		fcompile('$LOGTALKUSER/.qp.pl', [assemble_only(true), object_file('$LOGTALKUSER/.qp.qo')])
 	),
 	load('$LOGTALKUSER/.qp.qo'),
+	(	stat('$LOGTALKHOME/libpaths/libpaths.pl', stat(TimePathSource, _)),
+		stat('$LOGTALKUSER/libpaths/libpaths.qo', stat(TimePathsObject, _)) ->
+		(	TimePathsObject < TimePathSource ->
+			fcompile('$LOGTALKUSER/libpaths/libpaths.pl', [assemble_only(true)])
+		;	true
+		)
+	;	fcompile('$LOGTALKUSER/libpaths/libpaths.pl', [assemble_only(true)])
+	),
+	load('$LOGTALKUSER/libpaths/libpaths.qo'),
 	(	stat('$LOGTALKHOME/compiler/logtalk.pl', stat(TimeCompilerSource, _)),
 		stat('$LOGTALKUSER/.logtalk.qo', stat(TimeCompilerObject, _)) ->
 		(	TimeCompilerObject < TimeCompilerSource ->
@@ -31,14 +40,4 @@
 	;	os(system('ln -sf $LOGTALKHOME/compiler/logtalk.pl $LOGTALKUSER/.logtalk.pl')),
 		fcompile('$LOGTALKUSER/.logtalk.pl', [assemble_only(true), object_file('$LOGTALKUSER/.logtalk.qo'), compiler_heap(2048), string_table(256)])
 	),
-	load('$LOGTALKUSER/.logtalk.qo'),
-
-	(	stat('$LOGTALKHOME/libpaths/libpaths.pl', stat(TimePathSource, _)),
-		stat('$LOGTALKUSER/libpaths/libpaths.qo', stat(TimePathsObject, _)) ->
-		(	TimePathsObject < TimePathSource ->
-			fcompile('$LOGTALKUSER/libpaths/libpaths.pl', [assemble_only(true)])
-		;	true
-		)
-	;	fcompile('$LOGTALKUSER/libpaths/libpaths.pl', [assemble_only(true)])
-	),
-	load('$LOGTALKUSER/libpaths/libpaths.qo').
+	load('$LOGTALKUSER/.logtalk.qo').

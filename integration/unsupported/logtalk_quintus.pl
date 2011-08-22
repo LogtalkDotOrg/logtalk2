@@ -16,5 +16,5 @@
 	atom_chars(LOGTALKHOME, LH),
 	atom_chars(LOGTALKUSER, LU),
 	atom_chars('/configs/quintus.pl', LC), append(LH, LC, L1), atom_chars(ConfigFile, L1), compile(ConfigFile),
-	atom_chars('/compiler/logtalk.pl', LL), append(LH, LL, L2), atom_chars(CompilerFile, L2), compile(CompilerFile),
-	atom_chars('/libpaths/libpaths.pl', LP), append(LU, LP, L3), atom_chars(LibpathsFile, L3), compile(LibpathsFile).
+	atom_chars('/libpaths/libpaths.pl', LP), append(LU, LP, L3), atom_chars(LibpathsFile, L3), compile(LibpathsFile),
+	atom_chars('/compiler/logtalk.pl', LL), append(LH, LL, L2), atom_chars(CompilerFile, L2), compile(CompilerFile).

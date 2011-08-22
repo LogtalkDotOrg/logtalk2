@@ -13,5 +13,5 @@
 
 
 :- consult('$LOGTALKHOME/configs/k5.pl').
-:- consult('$LOGTALKHOME/compiler/logtalk.pl').
 :- consult('$LOGTALKUSER/libpaths/libpaths_no_multifile.pl').
+:- consult('$LOGTALKHOME/compiler/logtalk.pl').

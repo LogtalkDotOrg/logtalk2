@@ -13,9 +13,9 @@
 
 
 :- ensure_loaded('$LOGTALKHOME/configs/ciao.pl').
+:- ensure_loaded('$LOGTALKUSER/libpaths/libpaths.pl').
 :- set_prolog_flag(multi_arity_warnings, off).
 :- ensure_loaded('$LOGTALKHOME/compiler/logtalk.pl').
-:- ensure_loaded('$LOGTALKUSER/libpaths/libpaths.pl').
 :- op(600, xfy, ::).
 :- op(600,  fy, ::).
 :- op(600,  fy, ^^).
