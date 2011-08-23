@@ -136,6 +136,10 @@ setup_call_cleanup(_, _, _) :-
 % the third argument, which must be either "predicate" or "control_construct",
 % is used to guide the compilation of these meta-predicates in debug mode
 
+'$lgt_pl_meta_predicate'('?'(_), '?'(0), predicate).
+'$lgt_pl_meta_predicate'(':'(_, _), ':'(*, 0), predicate).
+'$lgt_pl_meta_predicate'('@'(_, _), '@'(*, 0), predicate).
+'$lgt_pl_meta_predicate'(add_task(_), add_task(0), predicate).
 '$lgt_pl_meta_predicate'(add_task(_, _), add_task(*, 0), predicate).
 '$lgt_pl_meta_predicate'(add_task(_, _, _), add_task(*, 0, *), predicate).
 '$lgt_pl_meta_predicate'(all(_, _), all(0, *), predicate).
@@ -153,6 +157,7 @@ setup_call_cleanup(_, _, _) :-
 '$lgt_pl_meta_predicate'(call_ifdef(_, _), call_ifdef(0, 0), predicate).
 '$lgt_pl_meta_predicate'(call_with_time_limit(_, _), call_with_time_limit(*, 0), predicate).
 '$lgt_pl_meta_predicate'(ccall(_, _, _, _, _), ccall(*, *, *, 0, *), predicate).
+'$lgt_pl_meta_predicate'(det_call(_), det_call(0), predicate).
 '$lgt_pl_meta_predicate'(drop_at_least(_, _), drop_at_least(*, 0), predicate).
 '$lgt_pl_meta_predicate'(find_at_most(_, _, _, _), find_at_most(*, *, 0, *), predicate).
 '$lgt_pl_meta_predicate'(find_while(_, _, _, _), find_while(*, *, 0, *), predicate).
@@ -163,10 +168,12 @@ setup_call_cleanup(_, _, _) :-
 '$lgt_pl_meta_predicate'(mbg(_), mbg([0]), predicate).
 '$lgt_pl_meta_predicate'(new_engine(_, _, _), new_engine(*, 0, *), predicate).
 '$lgt_pl_meta_predicate'(nth_answer(_, _), nth_answer(*, 0), predicate).
+'$lgt_pl_meta_predicate'(take_at_most(_, _), take_at_most(*, 0), predicate).
 '$lgt_pl_meta_predicate'(tell_agent_at(_, _), tell_agent_at(*, 0), predicate).
 '$lgt_pl_meta_predicate'(time(_), time(0), predicate).
 '$lgt_pl_meta_predicate'(time(_, _), time(0, *), predicate).
 '$lgt_pl_meta_predicate'(topcall(_), topcall(0), predicate).
+'$lgt_pl_meta_predicate'(while(_, _), while(0, 0), predicate).
 
 % workaround for built-in meta-predicates with non-standard templates
 '$lgt_pl_meta_predicate'(to_engine(_, _, _), to_engine(*, *, 0), predicate).
