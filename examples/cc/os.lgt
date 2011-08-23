@@ -593,7 +593,7 @@
 		operating_system_type(_) :-
 			throw(not_available(operating_system_type/1)).
 
-		command_line_arguments(Arguments) :-
+		command_line_arguments(_) :-
 			throw(not_available(command_line_arguments/1)).
 
 	:- elif(current_logtalk_flag(prolog_dialect, cx)).
