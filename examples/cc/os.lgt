@@ -759,6 +759,83 @@
 		command_line_arguments(Arguments) :-
 			get_args(Arguments).
 
+	:- elif(current_logtalk_flag(prolog_dialect, lean)).
+
+		shell(_, _) :-
+			throw(not_available(shell/2)).
+
+		shell(Command) :-
+			{system(Command)}.
+
+		expand_path(Path, ExpandedPath) :-
+			{(	\+ atom_concat('/', _, Path),
+				\+ atom_concat('$', _, Path),
+				working_directory(Current, Current),
+				atom_concat(Current, '/', ExpandedPath0),
+				atom_concat(ExpandedPath0, Path, ExpandedPath)
+			;	absolute_file_name(Path, ExpandedPath)
+			)}.
+
+		make_directory(Directory) :-
+			{(	exists_dir(Directory) ->
+				true
+			;	make_directory(Directory)
+			)}.
+
+		delete_directory(_) :-
+			throw(not_available(delete_directory/1)).
+
+		change_directory(Directory) :-
+			{absolute_file_name(Directory, Path),
+			 working_directory(_, Path)}.
+
+		working_directory(Directory) :-
+			{working_directory(Directory, Directory)}.
+
+		directory_exists(Directory) :-
+			{exists_dir(Directory)}.
+
+		file_exists(File) :-
+			{working_directory(Path0, Path0),
+			 atom_concat(Path0, '/', Path1),
+			 atom_concat(Path1, File, Path),
+			 exists_file(Path)}.
+
+		file_modification_time(_, _) :-
+			throw(not_available(file_modification_time/2)).
+
+		file_size(_, _) :-
+			throw(not_available(file_size/2)).
+
+		delete_file(File) :-
+			{working_directory(Path0, Path0),
+			 atom_concat(Path0, '/', Path1),
+			 atom_concat(Path1, File, Path),
+			 delete_file(Path)}.
+
+		rename_file(Old, New) :-
+			{rename_file(Old, New)}.
+
+		environment_variable(Variable, Value) :-
+			{getenv(Variable, Value)}.
+
+		time_stamp(_) :-
+			throw(not_available(time_stamp/7)).
+
+		date_time(_, _, _, _, _, _, _) :-
+			throw(not_available(date_time/7)).
+
+		cpu_time(_) :-
+			throw(not_available(cpu_time/1)).
+
+		wall_time(_) :-
+			throw(not_available(wall_time/1)).
+
+		operating_system_type(unix).
+
+		command_line_arguments(_) :-
+			throw(not_available(command_line_arguments/1)).
+
 	:- else.
 
 		:- initialization((write('WARNING: back-end Prolog compiler not supported!'), nl)).

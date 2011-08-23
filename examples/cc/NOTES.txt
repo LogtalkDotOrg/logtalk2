@@ -12,9 +12,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
 This folder contains an example of using conditional compilation to implement
-a portable operating-system interface for ten Prolog compilers: SWI-Prolog,
-YAP, XSB, GNU-Prolog, B-Prolog, SICStus Prolog, ECLiPSe, Ciao, CxProlog, and
-Qu-Prolog. For other back-end Prolog compilers, a warning is printed.
+a portable operating-system interface for the following Prolog compilers: YAP,
+SWI-Prolog, XSB, GNU-Prolog, B-Prolog, SICStus Prolog, ECLiPSe, Ciao, CxProlog,
+Qu-Prolog, and Lean Prolog. For other back-end Prolog compilers, a warning is
+printed.
 
 Note that this is just an example of using the conditional compilation
 directives. This code should not be used without careful testing in a
