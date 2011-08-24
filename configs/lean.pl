@@ -11,10 +11,12 @@
 %
 %  configuration file for Lean Prolog 2.18.2 and later versions
 %
-%  last updated: August 22, 2011
+%  last updated: August 23, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+:- set_quickfail(0, _).
 
 
 
@@ -278,6 +280,9 @@ to_engine(Engine, Var, Goal) :-
 '$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(source_data, on).
 '$lgt_default_flag'(debug, off).
+% Prolog compiler and loader flags:
+'$lgt_default_flag'(prolog_compiler, []).
+'$lgt_default_flag'(prolog_loader, []).
 
 
 
@@ -397,6 +402,26 @@ to_engine(Engine, Var, Goal) :-
 	(	exists_dir(Directory) ->
 		true
 	;	make_directory(Directory)
+	).
+
+
+% '$lgt_compile_prolog_code'(+atom, +atom, +list)
+%
+% compile to disk a Prolog file, resulting from a
+% Logtalk source file, given a list of options
+
+'$lgt_compile_prolog_code'(File, _, Options) :-
+	writeq('$lgt_compile_prolog_code'(File, _, Options)), nl,
+	(	'$lgt_member'(wam, Options) ->
+		'$lgt_file_extension'(prolog, Extension),
+		atom_concat(Source, Extension, File),
+		atomic_list_concat(['fcompile(\'', Source, '\')'], Arg),
+		atom_concat(Source, '.wam', WamFile),
+		bg(system([lprolog, Arg], _)),
+		repeat,
+		exists_file(WamFile),
+		!
+	;	true
 	).
 
 

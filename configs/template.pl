@@ -226,6 +226,9 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(source_data, on).
 '$lgt_default_flag'(debug, off).
+% Prolog compiler and loader flags:
+'$lgt_default_flag'(prolog_compiler, []).
+'$lgt_default_flag'(prolog_loader, []).
 
 
 
@@ -330,6 +333,15 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_make_directory'(Directory) :-
 	?????
+
+
+% '$lgt_compile_prolog_code'(+atom, +atom, +list)
+%
+% compile to disk a Prolog file, resulting from a
+% Logtalk source file, given a list of options
+
+'$lgt_compile_prolog_code'(File, Source, Options) :-
+	?????.
 
 
 % '$lgt_load_prolog_code'(+atom, +atom, +list)

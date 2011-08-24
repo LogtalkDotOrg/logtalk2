@@ -33,6 +33,11 @@ RELEASE NOTES
     built-in methods whenever the goal argument may use the ^/2 existential
     quantifier.
 
+    Added "prolog_compiler" and "prolog_loader" compiler flags, which allow
+    passing options to the back-end Prolog compiler built-in predicates that
+    compile to disk and load a (compiled) Prolog flag. The default value for
+    both flags is the empty list.
+
     Corrected a bug when compiling calls to Prolog proprietary built-in meta-
     predicates where the Logtalk compiler could attempt to process non meta-
     arguments as goals. This bug only manifested itself with some back-end

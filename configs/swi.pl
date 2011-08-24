@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: July 14, 2011
+%  last updated: August 23, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -248,6 +248,9 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 	'$lgt_default_flag'(source_data, off).
 :- endif.
 '$lgt_default_flag'(debug, off).
+% Prolog compiler and loader flags:
+'$lgt_default_flag'(prolog_compiler, []).
+'$lgt_default_flag'(prolog_loader, []).
 
 
 
@@ -366,6 +369,14 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 		true
 	;	make_directory(Fixed)
 	).
+
+
+% '$lgt_compile_prolog_code'(+atom, +atom, +list)
+%
+% compile to disk a Prolog file, resulting from a
+% Logtalk source file, given a list of options
+
+'$lgt_compile_prolog_code'(_, _, _).
 
 
 % '$lgt_load_prolog_code'(+atom, +atom, +list)

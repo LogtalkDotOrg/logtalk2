@@ -5145,10 +5145,11 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_file_name'(prolog, Source, _, PrologFile),
 	'$lgt_clean_lookup_caches',
 	'$lgt_check_redefined_entities',
+	'$lgt_compiler_flag'(prolog_loader, Options),
 	(	'$lgt_pp_file_encoding_'(_, Encoding) ->
 		% use the same encoding as the original source file:
-		'$lgt_load_prolog_code'(PrologFile, SourceFile, [encoding(Encoding)])
-	;	'$lgt_load_prolog_code'(PrologFile, SourceFile, [])
+		'$lgt_load_prolog_code'(PrologFile, SourceFile, [encoding(Encoding)| Options])
+	;	'$lgt_load_prolog_code'(PrologFile, SourceFile, Options)
 	),
 	(	'$lgt_compiler_flag'(clean, on) ->
 		% try to delete the intermediate Prolog (ignore failure or error):
@@ -5457,6 +5458,10 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_compile_file'(File) :-
 	'$lgt_report_compiling_file'(File),
 	'$lgt_tr_file'(File),
+	'$lgt_compiler_flag'(prolog_compiler, Options),
+	'$lgt_file_name'(logtalk, File, _, SourceFile),
+	'$lgt_file_name'(prolog, File, _, PrologFile),
+	'$lgt_compile_prolog_code'(PrologFile, SourceFile, Options),
 	'$lgt_report_compiled_file'(File).
 
 
@@ -5471,9 +5476,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	!.
 
 '$lgt_needs_recompilation'(File) :-
-	'$lgt_file_name'(logtalk, File, _, Source),
-	'$lgt_file_name'(prolog, File, _, Object),
-	(	'$lgt_compare_file_mtimes'(Result, Source, Object) ->
+	'$lgt_file_name'(logtalk, File, _, SourceFile),
+	'$lgt_file_name'(prolog, File, _, PrologFile),
+	(	'$lgt_compare_file_mtimes'(Result, SourceFile, PrologFile) ->
 		Result == (>)
 	;	true
 	).
@@ -16013,6 +16018,9 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_valid_flag'(modules).
 '$lgt_valid_flag'(tabling).
 '$lgt_valid_flag'(coinduction).
+% back-end Prolog compiler and loader options:
+'$lgt_valid_flag'(prolog_compiler).
+'$lgt_valid_flag'(prolog_loader).
 
 
 
@@ -16127,6 +16135,11 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	atom(Directory).
 '$lgt_valid_flag_value'(tmpdir, Directory) :-
 	atom(Directory).
+
+'$lgt_valid_flag_value'(prolog_compiler, Options) :-
+	'$lgt_is_list'(Options).
+'$lgt_valid_flag_value'(prolog_loader, Options) :-
+	'$lgt_is_list'(Options).
 
 
 
@@ -18951,8 +18964,11 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_compiler_flag'(clean, Clean), write('  clean: '), writeq(Clean),
 	'$lgt_compiler_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
 	'$lgt_compiler_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
+	write('Back-end Prolog compiler and loader flags:'), nl,
+	'$lgt_compiler_flag'(prolog_compiler, PrologCompiler), write('  prolog_compiler: '), write(PrologCompiler),
+	'$lgt_compiler_flag'(prolog_loader, PrologLoader), write(', prolog_loader: '), write(PrologLoader), nl,
 	write('Read-only compilation flags (back-end Prolog compiler features):'), nl,
-	'$lgt_compiler_flag'(prolog_dialect, Prolog), write('  prolog_dialect: '), write(Prolog),
+	'$lgt_compiler_flag'(prolog_dialect, PrologDialect), write('  prolog_dialect: '), write(PrologDialect),
 	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
 	'$lgt_compiler_flag'(modules, Modules), write(', modules: '), write(Modules), nl,
 	'$lgt_compiler_flag'(threads, Threads), write('  threads: '), write(Threads),
@@ -18963,84 +18979,89 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,
 	'$lgt_compiler_flag'(unknown, Unknown),
-	write('  Unknown entities (unknown):                                 '), write(Unknown), nl,
+	write('  Unknown entities (unknown):                                    '), write(Unknown), nl,
 	'$lgt_compiler_flag'(misspelt, Misspelt),
-	write('  Misspelt predicate calls (misspelt):                        '), write(Misspelt), nl,
+	write('  Misspelt predicate calls (misspelt):                           '), write(Misspelt), nl,
 	'$lgt_compiler_flag'(lgtredef, Lgtredef),
-	write('  Logtalk built-in predicates redefinition (lgtredef):        '), write(Lgtredef), nl,
+	write('  Logtalk built-in predicates redefinition (lgtredef):           '), write(Lgtredef), nl,
 	'$lgt_compiler_flag'(plredef, Plredef),
-	write('  Prolog built-in predicates redefinition (plredef):          '), write(Plredef), nl,
+	write('  Prolog built-in predicates redefinition (plredef):             '), write(Plredef), nl,
 	'$lgt_compiler_flag'(missing_directives, Missing),
-	write('  Missing predicate directives (missing_directives):          '), write(Missing), nl,
+	write('  Missing predicate directives (missing_directives):             '), write(Missing), nl,
 	'$lgt_compiler_flag'(portability, Portability),
-	write('  Non portable calls (portability):                           '), write(Portability), nl,
+	write('  Non portable calls (portability):                              '), write(Portability), nl,
 	'$lgt_compiler_flag'(singletons, Singletons),
-	write('  Singletons variables (singletons):                          '), write(Singletons), nl,
+	write('  Singletons variables (singletons):                             '), write(Singletons), nl,
 	'$lgt_compiler_flag'(underscore_variables, Underscore),
-	write('  Underscore variables interpretation (underscore_variables): '), write(Underscore), nl,
+	write('  Underscore variables interpretation (underscore_variables):    '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
 	'$lgt_compiler_flag'(xmldocs, XMLDocs),
-	write('  XML documenting files (xmldocs):                            '), write(XMLDocs), nl,
+	write('  XML documenting files (xmldocs):                               '), write(XMLDocs), nl,
 	'$lgt_compiler_flag'(xmlspec, XMLSpec),
-	write('  XML specification file (xmlspec):                           '), write(XMLSpec), nl,
+	write('  XML specification file (xmlspec):                              '), write(XMLSpec), nl,
 	'$lgt_compiler_flag'(xmlsref, XMLSRef),
-	write('  XML specification reference (xmlsref):                      '), write(XMLSRef), nl,
+	write('  XML specification reference (xmlsref):                         '), write(XMLSRef), nl,
 	'$lgt_compiler_flag'(xslfile, XSLFile),
-	write('  XSL stylesheet file (xslfile):                              '), write(XSLFile), nl,
+	write('  XSL stylesheet file (xslfile):                                 '), write(XSLFile), nl,
 	write('Default directories compiler flags:'), nl,
 	'$lgt_compiler_flag'(altdirs, Altdirs),
-	write('  Alternative compilation directories (altdirs):              '), write(Altdirs), nl,
+	write('  Alternative compilation directories (altdirs):                 '), write(Altdirs), nl,
 	'$lgt_compiler_flag'(tmpdir, TmpDir),
-	write('  Directory for compiler generated temporary files (tmpdir):  '), write(TmpDir), nl,
+	write('  Directory for compiler generated temporary files (tmpdir):     '), write(TmpDir), nl,
 	'$lgt_compiler_flag'(xmldir, XMLDir),
-	write('  XML documenting files directory (xmldir):                   '), write(XMLDir), nl,
+	write('  XML documenting files directory (xmldir):                      '), write(XMLDir), nl,
 	write('Default optional features compiler flags:'), nl,
 	'$lgt_compiler_flag'(complements, Complements),
-	write('  Complementing category support (complements):               '), write(Complements), nl,
+	write('  Complementing category support (complements):                  '), write(Complements), nl,
 	'$lgt_compiler_flag'(dynamic_declarations, DynamicDeclarations),
-	write('  Dynamic declarations support (dynamic_declarations):        '), write(DynamicDeclarations), nl,
+	write('  Dynamic declarations support (dynamic_declarations):           '), write(DynamicDeclarations), nl,
 	'$lgt_compiler_flag'(events, Events),
-	write('  Compile messages with event support (events):               '), write(Events), nl,
+	write('  Compile messages with event support (events):                  '), write(Events), nl,
 	'$lgt_compiler_flag'(context_switching_calls, ContextCalls),
-	write('  Context-switching calls (context_switching_calls):          '), write(ContextCalls), nl,
+	write('  Context-switching calls (context_switching_calls):             '), write(ContextCalls), nl,
 	write('Other default compilation flags:'), nl,
 	'$lgt_compiler_flag'(startup_message, Startup),
-	write('  Startup message (startup_message):                          '), write(Startup), nl,
+	write('  Startup message (startup_message):                             '), write(Startup), nl,
 	'$lgt_compiler_flag'(report, Report),
-	write('  Compilation report (report):                                '), write(Report), nl,
+	write('  Compilation report (report):                                   '), write(Report), nl,
 	'$lgt_compiler_flag'(code_prefix, Code),
-	write('  Compiled code functors prefix (code_prefix):                '), writeq(Code), nl,
+	write('  Compiled code functors prefix (code_prefix):                   '), writeq(Code), nl,
 	'$lgt_compiler_flag'(optimize, Optimize),
-	write('  Optimize compiled code (optimize):                          '), writeq(Optimize), nl,
+	write('  Optimize compiled code (optimize):                             '), writeq(Optimize), nl,
 	'$lgt_compiler_flag'(source_data, SourceData),
-	write('  Keep data on source files and line numbers (source_data):   '), writeq(SourceData), nl,
+	write('  Keep data on source files and line numbers (source_data):      '), writeq(SourceData), nl,
 	'$lgt_compiler_flag'(debug, Debug),
-	write('  Compile entities in debug mode (debug):                     '), writeq(Debug), nl,
+	write('  Compile entities in debug mode (debug):                        '), writeq(Debug), nl,
 	'$lgt_compiler_flag'(reload, Reload),
-	write('  Reloading of already loaded source files (reload):          '), write(Reload), nl,
+	write('  Reloading of already loaded source files (reload):             '), write(Reload), nl,
 	'$lgt_compiler_flag'(clean, Clean),
-	write('  Cleaning of intermediate Prolog files (clean):              '), write(Clean), nl,
+	write('  Cleaning of intermediate Prolog files (clean):                 '), write(Clean), nl,
 	'$lgt_compiler_flag'(smart_compilation, Smart),
-	write('  Smart compilation (smart_compilation):                      '), write(Smart), nl,
+	write('  Smart compilation (smart_compilation):                         '), write(Smart), nl,
 	(	'$lgt_compiler_flag'(hook, Hook) -> true
 	;	Hook = '(none defined)'
 	),
-	write('  Compiler hook object (hook):                                '), write(Hook), nl,
+	write('  Compiler hook object (hook):                                   '), write(Hook), nl,
 	write('Read-only compilation flags (back-end Prolog compiler features):'), nl,
 	'$lgt_compiler_flag'(prolog_dialect, Prolog),
-	write('  Name of the back-end Prolog compiler (prolog_dialect):      '), write(Prolog), nl,
+	write('  Name of the back-end Prolog compiler (prolog_dialect):         '), write(Prolog), nl,
 	'$lgt_compiler_flag'(break_predicate, Break),
-	write('  Support for break/0 predicate (break_predicate):            '), write(Break), nl,
+	write('  Support for break/0 predicate (break_predicate):               '), write(Break), nl,
 	'$lgt_compiler_flag'(modules, Modules),
-	write('  Support for modules (modules):                              '), write(Modules), nl,
+	write('  Support for modules (modules):                                 '), write(Modules), nl,
 	'$lgt_compiler_flag'(encoding_directive, Encodings),
-	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
+	write('  Support for encoding/1 directive (encoding_directive):         '), write(Encodings), nl,
 	'$lgt_compiler_flag'(tabling, Tabling),
-	write('  Support for tabling (tabling):                              '), write(Tabling), nl,
+	write('  Support for tabling (tabling):                                 '), write(Tabling), nl,
 	'$lgt_compiler_flag'(threads, Threads),
-	write('  Multi-threading programming support (threads):              '), write(Threads), nl,
+	write('  Multi-threading programming support (threads):                 '), write(Threads), nl,
 	'$lgt_compiler_flag'(coinduction, Coinduction),
-	write('  Support for coinductive predicates (coinduction):           '), write(Coinduction), nl, nl.
+	write('  Support for coinductive predicates (coinduction):              '), write(Coinduction), nl,
+	write('Back-end Prolog compiler and loader flags:'), nl,
+	'$lgt_compiler_flag'(prolog_compiler, PrologCompiler),
+	write('  Compiler options for generated Prolog files (prolog_compiler): '), write(PrologCompiler), nl,
+	'$lgt_compiler_flag'(prolog_loader, PrologLoader),
+	write('  Loading options for generated Prolog files (prolog_loader):    '), write(PrologLoader), nl, nl.
 
 
 

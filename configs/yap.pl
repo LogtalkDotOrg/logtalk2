@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: August 17, 2011
+%  last updated: August 23, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -322,6 +322,9 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(source_data, on).
 '$lgt_default_flag'(debug, off).
+% Prolog compiler and loader flags:
+'$lgt_default_flag'(prolog_compiler, []).
+'$lgt_default_flag'(prolog_loader, []).
 
 
 
@@ -446,6 +449,14 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 		true
 	;	make_directory(Directory)
 	).
+
+
+% '$lgt_compile_prolog_code'(+atom, +atom, +list)
+%
+% compile to disk a Prolog file, resulting from a
+% Logtalk source file, given a list of options
+
+'$lgt_compile_prolog_code'(_, _, _).
 
 
 % '$lgt_load_prolog_code'(+atom, +atom, +list)

@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: July 20, 2011
+%  last updated: August 23, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -187,6 +187,9 @@ term_variables(Term, Variables) :-
 '$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(source_data, on).
 '$lgt_default_flag'(debug, off).
+% Prolog compiler and loader flags:
+'$lgt_default_flag'(prolog_compiler, []).
+'$lgt_default_flag'(prolog_loader, []).
 
 
 
@@ -297,6 +300,15 @@ term_variables(Term, Variables) :-
 	).
 
 
+% '$lgt_compile_prolog_code'(+atom, +atom, +list)
+%
+% compile to disk a Prolog file, resulting from a
+% Logtalk source file, given a list of options
+
+'$lgt_compile_prolog_code'(File, _, _) :-
+	fcompile(File, [assemble_only(true), string_table(256), compiler_heap(4096)]).
+
+
 % '$lgt_load_prolog_code'(+atom, +atom, +list)
 %
 % compile and load a Prolog file, resulting from a
@@ -305,7 +317,6 @@ term_variables(Term, Variables) :-
 '$lgt_load_prolog_code'(File, _, _) :-
 	'$lgt_file_extension'(prolog, Extension),
 	atom_concat(Name, Extension, File),
-	fcompile(File, [assemble_only(true), string_table(256), compiler_heap(4096)]),
 	load(Name).
 
 
