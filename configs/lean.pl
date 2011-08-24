@@ -411,7 +411,6 @@ to_engine(Engine, Var, Goal) :-
 % Logtalk source file, given a list of options
 
 '$lgt_compile_prolog_code'(File, _, Options) :-
-	writeq('$lgt_compile_prolog_code'(File, _, Options)), nl,
 	(	'$lgt_member'(wam, Options) ->
 		'$lgt_file_extension'(prolog, Extension),
 		atom_concat(Source, Extension, File),
