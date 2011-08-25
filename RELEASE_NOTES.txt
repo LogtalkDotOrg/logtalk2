@@ -43,6 +43,8 @@ RELEASE NOTES
     arguments as goals. This bug only manifested itself with some back-end
     Prolog compilers such as ECLiPSe.
 
+    Corrected a bug in the processing of conditional compilation directives.
+
     Removed from the built-in object "logtalk" the decompile_predicate_head/4
     and decompile_predicate_indicator/4 deprecated methods.
 

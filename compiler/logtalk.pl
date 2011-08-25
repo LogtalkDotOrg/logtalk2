@@ -6615,12 +6615,14 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	asserta('$lgt_pp_cc_if_found_'(Goal)),
 	(	Value == ignore ->
 		asserta('$lgt_pp_cc_mode_'(ignore))
-	;	Value == seek ->						% we're looking for an else
+	;	Value == seek_else ->					% we're looking for an else
 		asserta('$lgt_pp_cc_mode_'(ignore))		% so ignore this if ... endif
-	;	% Value == skip ->
+	;	Value == skip_all ->
+		asserta('$lgt_pp_cc_mode_'(ignore))
+	;	% Value == skip_else ->
 		(	catch(Goal, Error, '$lgt_compiler_error_handler'(Error)) ->
-			asserta('$lgt_pp_cc_mode_'(skip))
-		;	asserta('$lgt_pp_cc_mode_'(seek)),
+			asserta('$lgt_pp_cc_mode_'(skip_else))
+		;	asserta('$lgt_pp_cc_mode_'(seek_else)),
 			retractall('$lgt_pp_cc_skipping_'),
 			assertz('$lgt_pp_cc_skipping_')
 		)
@@ -6630,8 +6632,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	!,
 	asserta('$lgt_pp_cc_if_found_'(Goal)),
 	(	call(Goal) ->
-		asserta('$lgt_pp_cc_mode_'(skip))
-	;	asserta('$lgt_pp_cc_mode_'(seek)),
+		asserta('$lgt_pp_cc_mode_'(skip_else))
+	;	asserta('$lgt_pp_cc_mode_'(seek_else)),
 		retractall('$lgt_pp_cc_skipping_'),
 		assertz('$lgt_pp_cc_skipping_')
 	).
@@ -6652,18 +6654,21 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_tr_directive'(elif('$lgt_predicate_property'(Pred, Prop)), Ctx).
 
 '$lgt_tr_directive'(elif(Goal), _) :-
-	retract('$lgt_pp_cc_mode_'(Value)),
+	'$lgt_pp_cc_mode_'(Value),
 	(	Value == ignore ->						% we're inside an if ... endif
 		asserta('$lgt_pp_cc_mode_'(ignore))		% that we're ignoring
-	;	Value == skip ->						% the corresponding if is true
+	;	Value == skip_else ->					% the corresponding if is true
 		retractall('$lgt_pp_cc_skipping_'),		% so we must skip this elif
 		assertz('$lgt_pp_cc_skipping_'),
-		asserta('$lgt_pp_cc_mode_'(skip))
-	;	% Value == seek ->						% the corresponding if is false
+		asserta('$lgt_pp_cc_mode_'(skip_all))
+	;	Value == skip_all ->
+		true
+	;	% Value == seek_else ->					% the corresponding if is false
+		retract('$lgt_pp_cc_mode_'(_)),
 		(	catch(Goal, Error, '$lgt_compiler_error_handler'(Error)) ->
-			retract('$lgt_pp_cc_skipping_'),
-			asserta('$lgt_pp_cc_mode_'(skip))
-		;	asserta('$lgt_pp_cc_mode_'(seek))
+			retractall('$lgt_pp_cc_skipping_'),
+			asserta('$lgt_pp_cc_mode_'(skip_else))
+		;	asserta('$lgt_pp_cc_mode_'(seek_else))
 		)
 	),
 	!.
@@ -6676,11 +6681,13 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_pp_cc_mode_'(Value),
 	(	Value == ignore ->						% we're inside an if ... endif
 		true									% that we're ignoring
-	;	Value == skip ->						% the corresponding if is true
+	;	Value == skip_else ->					% the corresponding if is true
 		retractall('$lgt_pp_cc_skipping_'),		% so we must skip this else
 		assertz('$lgt_pp_cc_skipping_')
-	;	% Value == seek ->						% the corresponding if is false
-		retract('$lgt_pp_cc_skipping_')
+	;	Value == skip_all ->
+		true
+	;	% Value == seek_else ->					% the corresponding if is false
+		retractall('$lgt_pp_cc_skipping_')
 	),
 	!.
 
@@ -6691,9 +6698,11 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_directive'(endif, _) :-
 	retract('$lgt_pp_cc_if_found_'(_)),
 	retract('$lgt_pp_cc_mode_'(Value)),
-	(	Value == ignore ->
-		true
-	;	retractall('$lgt_pp_cc_skipping_')
+	(	Value == seek_else ->
+		retractall('$lgt_pp_cc_skipping_')
+	;	\+ '$lgt_pp_cc_if_found_'(_) ->
+		retractall('$lgt_pp_cc_skipping_')
+	;	true
 	),
 	!.
 
