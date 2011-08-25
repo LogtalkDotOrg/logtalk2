@@ -11,7 +11,7 @@
 %
 %  configuration file for Lean Prolog 2.18.2 and later versions
 %
-%  last updated: August 23, 2011
+%  last updated: August 24, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -520,6 +520,7 @@ to_engine(Engine, Var, Goal) :-
 '$lgt_read_single_char'(Char) :-
 	kbd_wait(Code),
 	put_code(Code),
+	nl,
 	char_code(Char, Code).
 
 
