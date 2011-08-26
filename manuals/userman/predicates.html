@@ -187,7 +187,7 @@ When the same operators are used on several entities within the same source file
 <h3 id="predicates_uses">Uses directive</h3>
 
 <p>
-When a predicate makes heavy use of predicates defined on other objects, its clauses can be excessively verbose due to all the necessary message sending constructs. Consider the following example:
+When a predicate makes heavy use of predicates defined on other objects, its predicate clauses can be verbose due to all the necessary message sending goals. Consider the following example:
 </p>
 <pre>foo :-
     ...,
@@ -200,7 +200,7 @@ Logtalk provides a directive, <a title="Consult reference manual" href="../refma
 </p>
 <pre>:- uses(Object, [Functor1/Arity1, Functor2/Arity2, ...]).</pre>
 <p>
-Rewriting the code above using this directive results in a simplified and more easily readable predicate definition:
+Rewriting the code above using this directive results in a simplified and more readable predicate definition:
 </p>
 <pre>:- uses(list,
     [append/3, member/2, select/3]).
@@ -212,7 +212,7 @@ Rewriting the code above using this directive results in a simplified and more e
         select(Y, C, R),
         ...</pre>
 <p>
-Logtalk supports an extended version of this directive that allows the declaration of predicate alias using the notation <code>Predicate::Alias</code>. For example:
+Logtalk also supports an extended version of this directive that allows the declaration of predicate alias using the notation <code>Predicate::Alias</code>. For example:
 </p>
 <pre>:- uses(btrees, [new/1::new_btree/1]).
 :- uses(queues, [new/1::new_queue/1]).</pre>
@@ -220,7 +220,7 @@ Logtalk supports an extended version of this directive that allows the declarati
 You may use this extended version for solving conflicts between predicates declared on several <code>uses/2</code> directives or just for giving new names to the predicates that will be more meaningful on their using context.
 </p>
 <p>
-The <code>uses/2</code> directive allows simpler predicate definitions as long as there are no conflicts between the predicates declared in the directive and the predicates defined in the object (or category) containing the directive. A predicate (or its alias if defined) cannot be listed in more than one <code>uses/2</code> directive. In addition, a <code>uses/2</code> directive cannot list a predicate (or its alias if defined) which is defined in the object (or category) containing the directive. Any conflicts are reported by the Logtalk pre-processor as compilation errors.
+The <code>uses/2</code> directive allows simpler predicate definitions as long as there are no conflicts between the predicates declared in the directive and the predicates defined in the object (or category) containing the directive. A predicate (or its alias if defined) cannot be listed in more than one <code>uses/2</code> directive. In addition, a <code>uses/2</code> directive cannot list a predicate (or its alias if defined) which is defined in the object (or category) containing the directive. Any conflicts are reported by Logtalk as compilation errors.
 </p>
 <p>
 In the current Logtalk version, the omission of the <code>Object::</code> prefix is not supported when the predicate call occurs as an argument of a user-defined meta-predicate (Logtalk specified meta-predicates and Prolog non-standard meta-predicates declared in the config files pose no problem).
@@ -770,7 +770,7 @@ Currently, there is no clean workaround for calling non-standard Prolog built-in
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: August 16, 2011</span>
+		<span>Last updated on: August 25, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>
