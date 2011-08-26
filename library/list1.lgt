@@ -9,7 +9,7 @@
 		comment is 'List predicates with elements constrained to a single type.',
 		parnames is ['Type']]).
 
-	valid(-) :-		% catch variables and lists with unbound tails
+	valid((-)) :-		% catch variables and lists with unbound tails
 		!,
 		fail.
 	valid([]).

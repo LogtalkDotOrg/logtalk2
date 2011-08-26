@@ -171,7 +171,7 @@
 	suffix(Sufix, [_| Tail]) :-
 		suffix(Sufix, Tail).
 
-	valid(-) :-		% catch variables and lists with unbound tails
+	valid((-)) :-		% catch variables and lists with unbound tails
 		!,
 		fail.
 	valid([]).

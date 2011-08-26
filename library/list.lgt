@@ -368,7 +368,7 @@
 	proper_suffix(Suffix, [_| Tail]) :-
 		suffix(Suffix, Tail).
 
-	valid(-) :-		% catch variables and lists with unbound tails
+	valid((-)) :-		% catch variables and lists with unbound tails
 		!,
 		fail.
 	valid([]).

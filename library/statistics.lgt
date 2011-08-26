@@ -177,7 +177,7 @@
 		Acc2 is Acc + X,
 		sum(Xs, Acc2, Sum).
 
-	valid(-) :-		% catch variables and lists with unbound tails
+	valid((-)) :-		% catch variables and lists with unbound tails
 		!,
 		fail.
 	valid([]).

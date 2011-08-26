@@ -9,7 +9,7 @@
 		comment is 'Set predicates with elements constrained to a single type.',
 		parnames is ['Type']]).
 
-	valid(-) :-				% catch variables
+	valid((-)) :-				% catch variables
 		!,
 		fail.
 	valid([]) :-

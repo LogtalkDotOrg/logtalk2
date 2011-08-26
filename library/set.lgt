@@ -220,7 +220,7 @@
 	union(>, Head1, Tail1, Head2, Tail2, [Head2| Union], [Head2| Difference]) :-
 		union([Head1| Tail1], Tail2, Union, Difference).
 
-	valid(-) :-				% catch variables
+	valid((-)) :-				% catch variables
 		!,
 		fail.
 	valid([]) :-
