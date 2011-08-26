@@ -228,7 +228,7 @@
 	valid([Element| Set]) :-
 		check_order(Set, Element).
 
-	check_order(-, _) :-	% catch unbound tails
+	check_order((-), _) :-	% catch unbound tails
 		!,
 		fail.
 	check_order([], _) :-
