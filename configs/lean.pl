@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for Lean Prolog 2.18.2 and later versions
+%  configuration file for Lean Prolog 2.18.5 and later versions
 %
-%  last updated: August 24, 2011
+%  last updated: August 26, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -170,17 +170,17 @@ setup_call_cleanup(_, _, _) :-
 '$lgt_pl_meta_predicate'(mbg(_), mbg([0]), predicate).
 '$lgt_pl_meta_predicate'(new_engine(_, _, _), new_engine(*, 0, *), predicate).
 '$lgt_pl_meta_predicate'(nth_answer(_, _), nth_answer(*, 0), predicate).
+'$lgt_pl_meta_predicate'(rli_call(_, _, _, _, _), rli_call(*, *, _, 0, *), predicate).
 '$lgt_pl_meta_predicate'(take_at_most(_, _), take_at_most(*, 0), predicate).
 '$lgt_pl_meta_predicate'(tell_agent_at(_, _), tell_agent_at(*, 0), predicate).
 '$lgt_pl_meta_predicate'(time(_), time(0), predicate).
 '$lgt_pl_meta_predicate'(time(_, _), time(0, *), predicate).
+'$lgt_pl_meta_predicate'(to_engine(_, _, _), to_engine(*, *, 0), predicate).
 '$lgt_pl_meta_predicate'(topcall(_), topcall(0), predicate).
 '$lgt_pl_meta_predicate'(while(_, _), while(0, 0), predicate).
 
-% workaround for built-in meta-predicates with non-standard templates
-'$lgt_pl_meta_predicate'(to_engine(_, _, _), to_engine(*, *, 0), predicate).
-to_engine(Engine, Var, Goal) :-
-	to_engine(Engine, (Var :- Goal)).
+to_engine(Interactor, Pattern, Goal) :-
+	to_engine(Interactor, (Pattern:-Goal)).
 
 
 
@@ -218,7 +218,7 @@ to_engine(Engine, Var, Goal) :-
 '$lgt_prolog_feature'(prolog_dialect, lean).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	current_prolog_flag(version_data, lprolog(Major, Minor, Patch, _)).
-'$lgt_prolog_feature'(prolog_compatible_version, '@>='((2, 18, 2))).
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='((2, 18, 5))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
@@ -480,14 +480,12 @@ to_engine(Engine, Var, Goal) :-
 
 % '$lgt_current_date'(?Year, ?Month, ?Day)
 
-'$lgt_current_date'(_, _, _) :-
-	fail.
+'$lgt_current_date'(2011, 8, 26).
 
 
 % '$lgt_current_time'(?Hours, ?Mins, ?Secs)
 
-'$lgt_current_time'(_, _, _) :-
-	fail.
+'$lgt_current_time'(15, 00, 00).
 
 
 
