@@ -15,6 +15,11 @@ RELEASE NOTES
 
 2.43.1 - August ??, 2011
 
+    Changed the compiler to take into account the uses/2 directive when
+    compiling calls to the database built-in methods. This change extends
+    the semantics of the uses/2 directive and allows easier migration from
+    plain Prolog applications to Logtalk.
+
     Added experimental support for using a predicate template as argument to
     the coinductive/1 directive. This template allows the specification of
     which arguments are meaningful for coinductive success. Based on similar

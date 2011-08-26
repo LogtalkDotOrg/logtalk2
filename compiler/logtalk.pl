@@ -10026,11 +10026,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 % database handling built-in predicates
 
-'$lgt_tr_body'(abolish(Term), _, _, Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Term),
-	fail.
-
 '$lgt_tr_body'(abolish(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
@@ -10046,6 +10041,20 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		DCond = '$lgt_debugger.goal'(abolish(':'(Module, Pred)), TCond, ExCtx)
 	).
 
+'$lgt_tr_body'(abolish(AliasFunctor/AliasArity), TCond, DCond, Ctx) :-
+	nonvar(AliasFunctor),
+	nonvar(AliasArity),
+	functor(Alias, AliasFunctor, AliasArity),
+	'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+	!,
+	functor(Head, HeadFunctor, HeadArity),
+	'$lgt_tr_body'(Obj::abolish(HeadFunctor/HeadArity), TCond, DCond, Ctx).
+
+'$lgt_tr_body'(abolish(Term), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+	'$lgt_check_dynamic_directive'(Term),
+	fail.
+
 '$lgt_tr_body'(abolish(Pred), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
@@ -10058,11 +10067,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	),
 	DCond = '$lgt_debugger.goal'(abolish(Pred), TCond, ExCtx).
 
-'$lgt_tr_body'(assert(Clause), _, _, Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Clause),
-	fail.
-
 '$lgt_tr_body'(assert(Clause), TCond, DCond, Ctx) :-
 	!,
 	(	'$lgt_pp_non_portable_call_'(assert, 1) ->
@@ -10070,11 +10074,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	;	assertz('$lgt_pp_non_portable_call_'(assert, 1))
 	),
 	'$lgt_tr_body'(assertz(Clause), TCond, DCond, Ctx).
-
-'$lgt_tr_body'(asserta(Clause), _, _, Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Clause),
-	fail.
 
 '$lgt_tr_body'(asserta(QClause), TCond, DCond, Ctx) :-
 	nonvar(QClause),
@@ -10090,6 +10089,24 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		TCond = '$lgt_final_goal'(asserta(':'(Module, Clause))),
 		DCond = '$lgt_debugger.goal'(asserta(':'(Module, Clause)), TCond, ExCtx)
 	).
+
+'$lgt_tr_body'(asserta(QClause), TCond, DCond, Ctx) :-
+	nonvar(QClause),
+	(	QClause = (Alias :- Body) ->
+		nonvar(Alias),
+		'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+		Clause = (Head :- Body)
+	;	QClause = Alias,
+		'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+		Clause = Head
+	),
+	!,
+	'$lgt_tr_body'(Obj::asserta(Clause), TCond, DCond, Ctx).
+
+'$lgt_tr_body'(asserta(Clause), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+	'$lgt_check_dynamic_directive'(Clause),
+	fail.
 
 '$lgt_tr_body'(asserta(Clause), TCond, DCond, Ctx) :-
 	!,
@@ -10112,11 +10129,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	),
 	DCond = '$lgt_debugger.goal'(asserta(Clause), TCond, ExCtx).
 
-'$lgt_tr_body'(assertz(Clause), _, _, Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Clause),
-	fail.
-
 '$lgt_tr_body'(assertz(QClause), TCond, DCond, Ctx) :-
 	nonvar(QClause),
 	QClause = ':'(Module, Clause),
@@ -10131,6 +10143,24 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		TCond = '$lgt_final_goal'(assertz(':'(Module, Clause))),
 		DCond = '$lgt_debugger.goal'(assertz(':'(Module, Clause)), TCond, ExCtx)
 	).
+
+'$lgt_tr_body'(assertz(QClause), TCond, DCond, Ctx) :-
+	nonvar(QClause),
+	(	QClause = (Alias :- Body) ->
+		nonvar(Alias),
+		'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+		Clause = (Head :- Body)
+	;	QClause = Alias,
+		'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+		Clause = Head
+	),
+	!,
+	'$lgt_tr_body'(Obj::assertz(Clause), TCond, DCond, Ctx).
+
+'$lgt_tr_body'(assertz(Clause), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+	'$lgt_check_dynamic_directive'(Clause),
+	fail.
 
 '$lgt_tr_body'(assertz(Clause), TCond, DCond, Ctx) :-
 	!,
@@ -10153,11 +10183,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	),
 	DCond = '$lgt_debugger.goal'(assertz(Clause), TCond, ExCtx).
 
-'$lgt_tr_body'(clause(Head, _), _, _, Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Head),
-	fail.
-
 '$lgt_tr_body'(clause(QHead, Body), TCond, DCond, Ctx) :-
 	nonvar(QHead),
 	QHead = ':'(Module, Head),
@@ -10172,6 +10197,17 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		TCond = '$lgt_final_goal'(clause(':'(Module, Head), Body)),
 		DCond = '$lgt_debugger.goal'(clause(':'(Module, Head), Body), TCond, ExCtx)
 	).
+
+'$lgt_tr_body'(clause(Alias, Body), TCond, DCond, Ctx) :-
+	nonvar(Alias),
+	'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+	!,
+	'$lgt_tr_body'(Obj::clause(Head, Body), TCond, DCond, Ctx).
+
+'$lgt_tr_body'(clause(Head, _), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+	'$lgt_check_dynamic_directive'(Head),
+	fail.
 
 '$lgt_tr_body'(clause(Head, Body), TCond, DCond, Ctx) :-
 	!,
@@ -10188,11 +10224,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	),
 	DCond = '$lgt_debugger.goal'(clause(Head, Body), TCond, ExCtx).
 
-'$lgt_tr_body'(retract(Clause), _, _, Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Clause),
-	fail.
-
 '$lgt_tr_body'(retract(QClause), TCond, DCond, Ctx) :-
 	nonvar(QClause),
 	QClause = ':'(Module, Clause),
@@ -10207,6 +10238,24 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		TCond = '$lgt_final_goal'(retract(':'(Module, Clause))),
 		DCond = '$lgt_debugger.goal'(retract(':'(Module, Clause)), TCond, ExCtx)
 	).
+
+'$lgt_tr_body'(retract(QClause), TCond, DCond, Ctx) :-
+	nonvar(QClause),
+	(	QClause = (Alias :- Body) ->
+		nonvar(Alias),
+		'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+		Clause = (Head :- Body)
+	;	QClause = Alias,
+		'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+		Clause = Head
+	),
+	!,
+	'$lgt_tr_body'(Obj::retract(Clause), TCond, DCond, Ctx).
+
+'$lgt_tr_body'(retract(Clause), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+	'$lgt_check_dynamic_directive'(Clause),
+	fail.
 
 '$lgt_tr_body'(retract(Clause), TCond, DCond, Ctx) :-
 	!,
@@ -10231,11 +10280,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	),
 	DCond = '$lgt_debugger.goal'(retract(Clause), TCond, ExCtx).
 
-'$lgt_tr_body'(retractall(Head), _, _, Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Head),
-	fail.
-
 '$lgt_tr_body'(retractall(QHead), TCond, DCond, Ctx) :-
 	nonvar(QHead),
 	QHead = ':'(Module, Head),
@@ -10250,6 +10294,17 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		TCond = '$lgt_final_goal'(retractall(':'(Module, Head))),
 		DCond = '$lgt_debugger.goal'(retractall(':'(Module, Head)), TCond, ExCtx)
 	).
+
+'$lgt_tr_body'(retractall(Alias), TCond, DCond, Ctx) :-
+	nonvar(Alias),
+	'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+	!,
+	'$lgt_tr_body'(Obj::retractall(Head), TCond, DCond, Ctx).
+
+'$lgt_tr_body'(retractall(Head), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+	'$lgt_check_dynamic_directive'(Head),
+	fail.
 
 '$lgt_tr_body'(retractall(Head), TCond, DCond, Ctx) :-
 	!,
