@@ -9407,8 +9407,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_tr_body'(\+ Pred, \+ TPred, '$lgt_debugger.goal'(\+ Pred, \+ DPred, ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
 '$lgt_tr_body'(!, !, ('$lgt_debugger.goal'(!, true, ExCtx), !), Ctx) :-
 	!,
@@ -9428,8 +9428,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_tr_body'(call(Goal), call(TGoal), '$lgt_debugger.goal'(call(Goal), call(DGoal), ExCtx), Ctx) :-
 	!,		% we must keep the call/1 wrapper in order to preserve cut semantics
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx).
 
 '$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
 	CallN =.. [call, Closure| ExtraArgs],
@@ -9471,19 +9471,19 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_tr_body'(once(Goal), (TGoal -> true; fail), '$lgt_debugger.goal'(once(Goal), (DGoal -> true; fail), ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx).
 
 '$lgt_tr_body'(ignore(Goal), (TGoal -> true; true), '$lgt_debugger.goal'(ignore(Goal), (DGoal -> true; true), ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx).
 
 '$lgt_tr_body'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), '$lgt_debugger.goal'(catch(Goal, Catcher, Recovery), catch(DGoal, Catcher, DRecovery), ExCtx), Ctx) :-
 	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	'$lgt_tr_body'(Recovery, TRecovery, DRecovery, Ctx),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_tr_body'(Recovery, TRecovery, DRecovery, Ctx).
 
 '$lgt_tr_body'(throw(Error), throw(Error), '$lgt_debugger.goal'(throw(Error), throw(Error), ExCtx), Ctx) :-
 	!,
@@ -9595,33 +9595,40 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_comp_ctx'(Ctx, Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode, Stack),
 	(	var(QGoal), '$lgt_member_var'(QGoal, MetaVars) ->
 		'$lgt_comp_ctx'(Ctx2, Head, Sender, This, Self, Prefix, [Goal| MetaVars], MetaCallCtx, ExCtx, Mode, Stack),
+		TPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), bagof(Term, Vars^TGoal, List)),
+		DPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), bagof(Term, Vars^DGoal, List)),
 		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx2)
-	;	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx)
-	),
-	TPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), bagof(Term, Vars^TGoal, List)),
-	DPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), bagof(Term, Vars^DGoal, List)).
+	;	TPred = bagof(Term, TGoal, List),
+		DPred = bagof(Term, DGoal, List),
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		'$lgt_tr_body'(QGoal, TGoal, DGoal, Ctx)
+	).
 
 '$lgt_tr_body'(findall(Term, Goal, List), findall(Term, TGoal, List), '$lgt_debugger.goal'(findall(Term, Goal, List), findall(Term, DGoal, List), ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx).
 
 '$lgt_tr_body'(forall(Gen, Test), \+ (TGen, \+ TTest), '$lgt_debugger.goal'(forall(Gen, Test), \+ (DGen, \+ DTest), ExCtx), Ctx) :-
 	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_tr_body'(Gen, TGen, DGen, Ctx),
-	'$lgt_tr_body'(Test, TTest, DTest, Ctx),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_tr_body'(Test, TTest, DTest, Ctx).
 
 '$lgt_tr_body'(setof(Term, QGoal, List), TPred, '$lgt_debugger.goal'(setof(Term, QGoal, List), DPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode, Stack),
 	(	var(QGoal), '$lgt_member_var'(QGoal, MetaVars) ->
 		'$lgt_comp_ctx'(Ctx2, Head, Sender, This, Self, Prefix, [Goal| MetaVars], MetaCallCtx, ExCtx, Mode, Stack),
+		TPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), setof(Term, Vars^TGoal, List)),
+		DPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), setof(Term, Vars^DGoal, List)),
+		writeq('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx2)), nl,
 		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx2)
-	;	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx)
-	),
-	TPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), setof(Term, Vars^TGoal, List)),
-	DPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), setof(Term, Vars^DGoal, List)).
+	;	TPred = setof(Term, TGoal, List),
+		DPred = setof(Term, DGoal, List),
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		'$lgt_tr_body'(QGoal, TGoal, DGoal, Ctx)
+	).
 
 
 % multi-threading meta-predicates
@@ -9724,10 +9731,10 @@ current_logtalk_flag(version, version(2, 43, 1)).
 
 '$lgt_tr_body'(threaded_ignore(Goal), MTGoal, '$lgt_debugger.goal'(threaded_ignore(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	MTGoal = '$lgt_threaded_ignore'(TGoal),
 	MDGoal = '$lgt_threaded_ignore'(DGoal),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx).
 
 
 '$lgt_tr_body'(threaded_exit(_, _), _, _, _) :-
