@@ -382,7 +382,8 @@ to_engine(Interactor, Pattern, Goal) :-
 % gets current working directory
 
 '$lgt_current_directory'(Directory) :-
-	working_directory(Directory, Directory).
+	working_directory(Directory0, Directory0),
+	atom_concat(Directory0, '/', Directory).
 
 
 % '$lgt_change_directory'(+atom)
