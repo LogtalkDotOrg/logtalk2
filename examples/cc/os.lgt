@@ -11,9 +11,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.20,
+		version is 1.30,
 		author is 'Paulo Moura',
-		date is 2011/07/09,
+		date is 2011/08/24,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -32,7 +32,10 @@
 			 )}.
 
 		make_directory(Directory) :-
-			{make_directory(Directory)}.
+			(	{exists_directory(Directory)} ->
+				true
+			;	{make_directory(Directory)}
+			).
 
 		delete_directory(Directory) :-
 			{delete_directory(Directory)}.
@@ -106,8 +109,18 @@
 		shell(Command) :-
 			{shell(Command)}.
 
+		:- if((current_prolog_flag(version_data, yap(Major,Minor,_,_)), (Major,Minor) @< (6,3))).
 		expand_path(Path, ExpandedPath) :-
-			{absolute_file_name(Path, ExpandedPath)}.
+			{working_directory(Current, Current),
+			 absolute_file_name(Path, [access(none), file_type(txt), relative_to(Current)], ExpandedPath)}.
+		:- else.
+		expand_path(Path, ExpandedPath) :-
+			{working_directory(Current, Current),
+			 (	absolute_file_name(Path, [expand(true), relative_to(Current), file_errors(fail)], ExpandedPath) ->
+				true
+			 ;	absolute_file_name(Path, [expand(true), relative_to(Current), file_type(directory), file_errors(fail)], ExpandedPath)
+			 )}.
+		:- endif.
 
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
@@ -471,7 +484,10 @@
 			{canonical_path_name(Path, ExpandedPath)}.	% works with strings and atoms
 
 		make_directory(Directory) :-
-			{mkdir(Directory)}.
+			(	{exists(Directory)} ->
+				true
+			;	{mkdir(Directory)}
+			).
 
 		delete_directory(Directory) :-
 			{delete(Directory)}.
@@ -761,11 +777,13 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, lean)).
 
-		shell(_, _) :-
-			throw(not_available(shell/2)).
+		shell(Command, Status) :-
+			{split_string(Command, ' ', List),
+			 system('.', List, _, Status)}.
 
 		shell(Command) :-
-			{system(Command)}.
+			{split_string(Command, ' ', List),
+			 system(List, _)}.
 
 		expand_path(Path, ExpandedPath) :-
 			{(	\+ atom_concat('/', _, Path),
@@ -819,22 +837,24 @@
 		environment_variable(Variable, Value) :-
 			{getenv(Variable, Value)}.
 
-		time_stamp(_) :-
-			throw(not_available(time_stamp/7)).
+		time_stamp(Time) :-
+			{get_time(Time)}.
 
-		date_time(_, _, _, _, _, _, _) :-
-			throw(not_available(date_time/7)).
+		date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
+			{get_date_time(Time),
+			 split_string(Time, '/: ', [YearAtom, MonthAtom, DayAtom, HoursAtom, MinsAtom, SecsAtom]),
+			 maplist(to_number, [YearAtom, MonthAtom, DayAtom, HoursAtom, MinsAtom, SecsAtom], [Year, Month, Day, Hours, Mins, Secs])}.
 
-		cpu_time(_) :-
-			throw(not_available(cpu_time/1)).
+		cpu_time(Time) :-
+			{cputime(Time)}.
 
-		wall_time(_) :-
-			throw(not_available(wall_time/1)).
+		wall_time(Time) :-
+			{cputime(Time)}.
 
 		operating_system_type(unix).
 
-		command_line_arguments(_) :-
-			throw(not_available(command_line_arguments/1)).
+		command_line_arguments(Arguments) :-
+			{get_cmd_line_args(Arguments)}.
 
 	:- else.
 

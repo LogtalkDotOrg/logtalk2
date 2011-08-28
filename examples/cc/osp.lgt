@@ -2,7 +2,7 @@
 :- protocol(osp).
 
 	:- info([
-		version is 1.6,
+		version is 1.7,
 		author is 'Paulo Moura',
 		date is 2011/02/04,
 		comment is 'Portable operating-system access protocol.']).
@@ -28,7 +28,7 @@
 	:- public(make_directory/1).
 	:- mode(make_directory(+atom), one).
 	:- info(make_directory/1, [
-		comment is 'Makes a new directory. Argument is first expanded to a canonical file name.',
+		comment is 'Makes a new directory. Succeeds if the direcory already exists.',
 		argnames is ['Directory']]).
 
 	:- public(delete_directory/1).
@@ -46,7 +46,7 @@
 	:- public(working_directory/1).
 	:- mode(working_directory(?atom), zero_or_one).
 	:- info(working_directory/1, [
-		comment is 'Current working directory (as an absolute file name).',
+		comment is 'Current working directory.',
 		argnames is ['Directory']]).
 
 	:- public(directory_exists/1).
