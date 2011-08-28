@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: August 23, 2011
+%  last updated: August 28, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -323,7 +323,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 % '$lgt_delete_file'(+atom)
 %
-% deletes a file in the current directory
+% deletes a file
 
 '$lgt_delete_file'(File) :-
 	delete_file(File).

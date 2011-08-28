@@ -11,7 +11,7 @@
 %
 %  configuration file for Lean Prolog 2.18.5 and later versions
 %
-%  last updated: August 26, 2011
+%  last updated: August 28, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -218,7 +218,7 @@ to_engine(Interactor, Pattern, Goal) :-
 '$lgt_prolog_feature'(prolog_dialect, lean).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	current_prolog_flag(version_data, lprolog(Major, Minor, Patch, _)).
-'$lgt_prolog_feature'(prolog_compatible_version, '@>='((2, 18, 5))).
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='((2, 19, 0))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
@@ -263,7 +263,7 @@ to_engine(Interactor, Pattern, Goal) :-
 '$lgt_default_flag'(events, deny).
 '$lgt_default_flag'(context_switching_calls, allow).
 % directories compilation flags:
-'$lgt_default_flag'(altdirs, off).
+'$lgt_default_flag'(altdirs, on).
 '$lgt_default_flag'(tmpdir, TmpDir) :-
 	(	getenv('COMSPEC', _) ->		% Windows systems define this environment variable...
 		TmpDir = 'lgt_tmp/'
@@ -272,7 +272,7 @@ to_engine(Interactor, Pattern, Goal) :-
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 % other compilation flags:
 '$lgt_default_flag'(report, on).
-'$lgt_default_flag'(clean, off).
+'$lgt_default_flag'(clean, on).
 '$lgt_default_flag'(smart_compilation, off).
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
@@ -360,13 +360,10 @@ to_engine(Interactor, Pattern, Goal) :-
 
 % '$lgt_delete_file'(+atom)
 %
-% deletes a file in the current directory
+% deletes a file
 
 '$lgt_delete_file'(File) :-
-	working_directory(Path0, Path0),
-	atom_concat(Path0, '/', Path1),
-	atom_concat(Path1, File, Path),
-	delete_file(Path).
+	delete_file(File).
 
 
 % '$lgt_directory_exists'(+atom)

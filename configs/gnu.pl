@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: August 23, 2011
+%  last updated: August 28, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -262,7 +262,7 @@ setup_call_cleanup(_, _, _) :-
 
 % '$lgt_delete_file'(+atom)
 %
-% deletes a file in the current directory
+% deletes a file
 
 '$lgt_delete_file'(File) :-
 	delete_file(File).

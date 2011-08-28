@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: August 23, 2011
+%  last updated: August 28, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -404,7 +404,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 % '$lgt_delete_file'(+atom)
 %
-% deletes a file in the current directory
+% deletes a file
 
 '$lgt_delete_file'(File) :-
 	delete_file(File).

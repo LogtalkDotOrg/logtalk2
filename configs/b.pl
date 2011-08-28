@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.5#5 and later versions
 %
-%  last updated: August 23, 2011
+%  last updated: August 28, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -292,7 +292,7 @@
 
 % '$lgt_delete_file'(+atom)
 %
-% deletes a file in the current directory
+% deletes a file
 
 '$lgt_delete_file'(File) :-
 	delete_file(File).
