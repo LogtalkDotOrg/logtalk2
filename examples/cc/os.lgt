@@ -419,16 +419,19 @@
 			 absolute_file_name(Path, ExpandedPath, [relative_to(Directory)])}.
 
 		make_directory(Directory) :-
-			{make_directory(Directory)}.
+			(	{directory_exists(Directory)} ->
+				true
+			;	{make_directory(Directory)}
+			).
 
 		delete_directory(Directory) :-
-			{delete_file(Directory)}.
+			{delete_directory(Directory)}.
 
 		change_directory(Directory) :-
-			{working_directory(_, Directory)}.
+			{current_directory(_, Directory)}.
 
 		working_directory(Directory) :-
-			{working_directory(Directory, Directory)}.
+			{current_directory(Directory, Directory)}.
 
 		directory_exists(Directory) :-
 			{directory_exists(Directory)}.
@@ -437,10 +440,10 @@
 			{file_exists(File)}.
 
 		file_modification_time(File, Time) :-
-			{file_property(File, mod_time(Time))}.
+			{file_property(File, modify_timestamp, Time)}.
 
 		file_size(File, Size) :-
-			{file_property(File, size(Size))}.
+			{file_property(File, size_in_bytes, Size)}.
 
 		file_permission(File, Permission) :-
 			{file_exists(File, Permission)}.

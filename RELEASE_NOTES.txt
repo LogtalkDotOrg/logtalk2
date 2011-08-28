@@ -93,7 +93,8 @@ RELEASE NOTES
     to define wrappers for the bagof/3 and setof/3 built-in methods when the
     meta-argument may contain existentially qualified variables.
 
-    Added some unit tests to the "cc" example.
+    Updated the "cc" example, correcting predicate definitions for several
+    back-end Prolog compilers and adding some basic unit tests.
 
     Added missing entries for the meta_non_terminal/1 directive and for the
     call//N non-terminal to the "help" example.

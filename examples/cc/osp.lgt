@@ -28,7 +28,7 @@
 	:- public(make_directory/1).
 	:- mode(make_directory(+atom), one).
 	:- info(make_directory/1, [
-		comment is 'Makes a new directory. Succeeds if the direcory already exists.',
+		comment is 'Makes a new directory. Succeeds if the directory already exists.',
 		argnames is ['Directory']]).
 
 	:- public(delete_directory/1).
