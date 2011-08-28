@@ -10,8 +10,8 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 To load this example and for sample queries, please see the SCRIPT.txt file.
-This example requires a recent version of CxProlog, ECLiPSE, SICStus Prolog,
-SWI-Prolog, or YAP as the back-end Prolog compiler.
+This example requires a recent version of ECLiPSE, SICStus Prolog, SWI-Prolog,
+or YAP as the back-end Prolog compiler.
 
 Note that Logtalk support for coinduction is still experimental. The two major
 issues are lack of robust Prolog support for cyclic terms and lack of support

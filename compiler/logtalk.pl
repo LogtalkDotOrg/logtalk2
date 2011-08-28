@@ -8052,9 +8052,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	;	'$lgt_pl_meta_predicate'(if(_, _, _), _, _) ->
 		% back-end Prolog compiler supports the if/3 soft-cut built-in meta-predicate
 		'$lgt_tr_clause'((Head :- if({'$lgt_check_coinductive_success'(TestHead, HeadStack)}, true, ({'$lgt_push_coinductive_hypothesis'(TestHead, HeadStack, BodyStack)}, CoinductiveHead))), HeadCtx, BodyCtx)
-	;	% without the soft-cut control construct we have to walk the coinduction stack twice 
-		'$lgt_tr_clause'((Head :- {'$lgt_check_coinductive_success'(TestHead, HeadStack)}), HeadCtx, HeadCtx),
-		'$lgt_tr_clause'((Head :- \+ {'$lgt_check_coinductive_success'(TestHead, HeadStack)}, {'$lgt_push_coinductive_hypothesis'(TestHead, HeadStack, BodyStack)}, CoinductiveHead), HeadCtx, BodyCtx)
+	;	throw(resource_error(soft_cut_support))
 	),
 	'$lgt_tr_coinductive_directive'(Preds, Ctx).
 

@@ -28,6 +28,10 @@ RELEASE NOTES
     Improved support for debugging coinductive predicates when using the
     Logtalk built-in debugger.
 
+    Removed coinduction support for CxProlog. The current version of this
+    compiler lacks a soft-cut built-in predicate or control construct, which
+    is now required by the experimental coinduction implementation.
+
     Lifted a long-standing limitation that prevented the user definition of
     wrapper predicates for the bagof/3 and setof/3 built-in methods whenever
     the goal argument may use the ^/2 existential quantifier.

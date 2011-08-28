@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.5 or a later version
 %
-%  last updated: August 23, 2011
+%  last updated: August 27, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -155,7 +155,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
 '$lgt_prolog_feature'(modules, unsupported).
-'$lgt_prolog_feature'(coinduction, supported).
+'$lgt_prolog_feature'(coinduction, unsupported).
 
 
 
