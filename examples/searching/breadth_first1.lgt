@@ -34,7 +34,7 @@
 	expandall(_, [], [Tree| Trees], [Tree| Trees], fail, _, _, _).
 	expandall(Path, [Tree| Trees], Trees2, Subs2, Solved, Solution, Space, Bound) :-
 		(	Bound > 0,
-			Bound2 is Bound -1,
+			Bound2 is Bound - 1,
 			expand(Path, Tree, Tree2, Solved2, Solution, Space, Bound2),
 			(	Solved2 == true ->
 				Solved = true
