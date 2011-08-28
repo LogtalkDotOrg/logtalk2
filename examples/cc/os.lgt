@@ -544,8 +544,8 @@
 			{statistics(times, [_, _, Time])}.
 
 		operating_system_type(Type) :-
-			get_flag(hostarch, HostArch),
-			(	(atom_string(i386_nt, HostArch); atom_string(x86_64_nt, HostArch)) ->
+			{get_flag(hostarch, HostArch)},
+			(	{(atom_string(i386_nt, HostArch); atom_string(x86_64_nt, HostArch))} ->
 				Type = windows
 			;	Type = unix
 			).
@@ -615,8 +615,11 @@
 		wall_time(Time) :-
 			{statistics(walltime, [Time, _])}.
 
-		operating_system_type(_) :-
-			throw(not_available(operating_system_type/1)).
+		operating_system_type(Type) :-
+			(	{getenvstr('COMSPEC', _)} ->
+				Type = windows
+			;	Type = unix
+			).
 
 		command_line_arguments(_) :-
 			throw(not_available(command_line_arguments/1)).
@@ -779,7 +782,11 @@
 		wall_time(_) :-
 			throw(not_available(wall_time/1)).
 
-		operating_system_type(unix).
+		operating_system_type(Type) :-
+			(	environment_variable('COMSPEC', _) ->
+				Type = windows
+			;	Type = unix
+			).
 
 		command_line_arguments(Arguments) :-
 			get_args(Arguments).
@@ -860,7 +867,11 @@
 		wall_time(Time) :-
 			{cputime(Time)}.
 
-		operating_system_type(unix).
+		operating_system_type(Type) :-
+			(	{getenv('COMSPEC', _)} ->
+				Type = windows
+			;	Type = unix
+			).
 
 		command_line_arguments(Arguments) :-
 			{get_cmd_line_args(Arguments)}.
