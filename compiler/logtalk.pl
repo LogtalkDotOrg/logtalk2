@@ -9620,7 +9620,6 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		'$lgt_comp_ctx'(Ctx2, Head, Sender, This, Self, Prefix, [Goal| MetaVars], MetaCallCtx, ExCtx, Mode, Stack),
 		TPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), setof(Term, Vars^TGoal, List)),
 		DPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Vars, Goal), setof(Term, Vars^DGoal, List)),
-		writeq('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx2)), nl,
 		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx2)
 	;	TPred = setof(Term, TGoal, List),
 		DPred = setof(Term, DGoal, List),
