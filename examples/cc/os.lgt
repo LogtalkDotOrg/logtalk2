@@ -123,10 +123,13 @@
 		:- endif.
 
 		make_directory(Directory) :-
-			{make_directory(Directory)}.
+			(	{file_property(Directory, type(directory))} ->
+				true
+			;	{make_directory(Directory)}
+			).
 
 		delete_directory(Directory) :-
-			{delete_file(Directory)}.
+			{delete_directory(Directory)}.
 
 		change_directory(Directory) :-
 			{cd(Directory)}.
@@ -344,7 +347,10 @@
 			{expand_environment(Path, ExpandedPath)}.
 
 		make_directory(Directory) :-
-			{make_directory(Directory)}.
+			(	{file_property(Directory, type(directory))} ->
+				true
+			;	{make_directory(Directory)}
+			).
 
 		delete_directory(Directory) :-
 			{delete_directory(Directory)}.
@@ -718,7 +724,7 @@
 			{os(system(Command))}.
 
 		change_directory(Directory) :-
-			{chdir(_, Directory)}.
+			{chdir(Directory)}.
 
 		working_directory(Directory) :-
 			{getcwd(Directory)}.

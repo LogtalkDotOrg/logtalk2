@@ -49,6 +49,6 @@
 	test(cc_8) :-
 		os::time_stamp(Time1),
 		os::time_stamp(Time2),
-		Time1 =< Time2.
+		Time1 @=< Time2.
 
 :- end_object.
