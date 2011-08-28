@@ -229,4 +229,8 @@
 		obj::op2s(L2s),
 		L2s == [1, 2, 3].
 
+	test(metapredicates_23) :-
+		object::p(L),
+		L == [1, 2, 3].
+
 :- end_object.

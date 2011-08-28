@@ -56,6 +56,14 @@ Sorted = [1,2,3,4,9]
 yes
 
 
+% test the setof/3 wrapper:
+
+| ?- object::p(L).
+
+L = [1, 2, 3]
+yes
+
+
 % call the meta-predicate apply/2 directly:
 
 | ?- metapreds::test_this.
