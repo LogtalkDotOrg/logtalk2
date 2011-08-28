@@ -15,7 +15,7 @@ This is a very simple example of using the new, experimental encoding/1
 directive, which is fully based on the directive with the same name found 
 on recent development releases of SWI-Prolog and YAP. Currently, this 
 example requires Logtalk to be run with the latest versions of the YAP, 
-SWI-Prolog, SICStus Prolog, CxProlog, or K-Prolog compilers.
+SWI-Prolog, SICStus Prolog, CxProlog, Lean Prolog, or K-Prolog compilers.
 
 The following encodings are used in the source file:
 
@@ -28,6 +28,9 @@ As of the release date of this Logtalk version, only SICStus Prolog and
 CxProlog support UTF-32 encodings. Attempting to compile the "mythology.lgt" 
 source file with either YAP or SWI-Prolog results in a misleading syntax 
 error.
+
+Lean Prolog default encoding is UTF-8. Thus, only the "babel.lgt" file
+can be used with this compiler.
 
 K-Prolog 6.0.x supports ASCII, UTF-8, EUC-JP, and Shift_JIS encodings. 
 Thus, only the "babel.lgt" file can be used with this compiler.

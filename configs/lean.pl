@@ -221,7 +221,7 @@ to_engine(Interactor, Pattern, Goal) :-
 '$lgt_prolog_feature'(prolog_compatible_version, '@>='((2, 19, 0))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
-'$lgt_prolog_feature'(encoding_directive, unsupported).
+'$lgt_prolog_feature'(encoding_directive, source).
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
 '$lgt_prolog_feature'(modules, unsupported).

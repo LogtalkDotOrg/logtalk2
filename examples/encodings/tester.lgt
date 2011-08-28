@@ -1,9 +1,9 @@
 
 :- if(\+ current_logtalk_flag(encoding_directive, unsupported)).
 
-	% only test UTF-32 encoding on Prolog dialects supporting it
 	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap))).
 
+		% SWI-Prolog and YAP don't support UTF-32
 		:- initialization((
 			set_logtalk_flag(report, warnings),
 			logtalk_load(library(lgtunit_loader)),
@@ -14,8 +14,20 @@
 			tests_utf_16::run
 		)).
 
+	:- elif((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == lean; Dialect == k))).
+
+		% Lean Prolog and K-Prolog only supported Unicode encoding is UTF-8
+		:- initialization((
+			set_logtalk_flag(report, warnings),
+			logtalk_load(library(lgtunit_loader)),
+			logtalk_load(loader),
+			logtalk_load([tests_utf_8], [hook(lgtunit)]),
+			tests_utf_8::run
+		)).
+
 	:- else.
 
+		% only test UTF-32 encoding on Prolog dialects supporting it
 		:- initialization((
 			set_logtalk_flag(report, warnings),
 			logtalk_load(library(lgtunit_loader)),

@@ -96,6 +96,8 @@ RELEASE NOTES
     Updated the "cc" example, correcting predicate definitions for several
     back-end Prolog compilers and adding some basic unit tests.
 
+    Updated the "encodings" example with limited support for Lean Prolog.
+
     Added missing entries for the meta_non_terminal/1 directive and for the
     call//N non-terminal to the "help" example.
 
