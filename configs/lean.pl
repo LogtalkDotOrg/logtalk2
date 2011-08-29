@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for Lean Prolog 2.18.5 and later versions
+%  configuration file for Lean Prolog 2.19.0 and later versions
 %
 %  last updated: August 28, 2011
 %
