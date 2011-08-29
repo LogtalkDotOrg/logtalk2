@@ -111,7 +111,8 @@ RELEASE NOTES
     before loading the Logtalk compiler/runtime. This change aims to simplify
     loading of library and example files from the settings files.
 
-    Updated the Windows installer in order to detect YAP 64 bits versions.
+    Updated the Windows installer in order to support Lean Prolog and detect
+    YAP 64 bits versions.
 
 
 2.43.0 - July 31, 2011
