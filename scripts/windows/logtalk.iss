@@ -317,8 +317,6 @@ begin
 end;
 
 function LeanPrologExePath: String;
-var
-  RootPath: String;
 begin
   if FileExists(ExpandConstant('{pf}') + '\LeanProlog\lprolog.bat') then
     Result := ExpandConstant('{pf}') + '\LeanProlog\lprolog.bat'
@@ -502,10 +500,13 @@ function YAPExePath: String;
 var
   Home: String;
 begin
-  if RegQueryStringValue(HKLM64, 'Software\YAP\Prolog64\', 'home', Home) then
-    Result := Home + '\bin\yap.exe'
-  else if RegQueryStringValue(HKLM32, 'Software\YAP\Prolog64\', 'home', Home) then
-    Result := Home + '\bin\yap.exe'
+  if Is64BitInstallMode then
+    if RegQueryStringValue(HKLM64, 'Software\YAP\Prolog64\', 'home', Home) then
+      Result := Home + '\bin\yap.exe'
+    else if RegQueryStringValue(HKLM32, 'Software\YAP\Prolog64\', 'home', Home) then
+      Result := Home + '\bin\yap.exe'
+    else 
+      Result := 'prolog_compiler_not_installed'
   else if RegQueryStringValue(HKLM, 'Software\YAP\Prolog\', 'home', Home) then
     Result := Home + '\bin\yap.exe'
   else
