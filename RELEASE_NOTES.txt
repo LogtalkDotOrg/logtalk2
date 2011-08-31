@@ -54,6 +54,10 @@ RELEASE NOTES
 
     Corrected a bug in the processing of conditional compilation directives.
 
+    Corrected a bug that prevented passing alias/3 directives on calls to
+    the create_object/4, create_category/4, and create_protocol/3 built-in
+    predicates.
+
     Removed from the built-in object "logtalk" the decompile_predicate_head/4
     and decompile_predicate_indicator/4 deprecated methods.
 

@@ -7059,8 +7059,8 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_must_be'(callable, Goal),
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
 	% MetaVars = [] as we're compiling a local call
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx, _, _),
-	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, [], _),
+	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx, _, []),
+	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, [], []),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_compiler_flag'(debug, on) ->
 		assertz('$lgt_pp_entity_init_'(DGoal))
@@ -14793,6 +14793,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	'$lgt_assert_def_clauses',
 	'$lgt_assert_ddef_clauses',
 	'$lgt_assert_super_clauses',
+	'$lgt_assert_alias_clauses',
 	'$lgt_assert_entity_clauses',
 	'$lgt_assert_entity_aux_clauses',
 	'$lgt_assert_runtime_clauses',
@@ -14838,6 +14839,24 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
 '$lgt_assert_super_clauses'.
+
+
+'$lgt_assert_alias_clauses' :-
+	(	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, Rnm, _)
+	;	'$lgt_pp_category_'(_, _, _, _, Rnm, _)
+	;	'$lgt_pp_protocol_'(_, _, _, Rnm, _)
+	), !,
+	'$lgt_assert_alias_clauses'(Rnm).
+
+
+'$lgt_assert_alias_clauses'(Rnm) :-
+	'$lgt_pp_predicate_alias_'(Entity, Pred, Alias),
+		Clause =.. [Rnm, Entity, Pred, Alias],
+		'$lgt_assertz_entity_clause'(Clause, aux),
+	fail.
+'$lgt_assert_alias_clauses'(Rnm) :-
+	Catchall =.. [Rnm, _, Pred, Pred],
+	'$lgt_assertz_entity_clause'(Catchall, aux).
 
 
 '$lgt_assert_entity_clauses' :-
