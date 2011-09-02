@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.43.1 - August ??, 2011
+2.43.1 - September 5, 2011
 
     Changed the compiler to take into account the uses/2 directive when
     compiling calls to the database built-in methods. This change extends
