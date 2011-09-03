@@ -94,7 +94,7 @@ done
 echo "The following integration scripts are installed for running Logtalk"
 echo "with selected back-end Prolog compilers:"
 echo
-echo "* B-Prolog (version 7.5#5 or later):     bplgt"
+echo "* B-Prolog (version 7.5#8 or later):     bplgt"
 echo "* CxProlog (version 0.97.5 or later):    cxlgt"
 echo "* ECLiPSe (version 6.0#141 or later):    eclipselgt"
 echo "* GNU Prolog (version 1.4.0 or later):   gplgt"
