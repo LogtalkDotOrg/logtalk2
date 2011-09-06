@@ -11,9 +11,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.30,
+		version is 1.31,
 		author is 'Paulo Moura',
-		date is 2011/08/24,
+		date is 2011/09/06,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -123,7 +123,7 @@
 		:- endif.
 
 		make_directory(Directory) :-
-			(	{file_property(Directory, type(directory))} ->
+			(	directory_exists(Directory) ->
 				true
 			;	{make_directory(Directory)}
 			).
@@ -138,7 +138,8 @@
 			{getcwd(Directory)}.
 
 		directory_exists(Directory) :-
-			{file_property(Directory, type(directory))}.
+			{file_exists(Directory),
+			 file_property(Directory, type(directory))}.
 
 		file_exists(File) :-
 			{file_exists(File)}.
@@ -347,7 +348,7 @@
 			{expand_environment(Path, ExpandedPath)}.
 
 		make_directory(Directory) :-
-			(	{file_property(Directory, type(directory))} ->
+			(	directory_exists(Directory) ->
 				true
 			;	{make_directory(Directory)}
 			).
@@ -362,7 +363,8 @@
 			{working_directory(Directory)}.
 
 		directory_exists(Directory) :-
-			{file_property(Directory, type(directory))}.
+			{file_exists(Directory),
+			 file_property(Directory, type(directory))}.
 
 		file_exists(File) :-
 			{file_exists(File)}.
@@ -672,7 +674,7 @@
 			{os_env(Variable, Value)}.
 
 		time_stamp(_) :-
-			throw(not_available(time_stamp/7)).
+			throw(not_available(time_stamp/1)).
 
 		date_time(_, _, _, _, _, _, _) :-
 			throw(not_available(date_time/7)).
@@ -768,7 +770,7 @@
 			).
 
 		time_stamp(_) :-
-			throw(not_available(time_stamp/7)).
+			throw(not_available(time_stamp/1)).
 
 		date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
 			{realtime(Time)},
