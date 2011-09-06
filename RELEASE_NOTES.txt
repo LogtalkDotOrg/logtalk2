@@ -113,7 +113,10 @@ RELEASE NOTES
 
     Updated the integration scripts in order to load the library paths file
     before loading the Logtalk compiler/runtime. This change aims to simplify
-    loading of library and example files from the settings files.
+    loading of library and example files from the settings files. In addition,
+    also look for the Logtalk installation directory in $HOME/share when the
+    LOGTALKHOME environment variable is not defined. Thanks To Vítor Santos
+    Costa for the suggestion.
 
     Updated the Windows installer in order to support Lean Prolog and detect
     YAP 64 bits versions.

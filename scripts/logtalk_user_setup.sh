@@ -32,6 +32,9 @@ if ! [ "$LOGTALKHOME" ]; then
 	elif [ -d "/opt/share/logtalk" ]; then
 		LOGTALKHOME=/opt/share/logtalk
 		echo "Using Logtalk installation at \"/opt/share/logtalk\""
+	elif [ -d "$HOME/share/logtalk" ]; then
+		LOGTALKHOME="$HOME/share/logtalk"
+		echo "... using Logtalk installation found at $HOME/share/logtalk"
 	else
 		echo "Unable to locate Logtalk installation directory!"
 		echo
