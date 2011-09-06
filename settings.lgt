@@ -88,6 +88,7 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 
 /*
 :- initialization((
+	%set_logtalk_flag(prolog_loader, [silent(true)]),	% for SWI-Prolog and YAP
 	set_logtalk_flag(startup_message, none),
 	set_logtalk_flag(report, off)
 )).

@@ -6614,7 +6614,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 	!,
 	asserta('$lgt_pp_cc_if_found_'(Goal)),
 	(	Value == ignore ->
-		asserta('$lgt_pp_cc_mode_'(ignore))
+		asserta('$lgt_pp_cc_mode_'(ignore))		% another if ... endif to ignore
 	;	Value == seek_else ->					% we're looking for an else
 		asserta('$lgt_pp_cc_mode_'(ignore))		% so ignore this if ... endif
 	;	Value == skip_all ->
@@ -6628,7 +6628,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 		)
 	).
 
-'$lgt_tr_directive'(if(Goal), _) :-
+'$lgt_tr_directive'(if(Goal), _) :-				% top-level if
 	!,
 	asserta('$lgt_pp_cc_if_found_'(Goal)),
 	(	call(Goal) ->
