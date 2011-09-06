@@ -6656,7 +6656,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_directive'(elif(Goal), _) :-
 	'$lgt_pp_cc_mode_'(Value),
 	(	Value == ignore ->						% we're inside an if ... endif
-		asserta('$lgt_pp_cc_mode_'(ignore))		% that we're ignoring
+		true									% that we're ignoring
 	;	Value == skip_else ->					% the corresponding if is true
 		retractall('$lgt_pp_cc_skipping_'),		% so we must skip this elif
 		assertz('$lgt_pp_cc_skipping_'),
