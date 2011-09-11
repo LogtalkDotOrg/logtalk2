@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.3 or later versions
 %
-%  last updated: August 28, 2011
+%  last updated: September 11, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -227,7 +227,7 @@ setup_call_catcher_cleanup(Setup, Call, Catcher, Cleanup) :-
 '$lgt_default_flag'(debug, off).
 % Prolog compiler and loader flags:
 '$lgt_default_flag'(prolog_compiler, []).
-'$lgt_default_flag'(prolog_loader, []).
+'$lgt_default_flag'(prolog_loader, [optimize]).
 
 
 
@@ -357,9 +357,9 @@ setup_call_catcher_cleanup(Setup, Call, Catcher, Cleanup) :-
 % compile and load a Prolog file, resulting from a
 % Logtalk source file, given a list of options
 
-'$lgt_load_prolog_code'(File, _, _) :-
+'$lgt_load_prolog_code'(File, _, Options) :-
 	'$lgt_expand_path'(File, Expanded),
-	reconsult(Expanded, [optimize]).
+	reconsult(Expanded, Options).
 
 
 % '$lgt_compare_file_mtimes'(?atom, +atom, +atom)

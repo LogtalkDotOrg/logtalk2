@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: August 28, 2011
+%  last updated: September 11, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -288,7 +288,7 @@ forall(Generate, Test) :-
 '$lgt_default_flag'(debug, off).
 % Prolog compiler and loader flags:
 '$lgt_default_flag'(prolog_compiler, []).
-'$lgt_default_flag'(prolog_loader, []).
+'$lgt_default_flag'(prolog_loader, [debug:off]).
 
 
 
@@ -413,8 +413,8 @@ forall(Generate, Test) :-
 % compile and load a Prolog file, resulting from a
 % Logtalk source file, given a list of options
 
-'$lgt_load_prolog_code'(File, _, _) :-
-	compile(File, [debug:off]).
+'$lgt_load_prolog_code'(File, _, Options) :-
+	compile(File, Options).
 
 
 % '$lgt_compare_file_mtimes'(?atom, +atom, +atom)

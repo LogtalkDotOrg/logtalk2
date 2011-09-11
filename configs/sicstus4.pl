@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: August 28, 2011
+%  last updated: September 11, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -229,7 +229,7 @@ forall(Generate, Test) :-
 '$lgt_default_flag'(debug, off).
 % Prolog compiler and loader flags:
 '$lgt_default_flag'(prolog_compiler, []).
-'$lgt_default_flag'(prolog_loader, []).
+'$lgt_default_flag'(prolog_loader, [compilation_mode(compile)]).
 
 
 
@@ -357,7 +357,7 @@ forall(Generate, Test) :-
 % Logtalk source file, given a list of options
 
 '$lgt_load_prolog_code'(File, _, Options) :-
-	load_files(File, [compilation_mode(compile)| Options]).
+	load_files(File, Options).
 
 
 % '$lgt_compare_file_mtimes'(?atom, +atom, +atom)
