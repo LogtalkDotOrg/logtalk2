@@ -6,7 +6,7 @@ version 	2.43.1
 
 categories	lang
 maintainers	logtalk.org:pmoura
-license		Artistic License 2.0
+license		Artistic-2.0
 platforms	darwin freebsd linux
 supported_archs noarch
 
