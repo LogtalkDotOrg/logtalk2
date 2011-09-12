@@ -11,7 +11,7 @@
 %
 %  configuration file for Lean Prolog 2.19.0 and later versions
 %
-%  last updated: August 28, 2011
+%  last updated: September 12, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -444,6 +444,14 @@ to_engine(Interactor, Pattern, Goal) :-
 		Result = (>)
 	;	Result = (<)
 	).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Variable, Value) :-
+	getenv(Variable, Value).
 
 
 % '$lgt_startup_directory'(-atom)
