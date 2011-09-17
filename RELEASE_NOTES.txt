@@ -15,7 +15,10 @@ RELEASE NOTES
 
 2.43.2 - October ??, 2011
 
-    
+    Updated the Logtalk compiler to use the "modules" compiler flag when
+    testing for Prolog module support, thus avoid compilation issues with
+    back-end Prolog compilers that don't support a module system but still
+    define (:)/2 as a built-in control construct or predicate.
 
 
 2.43.1 - September 12, 2011

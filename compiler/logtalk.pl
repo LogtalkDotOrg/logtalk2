@@ -2037,7 +2037,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 43, 1)).
+current_logtalk_flag(version, version(2, 43, 2)).
 
 
 
@@ -9947,7 +9947,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 % calling explicitly qualified module predicates
 
 '$lgt_tr_body'(':'(Module, Pred), TPred, DPred, Ctx) :-
-	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
+	'$lgt_compiler_flag'(modules, supported),
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -9988,8 +9988,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_body'(current_predicate(Term), TPred, DPred, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),
-	% back-end Prolog compiler supports modules
+	'$lgt_compiler_flag'(modules, supported),
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -10009,8 +10008,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_body'(predicate_property(Term, Prop), TPred, DPred, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),
-	% back-end Prolog compiler supports modules
+	'$lgt_compiler_flag'(modules, supported),
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -10033,8 +10031,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_body'(abolish(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),
-	% back-end Prolog compiler supports modules
+	'$lgt_compiler_flag'(modules, supported),
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -10082,8 +10079,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_body'(asserta(QClause), TCond, DCond, Ctx) :-
 	nonvar(QClause),
 	QClause = ':'(Module, Clause),
-	'$lgt_pl_built_in'(':'(_, _)),
-	% back-end Prolog compiler supports modules
+	'$lgt_compiler_flag'(modules, supported),
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -10136,8 +10132,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_body'(assertz(QClause), TCond, DCond, Ctx) :-
 	nonvar(QClause),
 	QClause = ':'(Module, Clause),
-	'$lgt_pl_built_in'(':'(_, _)),
-	% back-end Prolog compiler supports modules
+	'$lgt_compiler_flag'(modules, supported),
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -10190,8 +10185,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_body'(clause(QHead, Body), TCond, DCond, Ctx) :-
 	nonvar(QHead),
 	QHead = ':'(Module, Head),
-	'$lgt_pl_built_in'(':'(_, _)),
-	% back-end Prolog compiler supports modules
+	'$lgt_compiler_flag'(modules, supported),
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -10231,8 +10225,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_body'(retract(QClause), TCond, DCond, Ctx) :-
 	nonvar(QClause),
 	QClause = ':'(Module, Clause),
-	'$lgt_pl_built_in'(':'(_, _)),
-	% back-end Prolog compiler supports modules
+	'$lgt_compiler_flag'(modules, supported),
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -10287,8 +10280,7 @@ current_logtalk_flag(version, version(2, 43, 1)).
 '$lgt_tr_body'(retractall(QHead), TCond, DCond, Ctx) :-
 	nonvar(QHead),
 	QHead = ':'(Module, Head),
-	'$lgt_pl_built_in'(':'(_, _)),
-	% back-end Prolog compiler supports modules
+	'$lgt_compiler_flag'(modules, supported),
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
