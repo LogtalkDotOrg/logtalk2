@@ -3,9 +3,9 @@
 	extends(number)).
 
 	:- info([
-		version is 1.5,
+		version is 1.51,
 		author is 'Paulo Moura',
-		date is 2009/7/6,
+		date is 2011/9/19,
 		comment is 'Integer data type predicates.']).
 
 	:- public(between/3).
@@ -26,7 +26,7 @@
 	:- public(succ/2).
 	:- mode(succ(+integer, ?integer), zero_or_one).
 	:- mode(succ(?integer, +integer), zero_or_one).
-	:- info(plus/2, [
+	:- info(succ/2, [
 		comment is 'Successor of a natural number. At least one of the arguments must be instantiated to a natural number.',
 		argnames is ['I', 'J']]).
 
