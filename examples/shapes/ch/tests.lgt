@@ -3,21 +3,21 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.1,
+		version is 1.11,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2011/05/04,
+		date is 2011/09/20,
 		comment is 'Unit tests for the "shapes_ch" example.']).
 
-	throws(ch_1, error(existence_error(predicate_declaration,nsides/1), logtalk(_,_))) :-
+	throws(shapes_ch_1, error(existence_error(predicate_declaration,nsides/1), logtalk(_,_))) :-
 		square::nsides(_).
 
 	% don't use message broadcasting syntax in order to workaround a XSB parser bug
-	test(ch_2) :-
+	test(shapes_ch_2) :-
 		q1::color(Color), q1::side(Side), q1::position(X, Y),
 		Color == red, Side == 1, X == 0, Y == 0.
 
 	% don't use message broadcasting syntax in order to workaround a XSB parser bug
-	test(ch_3) :-
+	test(shapes_ch_3) :-
 		q2::side(Side), q2::area(Area), q2::perimeter(Perimeter),
 		Side == 3, Area == 9, Perimeter == 12.
 
