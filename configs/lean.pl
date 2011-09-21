@@ -11,7 +11,7 @@
 %
 %  configuration file for Lean Prolog 2.19.0 and later versions
 %
-%  last updated: September 12, 2011
+%  last updated: September 21, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -414,7 +414,7 @@ to_engine(Interactor, Pattern, Goal) :-
 		atom_concat(Source, Extension, File),
 		atomic_list_concat(['fcompile(\'', Source, '\')'], Arg),
 		atom_concat(Source, '.wam', WamFile),
-		bg(system([lprolog, Arg], _)),
+		bg(system([lprolog, Arg, halt], _)),
 		repeat,
 		exists_file(WamFile),
 		!
