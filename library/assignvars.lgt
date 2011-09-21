@@ -9,8 +9,8 @@ version 2.1 (http://opensource.org/licenses/osl-2.1.php).
 */
 
 
-:-op(100, xfx, '<=').
-:-op(100, xfx, '=>').
+:- op(100, xfx, '<=').
+:- op(100, xfx, '=>').
 
 
 :- category(assignvars).
@@ -54,8 +54,8 @@ version 2.1 (http://opensource.org/licenses/osl-2.1.php).
 		exceptions is [
 			'Variable is not instantiated' - instantiation_error]]).
 
-	:-op(100, xfx, <=).
-	:-op(100, xfx, =>).
+	:- op(100, xfx, <=).
+	:- op(100, xfx, =>).
 
 	assignable(Assig) :-
 		nonvar(Assig),
