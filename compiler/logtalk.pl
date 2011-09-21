@@ -854,6 +854,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	;	true
 	),
 	'$lgt_clean_pp_clauses',
+	'$lgt_save_global_op_table',
 	'$lgt_tr_object_identifier'(Obj),
 	'$lgt_tr_object_relations'(Rels, Obj),
 	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context for compiling
@@ -865,6 +866,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_gen_object_clauses',
 	'$lgt_gen_object_directives',
 	'$lgt_assert_tr_entity',
+	'$lgt_restore_global_op_table',
 	'$lgt_clean_pp_clauses'.
 
 
@@ -899,6 +901,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	;	true
 	),
 	'$lgt_clean_pp_clauses',
+	'$lgt_save_global_op_table',
 	'$lgt_tr_category_identifier'(Ctg),
 	'$lgt_tr_category_relations'(Rels, Ctg),
 	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context for compiling
@@ -910,6 +913,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_gen_category_clauses',
 	'$lgt_gen_category_directives',
 	'$lgt_assert_tr_entity',
+	'$lgt_restore_global_op_table',
 	'$lgt_clean_pp_clauses'.
 
 
@@ -943,6 +947,7 @@ create_protocol(Ptc, Rels, Dirs) :-
 	;	true
 	),
 	'$lgt_clean_pp_clauses',
+	'$lgt_save_global_op_table',
 	'$lgt_tr_protocol_identifier'(Ptc),
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
 	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context
@@ -950,6 +955,7 @@ create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
+	'$lgt_restore_global_op_table',
 	'$lgt_clean_pp_clauses'.
 
 
