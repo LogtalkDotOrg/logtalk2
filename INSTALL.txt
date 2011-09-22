@@ -118,9 +118,9 @@ and non-admin users) takes care of the definition of the environment variables.
 
 3. END-USER SETUP (COPYING LOGTALK USER-MODIFIABLE FILES TO USERS HOME DIRS)
 
-If you installed Logtalk on your home directory, then skip this step if you 
-have set both Logtalk environment variables (LOGTALKHOME and LOGTALKUSER) to 
-point to the same directory.
+If you installed Logtalk on your home directory, then skip this step if and only
+if you have set both Logtalk environment variables (LOGTALKHOME and LOGTALKUSER)
+to point to the same directory.
 
 Each user must make a local copy of the Logtalk user-modifiable files
 (examples, libraries, and other supporting files) in his/her home directory.

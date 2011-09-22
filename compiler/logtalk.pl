@@ -130,7 +130,7 @@
 :- dynamic('$lgt_debugger.invocation_number_'/1).	% '$lgt_debugger.invocation_number_'(N)
 
 
-% runtime flags
+% runtime flag values
 
 :- dynamic('$lgt_current_flag_'/2).					% '$lgt_current_flag_'(Option, Value)
 
@@ -383,8 +383,8 @@ Obj<<Goal :-
 	).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/6), _)) :-
-	once((  atom_concat(Prefix, '_idcl', TFunctor)
-		;   atom_concat(Prefix, '_dcl', TFunctor)
+	once((	atom_concat(Prefix, '_idcl', TFunctor)
+		;	atom_concat(Prefix, '_dcl', TFunctor)
 	)),
 	'$lgt_reverse_entity_prefix'(Prefix, Obj),
 	(	'$lgt_instantiates_class_'(_, Obj, _)
@@ -2419,7 +2419,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 			;	throw(error(permission_error(modify, protected_predicate, Pred), logtalk(Obj::abolish(Functor/Arity), Sender)))
 			)
 		)
-	;	% no static predicate declaration; check for a dynamic declaration 
+	;	% no static predicate declaration; check for a dynamic declaration
 		functor(DDclClause, DDcl, 2),
 		arg(1, DDclClause, Pred),
 		call(DDclClause) ->
@@ -2512,7 +2512,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	!,
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::asserta(Head), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
-		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
+		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, Update),
 			(	'$lgt_debugging_entity_'(Obj) ->
 				asserta((THead :- '$lgt_debugger.fact'(Head, 0, ExCtx)))
@@ -2560,7 +2560,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	!,
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
-		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
+		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, _),
 			'$lgt_goal_meta_vars'(Head, Meta, MetaVars),
 			'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, MetaVars, _, ExCtx, runtime, _),
@@ -2593,7 +2593,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	!,
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::assertz(Head), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
-		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
+		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, Update),
 			(	'$lgt_debugging_entity_'(Obj) ->
 				assertz((THead :- '$lgt_debugger.fact'(Head, 0, ExCtx)))
@@ -2966,7 +2966,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 % '$lgt_add_db_lookup_cache_entry'(@object_identifier, @callable, @callable, +atom, @object_identifier, @callable)
 %
-% adds a new database lookup cache entry (when an update goal is not needed)
+% adds a new database lookup cache entry (when an update goal is not required)
 
 '$lgt_add_db_lookup_cache_entry'(Obj, Head, Scope, Type, Sender, THead) :-
 	'$lgt_term_template'(Obj, GObj),
@@ -6350,7 +6350,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	),
 	op(Priority, Spec, Operator),
 	assertz('$lgt_pp_file_op_'(Priority, Spec, Operator)).
-	
+
 
 
 % '$lgt_activate_entity_operators'(+integer, +operator_specifier, +atom_or_atom_list, +scope)
@@ -6936,7 +6936,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	'$lgt_tr_protocol_relations'(Rels, Ptc).
 
 '$lgt_tr_directive'(end_protocol, [], _) :-
-	(   '$lgt_pp_protocol_'(Ptc, _, _, _, _) ->
+	(	'$lgt_pp_protocol_'(Ptc, _, _, _, _) ->
 		'$lgt_add_entity_properties'(end, Ptc),
 		'$lgt_add_entity_predicate_properties'(Ptc),
 		'$lgt_tr_entity'(protocol, Ptc),
@@ -7053,13 +7053,13 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	!,
 	assertz('$lgt_pp_dynamic_'),
 	% update entity compilation mode to "dynamic":
-	(   retract('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags0)) ->
+	(	retract('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags0)) ->
 		Flags is Flags0 \/ 2,
 		assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags))
-	;   retract('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags0)) ->
+	;	retract('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags0)) ->
 		Flags is Flags0 \/ 2,
 		assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags))
-	;   retract('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags0)),
+	;	retract('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags0)),
 		Flags is Flags0 \/ 2,
 		assertz('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags))
 	).
@@ -10762,7 +10762,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 		\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
 		\+ '$lgt_pp_protected_'(Functor, Arity),		% built-in... unless
 		\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
-		\+ '$lgt_pp_redefined_built_in_'(Pred, _, _),   % yet to be compiled
+		\+ '$lgt_pp_redefined_built_in_'(Pred, _, _),	% yet to be compiled
 		TPred = '$lgt_call_built_in'(Pred, Pred, ExCtx)
 	),
 	DPred = '$lgt_debugger.goal'(Pred, TPred, ExCtx),
@@ -11291,11 +11291,11 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	nonvar(Obj),
 	Obj = {Proxy},
 	!,
-	(   var(Proxy) ->
+	(	var(Proxy) ->
 		'$lgt_tr_msg'(Pred, Proxy, TPred, This)
-	;   callable(Proxy) ->
+	;	callable(Proxy) ->
 		'$lgt_tr_msg'(Pred, Proxy, TPred, This)
-	;   throw(type_error(object_identifier, Proxy))
+	;	throw(type_error(object_identifier, Proxy))
 	).
 
 
@@ -11650,7 +11650,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	'$lgt_term_template'(Pred, Head),			% "super" call to the predicate being redefined
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
+	(	'$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		TPred = '$lgt_obj_super_call_same_'(Super, Pred, ExCtx)
 	;	'$lgt_pp_category_'(Ctg, _, _, _, _, _),
 		TPred = '$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx)
@@ -11658,7 +11658,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 '$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% "super" call to a predicate other than the one being
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),		% redefined or to a predicate only know at runtime
-	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
+	(	'$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		(	var(Pred) ->
 			TPred = '$lgt_obj_super_call_other'(Super, Pred, ExCtx)
 		;	TPred = '$lgt_obj_super_call_other_'(Super, Pred, ExCtx)
@@ -12651,8 +12651,8 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	functor(HeadDefTemplate, TFunctor, TArity),
 	'$lgt_unify_head_thead_args'(Arity, HeadTemplate, HeadDefTemplate),
 	arg(TArity, HeadDefTemplate, ExCtxTemplate),
-	once((  '$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _)
-		;   '$lgt_pp_category_'(_, _, _, Def, _, _)
+	once((	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _)
+		;	'$lgt_pp_category_'(_, _, _, Def, _, _)
 	)),
 	functor(Clause, Def, 3),
 	arg(1, Clause, HeadTemplate),
@@ -12745,7 +12745,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 % retracts a dynamic "ddef clause" (used to translate a predicate call)
 % if there are no more clauses for the predicate otherwise does nothing
 %
-% this is needed in order to allow definitions in ancestors to be found
+% this is required in order to allow definitions in ancestors to be found
 
 '$lgt_update_ddef_table'(DDef, Head, THead) :-
 	'$lgt_term_template'(THead, GTHead),
@@ -12764,7 +12764,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 % retracts a dynamic "ddef clause" (used to translate a predicate call)
 % if there are no more clauses for the predicate otherwise does nothing
 %
-% this is needed in order to allow definitions in ancestors to be found
+% this is required in order to allow definitions in ancestors to be found
 
 '$lgt_update_ddef_table_opt'(UClause) :-
 	(	UClause == true ->
@@ -14253,7 +14253,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 % reports possibly missing dynamic directives
 
 '$lgt_report_missing_dynamic_directives'(Type, Entity) :-
-	(   '$lgt_compiler_flag'(missing_directives, warning),
+	(	'$lgt_compiler_flag'(missing_directives, warning),
 		setof(Pred, '$lgt_missing_dynamic_directive'(Pred), Preds) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
@@ -14286,7 +14286,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 % reports possibly missing discontiguous directives
 
 '$lgt_report_missing_discontiguous_directives'(Type, Entity) :-
-	(   '$lgt_compiler_flag'(missing_directives, warning),
+	(	'$lgt_compiler_flag'(missing_directives, warning),
 		setof(Pred, '$lgt_missing_discontiguous_directive'(Pred), Preds) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
@@ -17275,7 +17275,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 % '$lgt_relation_to_xml_filename'(+entity, -atom)
 %
-% needed to build filenames in links to parametric objects
+% required to build filenames in links to parametric objects
 
 '$lgt_relation_to_xml_filename'(Relation, File) :-
 	functor(Relation, Functor, Arity),
@@ -18099,7 +18099,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 '$lgt_mt_non_det_goal'(Queue, Goal, This, Self, Tag) :-
 	thread_self(Id),
 	(	catch(Goal, Error, thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, Error, Id))),
-		(   var(Error) ->
+		(	var(Error) ->
 			thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, success, Id)),
 			thread_get_message(Message),
 			(	Message == '$lgt_next' ->
@@ -18300,7 +18300,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 '$lgt_mt_threaded_call'(TGoal, TVars, Queue) :-
 	thread_self(Id),
-	(   call(TGoal) ->
+	(	call(TGoal) ->
 		thread_send_message(Queue, '$lgt_result'(Id, true(TVars)))
 	;	thread_send_message(Queue, '$lgt_result'(Id, false))
 	).
@@ -19258,7 +19258,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 % checks for a compatible back-end Prolog compiler version
 
 '$lgt_check_prolog_version' :-
-	(	'$lgt_compiler_flag'(report,  off) ->
+	(	'$lgt_compiler_flag'(report, off) ->
 		true
 	;	'$lgt_compiler_flag'(prolog_version, Current),
 		'$lgt_compiler_flag'(prolog_compatible_version, Check),

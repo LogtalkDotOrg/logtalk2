@@ -27,6 +27,10 @@ RELEASE NOTES
     create_object/4, and create_category/4 built-in predicates where the
     local operator declarations would be visible outside the new entities.
 
+    Corrected a bug where creating a new dynamic entity at runtime would
+    define a no longer used bookkeeping dynamic predicate that would not
+    be abolished when the entity is abolished.
+
 
 2.43.1 - September 12, 2011
 
