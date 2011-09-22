@@ -12820,9 +12820,8 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 
 '$lgt_gen_protocol_directives' :-
-	(	'$lgt_pp_protocol_'(_, Prefix, Dcl, Rnm, _),
+	(	'$lgt_pp_protocol_'(_, _, Dcl, Rnm, _),
 		'$lgt_pp_dynamic_' ->
-		assertz('$lgt_pp_directive_'(dynamic(Prefix/2))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
 		assertz('$lgt_pp_directive_'(dynamic(Rnm/3)))
@@ -12898,9 +12897,8 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 
 '$lgt_gen_category_dynamic_directives' :-
-	(	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, _),
+	(	'$lgt_pp_category_'(_, _, Dcl, Def, Rnm, _),
 		'$lgt_pp_dynamic_' ->
-		assertz('$lgt_pp_directive_'(dynamic(Prefix/3))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
 		assertz('$lgt_pp_directive_'(dynamic(Def/3))),
