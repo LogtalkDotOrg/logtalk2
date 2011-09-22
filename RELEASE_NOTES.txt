@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.43.2 - October ??, 2011
 
+    Optimized the processing of operator declarations when compiling source
+    files and dynamically creating new entities.
+
     Updated the Logtalk compiler to use the "modules" compiler flag when
     testing for Prolog module support, thus avoid compilation issues with
     back-end Prolog compilers that don't support a module system but still

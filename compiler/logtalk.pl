@@ -845,7 +845,8 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	catch(
 		'$lgt_create_object'(Obj, Rels, Dirs, Clauses),
 		Error,
-		('$lgt_clean_pp_clauses', throw(error(Error, logtalk(create_object(Obj, Rels, Dirs, Clauses), _))))).
+		'$lgt_create_entity_error_handler'(Error, create_object(Obj, Rels, Dirs, Clauses))
+	).
 
 
 '$lgt_create_object'(Obj, Rels, Dirs, Clauses) :-
@@ -853,8 +854,6 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 		'$lgt_gen_entity_identifier'(o, Obj)
 	;	true
 	),
-	'$lgt_clean_pp_clauses',
-	'$lgt_save_global_op_table',
 	'$lgt_tr_object_identifier'(Obj),
 	'$lgt_tr_object_relations'(Rels, Obj),
 	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context for compiling
@@ -892,7 +891,8 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	catch(
 		'$lgt_create_category'(Ctg, Rels, Dirs, Clauses),
 		Error,
-		('$lgt_clean_pp_clauses', throw(error(Error, logtalk(create_category(Ctg, Rels, Dirs, Clauses), _))))).
+		'$lgt_create_entity_error_handler'(Error, create_category(Ctg, Rels, Dirs, Clauses))
+	).
 
 
 '$lgt_create_category'(Ctg, Rels, Dirs, Clauses) :-
@@ -900,8 +900,6 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 		'$lgt_gen_entity_identifier'(c, Ctg)
 	;	true
 	),
-	'$lgt_clean_pp_clauses',
-	'$lgt_save_global_op_table',
 	'$lgt_tr_category_identifier'(Ctg),
 	'$lgt_tr_category_relations'(Rels, Ctg),
 	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context for compiling
@@ -938,7 +936,8 @@ create_protocol(Ptc, Rels, Dirs) :-
 	catch(
 		'$lgt_create_protocol'(Ptc, Rels, Dirs),
 		Error,
-		('$lgt_clean_pp_clauses', throw(error(Error, logtalk(create_protocol(Ptc, Rels, Dirs), _))))).
+		'$lgt_create_entity_error_handler'(Error, create_protocol(Ptc, Rels, Dirs))
+	).
 
 
 '$lgt_create_protocol'(Ptc, Rels, Dirs) :-
@@ -946,8 +945,6 @@ create_protocol(Ptc, Rels, Dirs) :-
 		'$lgt_gen_entity_identifier'(p, Ptc)
 	;	true
 	),
-	'$lgt_clean_pp_clauses',
-	'$lgt_save_global_op_table',
 	'$lgt_tr_protocol_identifier'(Ptc),
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
 	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context
@@ -980,6 +977,17 @@ create_protocol(Ptc, Rels, Dirs) :-
 '$lgt_next_integer'(I, J) :-
 	I2 is I + 1,
 	'$lgt_next_integer'(I2, J).
+
+
+
+% '$lgt_create_entity_error_handler'(@nonvar, @callable)
+%
+% error handler for the dynamic entity creation built-in predicates
+
+'$lgt_create_entity_error_handler'(Error, Goal) :-
+	'$lgt_restore_global_op_table',
+	'$lgt_clean_pp_clauses',
+	throw(error(Error, logtalk(Goal, _))).
 
 
 
@@ -5573,7 +5581,6 @@ current_logtalk_flag(version, version(2, 43, 2)).
 % compiles a source file storing the resulting code in memory
 
 '$lgt_tr_file'(File) :-
-	'$lgt_save_global_op_table',
 	'$lgt_file_name'(logtalk, File, Basename, Source),
 	'$lgt_current_directory'(Directory),
 	asserta('$lgt_pp_file_path_'(Basename, Directory)),
@@ -6278,19 +6285,6 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 
 
-% '$lgt_save_global_op_table'
-%
-% saves current operator table
-
-'$lgt_save_global_op_table' :-
-	current_op(Pr, Spec, Op),
-		assertz('$lgt_pp_global_op_'(Pr, Spec, Op)),
-	fail.
-
-'$lgt_save_global_op_table'.
-
-
-
 % '$lgt_restore_global_op_table'
 %
 % restores current operator table
@@ -6301,31 +6295,16 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	fail.
 
 '$lgt_restore_global_op_table' :-
-	retractall('$lgt_pp_file_op_'(_, _, ',')),		% ','/2 cannot be an argument to op/3
 	retract('$lgt_pp_file_op_'(_, Spec, Op)),
-		catch(op(0, Spec, Op), _, fail),			% some Prolog compilers may define other operators as non-redefinable
+		op(0, Spec, Op),
 	fail.
 
 '$lgt_restore_global_op_table' :-
-	retractall('$lgt_pp_global_op_'(_, _, ',')),	% ','/2 cannot be an argument to op/3
 	retract('$lgt_pp_global_op_'(Pr, Spec, Op)),
-		catch(op(Pr, Spec, Op), _, fail),			% some Prolog compilers may define other operators as non-redefinable
+		op(Pr, Spec, Op),
 	fail.
 
 '$lgt_restore_global_op_table'.
-
-
-
-% '$lgt_save_file_op_table'
-%
-% saves current operator table
-
-'$lgt_save_file_op_table' :-
-	current_op(Pr, Spec, Op),
-		assertz('$lgt_pp_file_op_'(Pr, Spec, Op)),
-	fail.
-
-'$lgt_save_file_op_table'.
 
 
 
@@ -6339,29 +6318,65 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	fail.
 
 '$lgt_restore_file_op_table' :-
-	retractall('$lgt_pp_file_op_'(_, _, ',')),		% ','/2 cannot be an argument to op/3
 	retract('$lgt_pp_file_op_'(Pr, Spec, Op)),
-		catch(op(Pr, Spec, Op), _, fail),			% some Prolog compilers may define other operators as non-redefinable
+		op(Pr, Spec, Op),
 	fail.
 
 '$lgt_restore_file_op_table'.
 
 
 
-% '$lgt_assert_entity_operators'(+integer, +operator_specifier, +atom_or_atom_list, +scope)
+% '$lgt_activate_file_operators'(+integer, +operator_specifier, +atom_or_atom_list)
+%
+% asserts local file operators
+
+'$lgt_activate_file_operators'(_, _, []) :-
+	!.
+
+'$lgt_activate_file_operators'(Priority, Spec, [Operator| Operators]) :-
+	!,
+	'$lgt_activate_file_operator'(Priority, Spec, Operator),
+	'$lgt_activate_file_operators'(Priority, Spec, Operators).
+
+'$lgt_activate_file_operators'(Priority, Spec, Operator) :-
+	'$lgt_activate_file_operator'(Priority, Spec, Operator).
+
+
+'$lgt_activate_file_operator'(Priority, Spec, Operator) :-
+	(	current_op(OriginalPriority, OriginalSpec, Operator),
+	 	'$lgt_same_op_class'(Spec, OriginalSpec) ->
+		assertz('$lgt_pp_global_op_'(OriginalPriority, OriginalSpec, Operator))
+	;	true
+	),
+	op(Priority, Spec, Operator),
+	assertz('$lgt_pp_file_op_'(Priority, Spec, Operator)).
+	
+
+
+% '$lgt_activate_entity_operators'(+integer, +operator_specifier, +atom_or_atom_list, +scope)
 %
 % asserts local entity operators
 
-'$lgt_assert_entity_operators'(_, _, [], _) :-
+'$lgt_activate_entity_operators'(_, _, [], _) :-
 	!.
 
-'$lgt_assert_entity_operators'(Pr, Spec, [Op| Ops], Scope) :-
+'$lgt_activate_entity_operators'(Priority, Spec, [Operator| Operators], Scope) :-
 	!,
-	assertz('$lgt_pp_entity_op_'(Pr, Spec, Op, Scope)),
-	'$lgt_assert_entity_operators'(Pr, Spec, Ops, Scope).
+	'$lgt_activate_entity_operator'(Priority, Spec, Operator, Scope),
+	'$lgt_activate_entity_operators'(Priority, Spec, Operators, Scope).
 
-'$lgt_assert_entity_operators'(Pr, Spec, Op, Scope) :-
-	assertz('$lgt_pp_entity_op_'(Pr, Spec, Op, Scope)).
+'$lgt_activate_entity_operators'(Priority, Spec, Operator, Scope) :-
+	'$lgt_activate_entity_operator'(Priority, Spec, Operator, Scope).
+
+
+'$lgt_activate_entity_operator'(Priority, Spec, Operator, Scope) :-
+	(	current_op(OriginalPriority, OriginalSpec, Operator),
+	 	'$lgt_same_op_class'(Spec, OriginalSpec) ->
+		assertz('$lgt_pp_file_op_'(OriginalPriority, OriginalSpec, Operator))
+	;	true
+	),
+	op(Priority, Spec, Operator),
+	assertz('$lgt_pp_entity_op_'(Priority, Spec, Operator, Scope)).
 
 
 
@@ -6831,14 +6846,9 @@ current_logtalk_flag(version, version(2, 43, 2)).
 '$lgt_tr_file_directive'(op(Priority, Spec, Operators), _) :-
 	!,
 	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
-	% op/3 directives must be used during entity compilation
-	op(Priority, Spec, Operators),
+	'$lgt_activate_file_operators'(Priority, Spec, Operators),
 	'$lgt_pp_term_location'(Location),
-	assertz('$lgt_pp_prolog_term_'((:- op(Priority, Spec, Operators)), Location)),
-	(   atom(Operators) ->
-		assertz('$lgt_pp_file_op_'(Priority, Spec, Operators))
-	;	forall('$lgt_member'(Operator, Operators), assertz('$lgt_pp_file_op_'(Priority, Spec, Operator)))
-	).
+	assertz('$lgt_pp_prolog_term_'((:- op(Priority, Spec, Operators)), Location)).
 
 '$lgt_tr_file_directive'(set_logtalk_flag(Flag, Value), _) :-
 	!,
@@ -6885,7 +6895,6 @@ current_logtalk_flag(version, version(2, 43, 2)).
 '$lgt_tr_directive'(object, [Obj| Rels], _) :-
 	'$lgt_report_compiling_entity'(object, Obj),
 	'$lgt_add_entity_properties'(start, Obj),
-	'$lgt_save_file_op_table',
 	% assume static object
 	'$lgt_tr_object_identifier'(Obj),
 	'$lgt_tr_object_relations'(Rels, Obj).
@@ -6922,7 +6931,6 @@ current_logtalk_flag(version, version(2, 43, 2)).
 '$lgt_tr_directive'(protocol, [Ptc| Rels], _) :-
 	'$lgt_report_compiling_entity'(protocol, Ptc),
 	'$lgt_add_entity_properties'(start, Ptc),
-	'$lgt_save_file_op_table',
 	% assume static protocol
 	'$lgt_tr_protocol_identifier'(Ptc),
 	'$lgt_tr_protocol_relations'(Rels, Ptc).
@@ -6960,7 +6968,6 @@ current_logtalk_flag(version, version(2, 43, 2)).
 '$lgt_tr_directive'(category, [Ctg| Rels], _) :-
 	'$lgt_report_compiling_entity'(category, Ctg),
 	'$lgt_add_entity_properties'(start, Ctg),
-	'$lgt_save_file_op_table',
 	% assume static category
 	'$lgt_tr_category_identifier'(Ctg),
 	'$lgt_tr_category_relations'(Rels, Ctg).
@@ -6988,7 +6995,6 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	% remember we are compiling a module
 	assertz('$lgt_pp_module_'(Module)),
 	'$lgt_report_compiling_entity'(module, Module),
-	'$lgt_save_file_op_table',
 	% assume static module/object
 	'$lgt_tr_object_identifier'(Module),
 	'$lgt_split_operators_and_predicates'(Exports, Preds, Ops),
@@ -7078,8 +7084,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 '$lgt_tr_directive'(op, [Priority, Spec, Operators], _) :-
 	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
-	op(Priority, Spec, Operators),
-	'$lgt_assert_entity_operators'(Priority, Spec, Operators, (local)).
+	'$lgt_activate_entity_operators'(Priority, Spec, Operators, (local)).
 
 
 % uses/2 entity directive
@@ -7429,8 +7434,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	!,
 	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
-	op(Priority, Spec, Operators),
-	'$lgt_assert_entity_operators'(Priority, Spec, Operators, (public)),
+	'$lgt_activate_entity_operators'(Priority, Spec, Operators, (public)),
 	'$lgt_tr_public_directive'(Preds).
 
 '$lgt_tr_public_directive'([Pred| Preds]) :-
@@ -7469,8 +7473,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	!,
 	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
-	op(Priority, Spec, Operators),
-	'$lgt_assert_entity_operators'(Priority, Spec, Operators, protected),
+	'$lgt_activate_entity_operators'(Priority, Spec, Operators, protected),
 	'$lgt_tr_protected_directive'(Preds).
 
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
@@ -7509,8 +7512,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	!,
 	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
-	op(Priority, Spec, Operators),
-	'$lgt_assert_entity_operators'(Priority, Spec, Operators, private),
+	'$lgt_activate_entity_operators'(Priority, Spec, Operators, private),
 	'$lgt_tr_private_directive'(Preds).
 
 '$lgt_tr_private_directive'([Pred| Preds]) :-
@@ -10433,6 +10435,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 
 % term input predicates that need to be operator aware
+% (these translations are only applied if there are local entity operators declared)
 
 '$lgt_tr_body'(read_term(Stream, Term, Options), '$lgt_iso_read_term'(Stream, Term, Options, Ops), '$lgt_debugger.goal'(read_term(Stream, Term, Options), '$lgt_iso_read_term'(Stream, Term, Options, Ops), ExCtx), Ctx) :-
 	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
@@ -10456,6 +10459,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 
 % term output predicates that need to be operator aware
+% (these translations are only applied if there are local entity operators declared)
 
 '$lgt_tr_body'(write_term(Stream, Term, Options), '$lgt_iso_write_term'(Stream, Term, Options, Ops), '$lgt_debugger.goal'(write_term(Stream, Term, Options), '$lgt_iso_write_term'(Stream, Term, Options, Ops), ExCtx), Ctx) :-
 	('$lgt_member'(ignore_ops(Value), Options) -> Value \== true; true),
@@ -15859,7 +15863,11 @@ current_logtalk_flag(version, version(2, 43, 2)).
 
 
 
-% '$lgt_same_op_class'(?atom, ?atom)
+% '$lgt_same_op_class'(+atom, +atom)
+%
+% this utility predicate is used when defining new operators using op/3
+% in order to know if there's an operator of the same class that should
+% be backed up
 
 '$lgt_same_op_class'(fx, fx).
 '$lgt_same_op_class'(fx, fy).
