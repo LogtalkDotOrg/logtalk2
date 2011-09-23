@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: August 28, 2011
+%  last updated: September 23, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -317,7 +317,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_default_flag'(clean, on).
 '$lgt_default_flag'(smart_compilation, off).
 '$lgt_default_flag'(reload, always).
-'$lgt_default_flag'(startup_message, flags(compact)).
+'$lgt_default_flag'(startup_message, flags).
 '$lgt_default_flag'(code_prefix, '$').
 '$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(source_data, on).

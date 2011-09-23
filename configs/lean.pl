@@ -11,7 +11,7 @@
 %
 %  configuration file for Lean Prolog 2.19.0 and later versions
 %
-%  last updated: September 21, 2011
+%  last updated: September 23, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -275,7 +275,7 @@ to_engine(Interactor, Pattern, Goal) :-
 '$lgt_default_flag'(clean, on).
 '$lgt_default_flag'(smart_compilation, off).
 '$lgt_default_flag'(reload, always).
-'$lgt_default_flag'(startup_message, flags(compact)).
+'$lgt_default_flag'(startup_message, flags).
 '$lgt_default_flag'(code_prefix, '$').
 '$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(source_data, on).

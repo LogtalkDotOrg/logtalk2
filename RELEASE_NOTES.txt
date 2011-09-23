@@ -23,6 +23,10 @@ RELEASE NOTES
     back-end Prolog compilers that don't support a module system but still
     define (:)/2 as a built-in control construct or predicate.
 
+    Removed support for the "startup_message" compiler flag "flags(compact)"
+    and "flags(verbose)" values, replaced by a single value, "flags", which
+    corresponds to the old "flags(compact)" value.
+
     Corrected a bug when using op/3 directives with the create_protocol/3,
     create_object/4, and create_category/4 built-in predicates where the
     local operator declarations would be visible outside the new entities.
