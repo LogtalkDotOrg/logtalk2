@@ -89,6 +89,9 @@ When running the tests, pay special attention to the empty loop times. If
 the times for the empty loop are not stable across tests, try to use an
 higher value (than the default one) as argument of the run/1 predicate.
 
+When the number of benchmark test repetitions is too low, you may get a
+"Number of calls per second: n/a" result.
+
 The test that creates and abolishes empty objects may take a long time to
 complete when compared with all the other tests.
 

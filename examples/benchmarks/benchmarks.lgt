@@ -2,9 +2,9 @@
 :- object(benchmarks).
 
 	:- info([
-		version is 5.0,
+		version is 5.1,
 		author is 'Paulo Moura',
-		date is 2010/11/14,
+		date is 2011/09/23,
 		comment is 'Benchmark utility predicates and standard set of benchmarks.']).
 
 	:- public(run/0).
@@ -58,7 +58,7 @@
 		{'$lgt_cpu_time'(Seconds4)},
 		Goaltime is Seconds4 - Seconds3,
 		Average is (Goaltime - Looptime)/N,
-		Speed is round(1.0/Average).
+		catch(Speed is round(1.0/Average), _, Speed = 'n/a').
 
 	report(Id, Goal, N, Looptime, Goaltime, Average, Speed) :-
 		write(Id), write(': '),
