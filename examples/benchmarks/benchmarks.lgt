@@ -2,9 +2,9 @@
 :- object(benchmarks).
 
 	:- info([
-		version is 5.1,
+		version is 5.2,
 		author is 'Paulo Moura',
-		date is 2011/09/23,
+		date is 2011/09/24,
 		comment is 'Benchmark utility predicates and standard set of benchmarks.']).
 
 	:- public(run/0).
@@ -37,37 +37,37 @@
 	% run all benchmark tests N times:
 	run(N) :-
 		benchmark(Id, Goal),
-		run(Id, N, Looptime, Goaltime, Average, Speed),
-		report(Id, Goal, N, Looptime, Goaltime, Average, Speed),
+		run(Id, N, LoopTime, GoalTime, Average, Speed),
+		report(Id, Goal, N, LoopTime, GoalTime, Average, Speed),
 		fail.
 	run(_).
 
 	% run a specific benchmark test:
 	run(Id, N) :-
 		benchmark(Id, Goal),
-		run(Id, N, Looptime, Goaltime, Average, Speed),
-		report(Id, Goal, N, Looptime, Goaltime, Average, Speed).
+		run(Id, N, LoopTime, GoalTime, Average, Speed),
+		report(Id, Goal, N, LoopTime, GoalTime, Average, Speed).
 
-	run(Id, N, Looptime, Goaltime, Average, Speed) :-
+	run(Id, N, LoopTime, GoalTime, Average, Speed) :-
 		{'$lgt_cpu_time'(Seconds1)},		% defined in the config files
 		do_benchmark(empty_loop, N),
 		{'$lgt_cpu_time'(Seconds2)},
-		Looptime is Seconds2 - Seconds1,
+		LoopTime is Seconds2 - Seconds1,
 		{'$lgt_cpu_time'(Seconds3)},
 		do_benchmark(Id, N),
 		{'$lgt_cpu_time'(Seconds4)},
-		Goaltime is Seconds4 - Seconds3,
-		Average is (Goaltime - Looptime)/N,
+		GoalTime is Seconds4 - Seconds3,
+		Average is (GoalTime - LoopTime)/N,
 		catch(Speed is round(1.0/Average), _, Speed = 'n/a').
 
-	report(Id, Goal, N, Looptime, Goaltime, Average, Speed) :-
-		write(Id), write(': '),
+	report(Id, Goal, N, LoopTime, GoalTime, Average, Speed) :-
+		write(Id), write(' goal: '),
 		writeq(Goal), nl,
 		write('Number of repetitions: '), write(N), nl,
-		write('Loop time: '), write(Looptime), nl,
-		write('Goal time: '), write(Goaltime), nl,
-		write('Average time per call: '), write(Average), nl,
-		write('Number of calls per second: '), write(Speed), nl,
+		write('Empty loop time: '), write(LoopTime), nl,
+		write('Goal loop time:  '), write(GoalTime), nl,
+		write('Average goal time: '), write(Average), nl,
+		write('Number of goals per second: '), write(Speed), nl,
 		nl.
 
 	% some benchmark tests for static code:
