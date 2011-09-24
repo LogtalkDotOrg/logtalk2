@@ -329,7 +329,7 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 
 	<dl>
 		<dt><code>prolog_compiler(Options)</code></dt>
-			<dd>Compiler options for the generated Prolog files. The usual default is the empty list. These options are passed to the back-end Prolog compiler built-in predicate that is responsible for compiling to disk a Prolog file.</dd>
+			<dd>Compiler options for the generated Prolog files. The usual default is the empty list. These options are passed to the back-end Prolog compiler built-in predicate that is responsible for compiling to disk a Prolog file. For Prolog compilers that don't provide separate predicates for compiling and loading a file, use instead the <code>prolog_loader/1</code> flag.</dd>
 	</dl>
 	<dl>
 		<dt><code>prolog_loader(Options)</code></dt>
@@ -724,7 +724,7 @@ When objects or categories containing grammar rules are compiled in debug mode, 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: September 23, 2011</span>
+		<span>Last updated on: September 24, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="migration.html">next</a></span><br/>
