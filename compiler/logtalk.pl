@@ -40,7 +40,7 @@
 
 % bitwise left-shift operator (used for context-switching calls)
 
-:- op(400, yfx, <<).	% some Prolog compilers don't declare this operator
+:- op(400, yfx, <<).	% some back-end Prolog compilers don't declare this operator
 
 
 % imported category predicate call operator
@@ -50,7 +50,7 @@
 
 % bitwise right-shift operator (used for lambda expressions)
 
-:- op(400, yfx, >>).	% some Prolog compilers don't declare this operator
+:- op(400, yfx, >>).	% some back-end Prolog compilers don't declare this operator
 
 
 
@@ -1775,7 +1775,7 @@ logtalk_compile(Files, Flags) :-
 	'$lgt_expand_library_path'(Library, Path, 16),
 	(	'$lgt_expand_path'(Path, ExpandedPath) ->
 		true
-	;	% some Prolog compilers don't provide the necessary support for expanding paths
+	;	% some back-end Prolog compilers don't provide the necessary support for expanding paths!
 		ExpandedPath = Path
 	).
 
@@ -1999,7 +1999,7 @@ logtalk_load_context(term_position, Position) :-
 
 logtalk_load_context(stream, Stream) :-
 	stream_property(Stream, alias('$lgt_input')),
-	!.	% avoid a spurious choice-point with some Prolog compilers
+	!.	% avoid a spurious choice-point with some back-end Prolog compilers
 
 
 
@@ -4278,7 +4278,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 %
 %  "user" built-in pseudo-object
 %
-%  represents the Prolog database (excluding built-in predicates)
+%  represents the plain Prolog database (excluding built-in predicates)
 %
 %  the clauses correspond to a virtual compilation of the object using a
 %  "code_prefix" flag set to '$lgt_'
@@ -5614,7 +5614,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 		Error,
 		'$lgt_compiler_error_handler'(Error)),
 	close(NewInput),
-	% finnish writing output Prolog file:
+	% finnish writing generated Prolog file:
 	catch(
 		('$lgt_write_prolog_terms'(Output),								% write out any Prolog code occurring after the last source file entity;
 		 '$lgt_write_runtime_clauses'(Output),							% write entity runtime directives and clauses;
@@ -13803,9 +13803,9 @@ current_logtalk_flag(version, version(2, 43, 2)).
 % we can have a root object where "super" have nowhere to go ...
 
 '$lgt_gen_ic_super_clauses' :-
-	'$lgt_pp_object_'(_, _, _, _, OSuper, _, _, _, _, _, _),
-	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
+	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _, _, _),
 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _),
+	\+ ('$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, _, _, _, _), Class \= Obj),
 	Head =.. [OSuper, _, _, _, _],
 	assertz('$lgt_pp_super_'((Head:-fail))),
 	!.
@@ -19154,7 +19154,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 % creates the message queue for the pseudo-object "user" and initializes the asynchronous
 % threaded calls tag counter support for compilers supporting multi-threading programming
 % (curently we use integers, which impose a limitation on the maximum number of tags on
-% Prolog compilers with bounded integers)
+% back-end Prolog compilers with bounded integers)
 
 '$lgt_start_runtime_threading' :-
 	(	'$lgt_compiler_flag'(threads, supported),

@@ -35,10 +35,15 @@ RELEASE NOTES
     define a no longer used bookkeeping dynamic predicate that would not
     be abolished when the entity is abolished.
 
+    Corrected a compiler bug where a "super" call from within an object that
+    only instantiates itself and doesn't specialize any object would throw an
+    exception instead of failing.
+
     Updated the "benchmarks" example in order to protect against arithmetic
     exceptions when computing the total number of calls per second for each
     test. Reduced the number of benchmark test repetitions when running the
-    unit tests to avoid lengthy computing times with slow Prolog compilers.
+    unit tests to avoid lengthy computing times with slow back-end Prolog
+    compilers.
 
 
 2.43.1 - September 12, 2011
