@@ -2,9 +2,9 @@
 :- object(database).
 
 	:- info([
-		version is 3.0,
+		version is 3.1,
 		author is 'Paulo Moura',
-		date is 2010/10/30,
+		date is 2011/10/03,
 		comment is 'Dynamic database benchmark utility predicates.']).
 
 	:- public(this_dyndb/1).
@@ -30,18 +30,18 @@
 
 	% direct calls to assertz/1 and retract/1:
 	this_dyndb(N) :-
-		assertz(pred_this(N, _, a, 3.14)),
-		retract(pred_this(N, _, _,    _)).
+		retractall(pred_this(N, _, _,    _)),
+		assertz(pred_this(N, _, a, 3.14)).
 
 	% calls to assertz/1 and retract/1 using ::/1:
 	self_dyndb(N) :-
-		::assertz(pred_self(N, _, a, 3.14)),
-		::retract(pred_self(N, _, _,    _)).
+		::retractall(pred_self(N, _, _,    _)),
+		::assertz(pred_self(N, _, a, 3.14)).
 
 	% calls to assertz/1 and retract/1 using ::/2:
 	obj_dyndb(N) :-
 		this(This),
-		This::assertz(pred_obj(N, _, a, 3.14)),
-		This::retract(pred_obj(N, _, _,    _)).
+		This::retractall(pred_obj(N, _, _,    _)),
+		This::assertz(pred_obj(N, _, a, 3.14)).
 
 :- end_object.
