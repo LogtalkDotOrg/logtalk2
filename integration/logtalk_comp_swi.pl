@@ -62,7 +62,7 @@
 )).
 
 % the following index/1 directives may or may not improve performance
-% depending on your application; you can comment out them if necessary
+% depending on your application; you can comment them out if necessary
 :- index('$lgt_send_to_self_'(1, 1, 0)).
 :- index('$lgt_send_to_obj_'(1, 1, 0)).
 :- index('$lgt_send_to_obj_ne_'(1, 1, 0)).

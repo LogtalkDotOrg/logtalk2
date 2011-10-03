@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.43.2 - October ??, 2011
+2.43.2 - October 4, 2011
 
     Optimized the processing of operator declarations when compiling source
     files and dynamically creating new entities.
