@@ -27,8 +27,8 @@ my_member(Element, [_| List]) :-
 :- dynamic(pred_plain/4).
 
 plain_dyndb(N) :-
-	assertz(pred_plain(N, _, a, 3.14)),
-	retract(pred_plain(N, _, _,    _)).
+	retractall(pred_plain(N, _, _,    _)),
+	assertz(pred_plain(N, _, a, 3.14)).
 
 
 my_between(Lower, _, Lower).
