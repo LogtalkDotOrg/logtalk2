@@ -9,7 +9,7 @@
 %  it under the terms of the "Artistic License 2.0" as published by 
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
-%  last updated: May 18, 2011
+%  last updated: October 5, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -63,14 +63,16 @@
 
 % the following index/1 directives may or may not improve performance
 % depending on your application; you can comment them out if necessary
-:- index('$lgt_send_to_self_'(1, 1, 0)).
-:- index('$lgt_send_to_obj_'(1, 1, 0)).
-:- index('$lgt_send_to_obj_ne_'(1, 1, 0)).
-:- index('$lgt_obj_super_call_same_'(1, 1, 0)).
-:- index('$lgt_obj_super_call_other_'(1, 1, 0)).
-:- index('$lgt_ctg_super_call_same_'(1, 1, 0)).
-:- index('$lgt_ctg_super_call_other_'(1, 1, 0)).
-:- index('$lgt_ctg_call_'(1, 1, 0)).
-:- index('$lgt_db_lookup_cache_'(1, 1, 0, 0, 0)).
+:- if(current_predicate(system:index/1)).
+	:- index('$lgt_send_to_self_'(1, 1, 0)).
+	:- index('$lgt_send_to_obj_'(1, 1, 0)).
+	:- index('$lgt_send_to_obj_ne_'(1, 1, 0)).
+	:- index('$lgt_obj_super_call_same_'(1, 1, 0)).
+	:- index('$lgt_obj_super_call_other_'(1, 1, 0)).
+	:- index('$lgt_ctg_super_call_same_'(1, 1, 0)).
+	:- index('$lgt_ctg_super_call_other_'(1, 1, 0)).
+	:- index('$lgt_ctg_call_'(1, 1, 0)).
+	:- index('$lgt_db_lookup_cache_'(1, 1, 0, 0, 0)).
+:- endif.
 
 :- include('../compiler/logtalk.pl').

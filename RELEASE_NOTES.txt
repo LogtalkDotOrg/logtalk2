@@ -15,7 +15,10 @@ RELEASE NOTES
 
 2.43.3 - November ??, 2011
 
-
+    Updated the SWI-Prolog integration files to test for the availability
+    of the index/1 directive, providing compatibility with the experimental
+    SWI-Prolog support for just-in-time multi-argument indexing (which
+    deprecates the index/1 directive).
 
 
 2.43.2 - October 4, 2011
