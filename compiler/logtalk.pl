@@ -2051,7 +2051,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 43, 2)).
+current_logtalk_flag(version, version(2, 43, 3)).
 
 
 
@@ -2485,7 +2485,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 			'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, MetaVars, _, ExCtx, runtime, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_entity_'(Obj) ->
-				asserta((THead :- ('$lgt_nop'(Body), '$lgt_debugger.head'(Head, 0, ExCtx), DBody)))
+				asserta((THead :- ('$lgt_nop'(Body), '$lgt_debugger.rule'(Head, 0, ExCtx), DBody)))
 			;	asserta((THead :- ('$lgt_nop'(Body), TBody)))
 			)
 		;	% predicate is not within the scope of the sender:
@@ -2566,7 +2566,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 			'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, MetaVars, _, ExCtx, runtime, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_entity_'(Obj) ->
-				assertz((THead :- ('$lgt_nop'(Body), '$lgt_debugger.head'(Head, 0, ExCtx), DBody)))
+				assertz((THead :- ('$lgt_nop'(Body), '$lgt_debugger.rule'(Head, 0, ExCtx), DBody)))
 			;	assertz((THead :- ('$lgt_nop'(Body), TBody)))
 			)
 		;	% predicate is not within the scope of the sender:
@@ -4720,7 +4720,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	).
 
 
-'$lgt_debugger.head'(Head, N, ExCtx) :-
+'$lgt_debugger.rule'(Head, N, ExCtx) :-
 	(	'$lgt_debugger.debugging_', \+ '$lgt_debugger.skipping_' ->
 		'$lgt_debugger.port'(rule(N), _, Head, _, ExCtx, Action),
 		call(Action)
@@ -8871,7 +8871,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	!,
 	'$lgt_tr_clause'((CoinductiveHead :- Body), TClause, DClause, HeadCtx, BodyCtx).
 
-'$lgt_tr_clause'((Head:-Body), (THead:-'$lgt_nop'(Body), SBody), (THead:-'$lgt_nop'(Body),'$lgt_debugger.head'(DHead, N, ExCtx),DBody), HeadCtx, BodyCtx) :-
+'$lgt_tr_clause'((Head:-Body), (THead:-'$lgt_nop'(Body), SBody), (THead:-'$lgt_nop'(Body),'$lgt_debugger.rule'(DHead, N, ExCtx),DBody), HeadCtx, BodyCtx) :-
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
@@ -8893,7 +8893,7 @@ current_logtalk_flag(version, version(2, 43, 2)).
 	),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx).
 
-'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_debugger.head'(DHead, N, ExCtx),DBody), HeadCtx, BodyCtx) :-
+'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_debugger.rule'(DHead, N, ExCtx),DBody), HeadCtx, BodyCtx) :-
 	!,
 	'$lgt_head_meta_vars'(Head, MetaVars),
 	'$lgt_comp_ctx_meta_vars'(HeadCtx, MetaVars),
