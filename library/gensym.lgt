@@ -2,9 +2,9 @@
 :- object(gensym).
 
 	:- info([
-		version is 1.0,
+		version is 1.01,
 		author is 'Paulo Moura',
-		date is 2008/10/06,
+		date is 2011/11/09,
 		comment is 'Predicates for generating unique atoms. Object protocol based on the "gensym" module of SWI-Prolog.']).
 
 	:- public(reset_gensym/0).
@@ -15,7 +15,7 @@
 
 	:- public(reset_gensym/1).
 	:- synchronized(reset_gensym/1).
-	:- mode(reset_gensym(-atom), one).
+	:- mode(reset_gensym(+atom), one).
 	:- info(reset_gensym/1, [
 		comment is 'Resets the generator counter for a given base.',
 		argnames is ['Base']]).
