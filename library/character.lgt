@@ -4,9 +4,9 @@
 	extends(atom)).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2011/02/19,
+		date is 2011/11/10,
 		comment is 'Character predicates (most of them assume an ASCII representation).']).
 
 	is_ascii(Char) :-
@@ -28,20 +28,20 @@
 	is_alphanumeric(Char) :-
 		is_dec_digit(Char).
 
-	is_bin_digit(0).
-	is_bin_digit(1).
+	is_bin_digit('0').
+	is_bin_digit('1').
 
 	is_octal_digit(Digit) :-
-		Digit @>= 0,
-		Digit @=< 7.
+		Digit @>= '0',
+		Digit @=< '7'.
 
 	is_dec_digit(Digit) :-
-		Digit @>= 0,
-		Digit @=< 9.
+		Digit @>= '0',
+		Digit @=< '9'.
 
 	is_hex_digit(Digit) :-
-		Digit @>= 0,
-		Digit @=< 9.
+		Digit @>= '0',
+		Digit @=< '9'.
 	is_hex_digit(Digit) :-
 		Digit @>= 'A',
 		Digit @=< 'F'.

@@ -19,6 +19,10 @@ RELEASE NOTES
     of the index/1 directive, which is deprecated by the new experimental
     SWI-Prolog support for just-in-time multi-argument indexing.
 
+    Corrected some silly bugs in the definition of the "character" library
+    object predicates is_bin_digit/1, is_octal_digit/1, is_dec_digit/1, and
+    is_hex_digit/1.
+
 
 2.43.2 - October 4, 2011
 
