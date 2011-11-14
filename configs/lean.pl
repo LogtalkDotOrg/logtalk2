@@ -11,7 +11,7 @@
 %
 %  configuration file for Lean Prolog 2.19.0 and later versions
 %
-%  last updated: September 23, 2011
+%  last updated: November 14, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -819,6 +819,36 @@ break :-
 
 ensure_loaded(_) :-
 	fail.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  index/1 directives that really don't belong on this file but we want to
+%  keep the Logtalk main compiler/runtime file portable
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+:- index('$lgt_current_protocol_'(1, 0, 0, 0, 0)).
+:- index('$lgt_current_category_'(1, 0, 0, 0, 0, 0)).
+:- index('$lgt_current_object_'(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).
+
+:- index('$lgt_entity_property_'(1, 0)).
+:- index('$lgt_predicate_property_'(1, 1, 0)).
+
+:- index('$lgt_implements_protocol_'(1, 1, 0)).
+:- index('$lgt_imports_category_'(1, 1, 0)).
+:- index('$lgt_instantiates_class_'(1, 1, 0)).
+:- index('$lgt_specializes_class_'(1, 1, 0)).
+:- index('$lgt_extends_category_'(1, 1, 0)).
+:- index('$lgt_extends_object_'(1, 1, 0)).
+:- index('$lgt_extends_protocol_'(1, 1, 0)).
+:- index('$lgt_complemented_object_'(1, 1, 0, 0, 0)).
+
+:- index('$lgt_current_flag_'(1, 0)).
+
+:- index('$lgt_loaded_file_'(1, 1, 0)).
 
 
 
