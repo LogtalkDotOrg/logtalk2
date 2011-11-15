@@ -2,9 +2,9 @@
 :- protocol(listp).
 
 	:- info([
-		version is 1.7,
+		version is 1.8,
 		author is 'Paulo Moura',
-		date is 2011/05/14,
+		date is 2011/11/15,
 		comment is 'List protocol.']).
 
 	:- public(append/2).
@@ -224,6 +224,12 @@
 	:- info(subsequence/3,
 		[comment is 'List is an interleaving of Subsequence and Remaining. Element order is preserved.',
 		 argnames is ['List', 'Subsequence', 'Remaining']]).
+
+	:- public(subsequence/4).
+	:- mode(subsequence(+list, +integer, ?list, ?list), zero_or_more).
+	:- info(subsequence/4,
+		[comment is 'Generates subsequences of a given length from a list. Also returns the remaining elements. Element order is preserved.',
+		 argnames is ['List', 'Length', 'Subsequence', 'Remaining']]).
 
 	:- public(subtract/3).
 	:- mode(subtract(+list, +list, -list), one).

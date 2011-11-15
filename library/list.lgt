@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 2.2,
+		version is 2.3,
 		author is 'Paulo Moura',
-		date is 2011/05/14,
+		date is 2011/11/15,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -284,9 +284,10 @@
 	select(Head, [Head2| Tail], [Head2| Tail2]) :-
 		select(Head, Tail, Tail2).
 
-	selectchk(Elem, List, Remaining) :-
-		select(Elem, List, Rest) ->
-		Remaining = Rest.
+	selectchk(Head, [Head| Tail], Tail) :-
+		!.
+	selectchk(Head, [Head2| Tail], [Head2| Tail2]) :-
+		selectchk(Head, Tail, Tail2).
 
 	select(Old, [Old| Tail], New, [New| Tail]).
 	select(Old, [Head| OldTail], New, [Head| NewTail]) :-
@@ -348,10 +349,19 @@
 		sublist(Tail, Head, Sublist).
 
 	subsequence([], [], []).
-	subsequence([Head| Tail], Subsequence, [Head| Remaining]) :-
-		subsequence(Tail, Subsequence, Remaining).
 	subsequence([Head| Tail], [Head| Subsequence], Remaining) :-
 		subsequence(Tail, Subsequence, Remaining).
+	subsequence([Head| Tail], Subsequence, [Head| Remaining]) :-
+		subsequence(Tail, Subsequence, Remaining).
+
+	subsequence(List, 0, [], List) :- !.
+	subsequence([Head| Tail], N, [Head| Subsequence], Remaining) :-
+		N > 0,
+		M is N - 1,
+		subsequence(Tail, M, Subsequence, Remaining).
+	subsequence([Head| Tail], N, Subsequence, [Head| Remaining]) :-
+		N > 0,
+		subsequence(Tail, N, Subsequence, Remaining).
 
 	subtract([], _, []).
 	subtract([Head| Tail], List, Rest) :-
