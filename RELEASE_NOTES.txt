@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.43.3 - November ??, 2011
 
+    Updated the Logtalk compiler to print the name of the hook object used in
+    the compilation of source files when the "hook" compiler flag is defined.
+
     Updated the Lean Prolog config file, adding index/1 directives for some
     of the dynamic predicates used by the internal Logtalk runtime tables.
 
