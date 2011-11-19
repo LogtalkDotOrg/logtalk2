@@ -18,6 +18,10 @@ RELEASE NOTES
     Updated the Logtalk compiler to print the name of the hook object used in
     the compilation of source files when the "hook" compiler flag is defined.
 
+    Corrected a bug in the Logtalk compiler runtime handler where it failed
+    to decompile internal entity identifiers when throwing entity existence
+    exceptions.
+
     Updated the Lean Prolog config file, adding index/1 directives for some
     of the dynamic predicates used by the internal Logtalk runtime tables.
 

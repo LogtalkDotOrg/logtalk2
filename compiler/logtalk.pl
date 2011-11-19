@@ -14997,7 +14997,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 		atom_concat(Functor, '.', FunctorDolar) ->
 		atom_codes(ArityAtom, ArityCodes),
 		number_codes(Arity, ArityCodes)
-	;	Functor = Prefix,
+	;	Functor = Entity1,
 		Arity = 0
 	),
 	functor(Entity, Functor, Arity),
