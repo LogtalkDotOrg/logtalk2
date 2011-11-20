@@ -15,6 +15,12 @@ RELEASE NOTES
 
 2.43.3 - November ??, 2011
 
+    Updated the Logtalk compiler to add information about a source file name,
+    source file directory, and source file compiler options to the generated
+    Prolog files. In previous versions, this information was registered only
+    when loading a source file. The changes simplify building applications
+    where Logtalk libraries is pre-compiled and pre-loaded.
+
     Updated the Logtalk compiler to print the name of the hook object used in
     the compilation of source files when the "hook" compiler flag is defined.
 

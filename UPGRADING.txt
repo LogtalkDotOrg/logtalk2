@@ -314,3 +314,7 @@ flag, "source_data", whose default value is "on", results in keeping several
 data about the source files being compiled. This is useful for integration
 with development tools but results in increased memory requirements. It's
 advisable to turn this option off for production code.
+
+Logtalk version 2.43.3 adds information about a source file name, source
+file directory, and source file compiler options to the generated Prolog
+files, thus requiring recompilation of all source files.

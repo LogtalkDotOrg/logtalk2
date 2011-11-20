@@ -113,7 +113,8 @@
 
 % table of loaded files
 
-:- dynamic('$lgt_loaded_file_'/3).					% '$lgt_loaded_file_'(File, Directory, Options)
+:- multifile('$lgt_loaded_file_'/3).				% '$lgt_loaded_file_'(File, Directory, Flags)
+:- dynamic('$lgt_loaded_file_'/3).
 
 
 % debugger status and tables
@@ -298,7 +299,7 @@
 
 :- dynamic('$lgt_pp_file_encoding_'/2).						% '$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)
 :- dynamic('$lgt_pp_file_bom_'/1).							% '$lgt_pp_file_bom_'(BOM)
-:- dynamic('$lgt_pp_file_path_'/2).							% '$lgt_pp_file_path_'(File, Path)
+:- dynamic('$lgt_pp_file_path_flags_'/3).					% '$lgt_pp_file_path_flags_'(File, Path, Flags)
 
 :- dynamic('$lgt_pp_file_runtime_clause_'/1).				% '$lgt_pp_file_runtime_clause_'(Clause)
 
@@ -1962,10 +1963,10 @@ logtalk_load(Files, Flags) :-
 % provides access to the compilation/loading context
 
 logtalk_load_context(file, File) :-
-	'$lgt_pp_file_path_'(File, _).
+	'$lgt_pp_file_path_flags_'(File, _, _).
 
 logtalk_load_context(directory, Directory) :-
-	'$lgt_pp_file_path_'(_, Directory).
+	'$lgt_pp_file_path_flags_'(_, Directory, _).
 
 logtalk_load_context(entity_name, Entity) :-
 	(	'$lgt_pp_object_'(Entity, _, _, _, _, _, _, _, _, _, _) ->
@@ -4242,7 +4243,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_logtalk._def'(expand_library_path(Library, Path), _, '$lgt_expand_library_path'(Library, Path)).
 '$lgt_logtalk._def'(loaded_file(File, Directory), _, '$lgt_loaded_file_'(File, Directory, _)).
-'$lgt_logtalk._def'(loaded_file(File, Directory, Options), _, '$lgt_loaded_file_'(File, Directory, Options)).
+'$lgt_logtalk._def'(loaded_file(File, Directory, Flags), _, '$lgt_loaded_file_'(File, Directory, Flags)).
 '$lgt_logtalk._def'(compile_aux_clauses(Clauses), _, '$lgt_compile_aux_clauses'(Clauses)).
 '$lgt_logtalk._def'(entity_prefix(Entity, Prefix), _, '$lgt_entity_prefix'(Entity, Prefix)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads), _, '$lgt_compile_predicate_heads'(Heads, THeads)).
@@ -5142,15 +5143,14 @@ current_logtalk_flag(version, version(2, 43, 3)).
 		(	'$lgt_compiler_flag'(reload, skip) ->
 			'$lgt_report_skipping_file'(Source)
 		;	'$lgt_report_reloading_file'(Source),
-			'$lgt_compile_file'(Source),
+			'$lgt_compile_file'(Source, Flags),
 			'$lgt_load_compiled_file'(Source),
 			'$lgt_report_reloaded_file'(Source)
 		)
 	;	'$lgt_report_loading_file'(Source),
-		'$lgt_compile_file'(Source),
+		'$lgt_compile_file'(Source, Flags),
 		'$lgt_load_compiled_file'(Source),
-		'$lgt_report_loaded_file'(Source),
-		assertz('$lgt_loaded_file_'(File, Directory, Flags))
+		'$lgt_report_loaded_file'(Source)
 	).
 
 
@@ -5443,23 +5443,23 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	!,
 	'$lgt_clean_pp_clauses',
 	'$lgt_set_compiler_flags'(Flags),
-	'$lgt_compile_file'(File),
+	'$lgt_compile_file'(File, Flags),
 	'$lgt_compile_files'(Files, Flags).
 
 '$lgt_compile_files'(File, Flags) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_set_compiler_flags'(Flags),
-	'$lgt_compile_file'(File),
+	'$lgt_compile_file'(File, Flags),
 	'$lgt_clear_compiler_flags',
 	'$lgt_clean_pp_clauses'.
 
 
 
-% '$lgt_compile_file'(@source_file_name)
+% '$lgt_compile_file'(@source_file_name, @list)
 %
 % compiles to disk a source file
 
-'$lgt_compile_file'(Term) :-
+'$lgt_compile_file'(Term, Flags) :-
 	compound(Term),
 	!,
 	Term =.. [Library, File],
@@ -5469,21 +5469,21 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	'$lgt_current_directory'(ExpandedPath),		% don't provide the necessary support for expanding paths
 	(	Current \== ExpandedPath ->
 		'$lgt_report_working_directory'(ExpandedPath),
-		'$lgt_compile_file'(File),
+		'$lgt_compile_file'(File, Flags),
 		'$lgt_change_directory'(Current),
 		'$lgt_report_working_directory'(Current)
-	;	'$lgt_compile_file'(File)
+	;	'$lgt_compile_file'(File, Flags)
 	).
 
-'$lgt_compile_file'(File) :-
+'$lgt_compile_file'(File, _) :-
 	'$lgt_compiler_flag'(smart_compilation, on),
 	\+ '$lgt_needs_recompilation'(File),
 	!,
 	'$lgt_report_up_to_date_file'(File).
 
-'$lgt_compile_file'(File) :-
+'$lgt_compile_file'(File, Flags) :-
 	'$lgt_report_compiling_file'(File),
-	'$lgt_tr_file'(File),
+	'$lgt_tr_file'(File, Flags),
 	'$lgt_compiler_flag'(prolog_compiler, Options),
 	'$lgt_file_name'(logtalk, File, _, SourceFile),
 	'$lgt_file_name'(prolog, File, _, PrologFile),
@@ -5588,14 +5588,14 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 
 
-% '$lgt_tr_file'(+atom)
+% '$lgt_tr_file'(+atom, @list)
 %
 % compiles a source file storing the resulting code in memory
 
-'$lgt_tr_file'(File) :-
+'$lgt_tr_file'(File, Flags) :-
 	'$lgt_file_name'(logtalk, File, Basename, Source),
 	'$lgt_current_directory'(Directory),
-	asserta('$lgt_pp_file_path_'(Basename, Directory)),
+	asserta('$lgt_pp_file_path_flags_'(Basename, Directory, Flags)),
 	% open the Logtalk source code file for reading:
 	catch(
 		open(Source, read, Input, [alias('$lgt_input')]),
@@ -5634,7 +5634,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 		OutputError,													% end of the file to improve compatibility
 		'$lgt_compiler_stream_io_error_handler'(Output, OutputError)),	% with non-ISO compliant Prolog compilers;
 	close(Output),
-	retractall('$lgt_pp_file_path_'(_, _)),
+	retractall('$lgt_pp_file_path_flags_'(_, _, _)),
 	'$lgt_restore_global_op_table'.
 
 
@@ -5774,7 +5774,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_add_entity_properties'(start, Entity) :-
 	(	'$lgt_compiler_flag'(source_data, on),
-		'$lgt_pp_file_path_'(File, Path) ->
+		'$lgt_pp_file_path_flags_'(File, Path, _) ->
 		(	'$lgt_pp_term_position_'((Start - _)) ->
 			assertz('$lgt_pp_entity_runtime_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, Start, _))))
 		;	assertz('$lgt_pp_entity_runtime_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, -1, _))))
@@ -5784,7 +5784,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_add_entity_properties'(end, Entity) :-
 	(	'$lgt_compiler_flag'(source_data, on) ->
-		(	'$lgt_pp_file_path_'(File, Path) ->
+		(	'$lgt_pp_file_path_flags_'(File, Path, _) ->
 			(	'$lgt_pp_term_position_'((_ - End)) ->
 				retract('$lgt_pp_entity_runtime_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, Start, _)))),
 				assertz('$lgt_pp_entity_runtime_clause_'('$lgt_entity_property_'(Entity, file_lines(File, Path, Start, End))))
@@ -5942,7 +5942,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Error) :-
-	'$lgt_pp_file_path_'(File, _),
+	'$lgt_pp_file_path_flags_'(File, _, _),
 	stream_property(Input, alias('$lgt_input')),
 	stream_property(Output, alias('$lgt_output')),
 	'$lgt_report_compiler_error_message'(Error),
@@ -6171,7 +6171,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	retractall('$lgt_pp_entity_init_'(_, _, _)),
 	retractall('$lgt_pp_file_encoding_'(_, _)),
 	retractall('$lgt_pp_file_bom_'(_)),
-	retractall('$lgt_pp_file_path_'(_, _)),
+	retractall('$lgt_pp_file_path_flags_'(_, _, _)),
 	retractall('$lgt_pp_file_runtime_clause_'(_)),
 	retractall('$lgt_pp_cc_if_found_'(_)),
 	retractall('$lgt_pp_cc_skipping_'),
@@ -12420,7 +12420,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_report_warning_entity_context'(Type, Entity) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
-		'$lgt_pp_file_path_'(File, _),
+		'$lgt_pp_file_path_flags_'(File, _, _),
 		'$lgt_file_extension'(logtalk, Extension),
 		write('%                   in '), write(Type), write(' '), writeq(Entity),
 		write(', defined in file '), write(File), write(Extension), nl,
@@ -12438,7 +12438,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	stream_property(Input, alias('$lgt_input')),
 	!,	% avoid a spurious choice-point with some Prolog compilers
 	(	'$lgt_compiler_flag'(report, warnings) ->
-		'$lgt_pp_file_path_'(File, _),
+		'$lgt_pp_file_path_flags_'(File, _, _),
 		'$lgt_file_extension'(logtalk, Extension),
 		write('%                   in file '), write(File), write(Extension),
 		'$lgt_report_warning_line_number'(Input),
@@ -12455,7 +12455,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 % reports warning full context
 
 '$lgt_report_warning_full_context'(Type, Entity) :-
-	'$lgt_pp_file_path_'(File, _),
+	'$lgt_pp_file_path_flags_'(File, _, _),
 	stream_property(Input, alias('$lgt_input')),
 	!,	% avoid a spurious choice-point with some Prolog compilers
 	(	'$lgt_compiler_flag'(report, warnings) ->
@@ -12620,9 +12620,9 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_pp_term_location'(Location) :-
 	(	'$lgt_pp_term_position_'(Line-_),
-		'$lgt_pp_file_path_'(File, Path) ->
+		'$lgt_pp_file_path_flags_'(File, Path, _) ->
 		Location = Path+File+Line
-	;	'$lgt_pp_file_path_'(File, Path) ->
+	;	'$lgt_pp_file_path_flags_'(File, Path, _) ->
 		Location = Path+File+1
 	;	Location = none
 	).
@@ -14540,7 +14540,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_write_dcl_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, on),
-	'$lgt_pp_file_path_'(File, Path),
+	'$lgt_pp_file_path_flags_'(File, Path, _),
 	'$lgt_pp_dcl_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
@@ -14556,7 +14556,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_write_def_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, on),
-	'$lgt_pp_file_path_'(File, Path),
+	'$lgt_pp_file_path_flags_'(File, Path, _),
 	'$lgt_pp_final_def_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
@@ -14572,7 +14572,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_write_ddef_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, on),
-	'$lgt_pp_file_path_'(File, Path),
+	'$lgt_pp_file_path_flags_'(File, Path, _),
 	'$lgt_pp_final_ddef_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
@@ -14588,7 +14588,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_write_super_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, on),
-	'$lgt_pp_file_path_'(File, Path),
+	'$lgt_pp_file_path_flags_'(File, Path, _),
 	'$lgt_pp_super_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
@@ -14612,7 +14612,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_write_alias_clauses'(Stream, Rnm) :-
 	'$lgt_compiler_flag'(source_data, on),
-	'$lgt_pp_file_path_'(File, Path),
+	'$lgt_pp_file_path_flags_'(File, Path, _),
 	'$lgt_pp_predicate_alias_'(Entity, Pred, Alias),
 	Clause =.. [Rnm, Entity, Pred, Alias],
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
@@ -14628,7 +14628,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 '$lgt_write_alias_clauses'(Stream, Rnm) :-
 	Catchall =.. [Rnm, _, Pred, Pred],
 	(	'$lgt_compiler_flag'(source_data, on) ->
-		'$lgt_pp_file_path_'(File, Path),
+		'$lgt_pp_file_path_flags_'(File, Path, _),
 		'$lgt_write_term_and_source_location'(Stream, Catchall, aux, Path+File+1)
 	;	write_canonical(Stream, Catchall), write(Stream, '.'), nl(Stream)
 	).
@@ -14651,7 +14651,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_write_entity_aux_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, on),
-	'$lgt_pp_file_path_'(File, Path),
+	'$lgt_pp_file_path_flags_'(File, Path, _),
 	'$lgt_pp_final_entity_aux_clause_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
@@ -14672,6 +14672,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 % runtime clauses for all defined entities
 
 '$lgt_write_runtime_clauses'(Stream) :-
+	% entity runtime clauses
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_current_protocol_'/5),
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_current_category_'/6),
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_current_object_'/11),
@@ -14686,7 +14687,16 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_protocol_'/3),
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_complemented_object_'/5),
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_debugging_entity_'/1),
-	'$lgt_write_runtime_clauses'(Stream, '$lgt_static_binding_entity_'/1).
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_static_binding_entity_'/1),
+	% file runtime clauses
+	write_canonical(Stream, (:- multifile('$lgt_loaded_file_'/3))), write(Stream, '.'), nl(Stream),
+	write_canonical(Stream, (:- dynamic('$lgt_loaded_file_'/3))), write(Stream, '.'), nl(Stream),
+	'$lgt_pp_file_path_flags_'(File, Path, Flags),
+	Clause = '$lgt_loaded_file_'(File, Path, Flags),
+	(	'$lgt_compiler_flag'(source_data, on) ->
+		'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1)
+	;	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream)
+	).
 
 
 '$lgt_write_runtime_clauses'(Stream, Functor/Arity) :-
@@ -14695,7 +14705,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 		write_canonical(Stream, (:- multifile(Functor/Arity))), write(Stream, '.'), nl(Stream),
 		write_canonical(Stream, (:- dynamic(Functor/Arity))), write(Stream, '.'), nl(Stream),
 		(	'$lgt_compiler_flag'(source_data, on) ->
-			'$lgt_pp_file_path_'(File, Path),
+			'$lgt_pp_file_path_flags_'(File, Path, _),
 			(	'$lgt_pp_file_runtime_clause_'(Clause),
 				'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 				fail
