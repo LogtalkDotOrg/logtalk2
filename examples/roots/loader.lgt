@@ -2,10 +2,13 @@
 :- initialization((
 	logtalk_load(
 		[library(events_loader), library(types_loader), library(hierarchies_loader)],
-		[reload(skip)]),		% allow for static binding
+		% allow for static binding
+		[reload(skip)]),
 	logtalk_load(
 		[(initialization)],
-		[reload(skip)]),		% allow for static binding
+		% allow for static binding
+		[reload(skip)]),
 	logtalk_load(
 		[classes, prototypes, nil],
-		[unknown(silent)]))).	% avoid warnings due to the use of a reflective design
+		% allow for static binding and avoid warnings due to the use of a reflective design
+		[reload(skip), unknown(silent)]))).
