@@ -5317,7 +5317,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 
 
-% '$lgt_report_compiling_file'(+entity_identifier)
+% '$lgt_report_compiling_file'(+atom)
 %
 % prints a message that an entity is being compiled
 
@@ -5339,7 +5339,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 
 
-% '$lgt_report_up_to_date_file'(+entity_identifier)
+% '$lgt_report_up_to_date_file'(+atom)
 %
 % prints a message that an entity is up-to-date
 
@@ -6003,8 +6003,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_report_error_context'(File, Input) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
-		'$lgt_file_extension'(logtalk, Extension),
-		write('%                   in file '), write(File), write(Extension),
+		write('%                   in file '), write(File),
 		(	catch('$lgt_stream_current_line_number'(Input, Line), _, fail) ->
 			write(', above line '), write(Line), nl
 		;	true
@@ -12421,9 +12420,8 @@ current_logtalk_flag(version, version(2, 43, 3)).
 '$lgt_report_warning_entity_context'(Type, Entity) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
 		'$lgt_pp_file_path_flags_'(File, _, _),
-		'$lgt_file_extension'(logtalk, Extension),
 		write('%                   in '), write(Type), write(' '), writeq(Entity),
-		write(', defined in file '), write(File), write(Extension), nl,
+		write(', defined in file '), write(File), nl,
 		write('%')
 	;	true
 	).
@@ -12439,8 +12437,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	!,	% avoid a spurious choice-point with some Prolog compilers
 	(	'$lgt_compiler_flag'(report, warnings) ->
 		'$lgt_pp_file_path_flags_'(File, _, _),
-		'$lgt_file_extension'(logtalk, Extension),
-		write('%                   in file '), write(File), write(Extension),
+		write('%                   in file '), write(File),
 		'$lgt_report_warning_line_number'(Input),
 		write('%')
 	;	'$lgt_compiler_flag'(report, on) ->
@@ -12459,9 +12456,8 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	stream_property(Input, alias('$lgt_input')),
 	!,	% avoid a spurious choice-point with some Prolog compilers
 	(	'$lgt_compiler_flag'(report, warnings) ->
-		'$lgt_file_extension'(logtalk, Extension),
 		write('%                   in '), write(Type), write(' '), writeq(Entity),
-		write(', defined in file '), write(File), write(Extension),
+		write(', defined in file '), write(File),
 		'$lgt_report_warning_line_number'(Input),
 		write('%')
 	;	'$lgt_compiler_flag'(report, on) ->
