@@ -24,6 +24,10 @@ RELEASE NOTES
     Updated the Logtalk compiler to print the name of the hook object used in
     the compilation of source files when the "hook" compiler flag is defined.
 
+    Updated the built-in debugger in order to avoid unnecessary choice points
+    created by back-end Prolog compilers whose retract/1 implementation fails
+    to take advantage of logical update semantics to make calls deterministic.
+
     Corrected a bug in the Logtalk compiler runtime handler where it failed
     to decompile internal entity identifiers when throwing entity existence
     exceptions.

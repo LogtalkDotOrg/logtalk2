@@ -325,7 +325,7 @@
 Obj::Pred :-
 	catch('$lgt_tr_msg'(Pred, Obj, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, logtalk(Obj::Pred, user)))),
 	(	'$lgt_debugger.debugging_', '$lgt_debugging_entity_'(Obj) ->
-		'$lgt_debugger.reset_invocation_number',
+		'$lgt_debugger.reset_invocation_number'(_),
 		'$lgt_exec_ctx'(ExCtx, user, user, Obj, [], []),
 		catch('$lgt_debugger.goal'(Obj::Pred, Call, ExCtx), Error, '$lgt_runtime_error_handler'(Error))
 	;	catch(Call, Error, '$lgt_runtime_error_handler'(Error))
@@ -336,7 +336,7 @@ Obj::Pred :-
 Obj<<Goal :-
 	catch('$lgt_tr_ctx_call'(Obj, Goal, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, logtalk(Obj<<Goal, user)))),
 	(	'$lgt_debugger.debugging_', '$lgt_debugging_entity_'(Obj) ->
-		'$lgt_debugger.reset_invocation_number',
+		'$lgt_debugger.reset_invocation_number'(_),
 		'$lgt_exec_ctx'(ExCtx, user, user, Obj, [], []),
 		catch('$lgt_debugger.goal'(Obj<<Goal, Call, ExCtx), Error, '$lgt_runtime_error_handler'(Error))
 	;	catch(Call, Error, '$lgt_runtime_error_handler'(Error))
@@ -4446,7 +4446,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	'$lgt_debugger.nospyall',
 	'$lgt_debugger.leash'(full),
 	'$lgt_debugger.nodebug',
-	'$lgt_debugger.reset_invocation_number'.
+	'$lgt_debugger.reset_invocation_number'(_).
 
 
 '$lgt_debugger.debug' :-
@@ -4454,7 +4454,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 		write('Debugger is on: showing spy points for all objects compiled in debug mode.'), nl
 	;	assertz('$lgt_debugger.debugging_'),
 		retractall('$lgt_debugger.tracing_'),
-		'$lgt_debugger.reset_invocation_number',
+		'$lgt_debugger.reset_invocation_number'(_),
 		write('Debugger switched on: showing spy points for all objects compiled in debug mode.'), nl
 	).
 
@@ -4493,7 +4493,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	;	assertz('$lgt_debugger.tracing_'),
 		retractall('$lgt_debugger.debugging_'),
 		assertz('$lgt_debugger.debugging_'),
-		'$lgt_debugger.reset_invocation_number',
+		'$lgt_debugger.reset_invocation_number'(_),
 		write('Debugger switched on: tracing everything for all objects compiled in debug mode.'), nl
 	).
 
@@ -5011,9 +5011,11 @@ current_logtalk_flag(version, version(2, 43, 3)).
 '$lgt_debugger.inc_invocation_number'(New) :-
 	(	'$lgt_prolog_feature'(threads, supported) ->
 		with_mutex('$lgt_threaded_dbg', '$lgt_debugger.inc_invocation_number_aux'(New))
-	;	retract('$lgt_debugger.invocation_number_'(Old)),
+	;	retract('$lgt_debugger.invocation_number_'(Old)) ->
 		New is Old + 1,
 		asserta('$lgt_debugger.invocation_number_'(New))
+	;	% something weird happen as the previous call should never fail
+		'$lgt_debugger.reset_invocation_number'(New)
 	).
 
 
@@ -5024,7 +5026,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 
 
-'$lgt_debugger.reset_invocation_number' :-
+'$lgt_debugger.reset_invocation_number'(0) :-
 	retractall('$lgt_debugger.invocation_number_'(_)),
 	asserta('$lgt_debugger.invocation_number_'(0)).
 
@@ -19221,7 +19223,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 	'$lgt_startup_message',
 	'$lgt_assert_default_hooks',
 	'$lgt_start_runtime_threading',
-	'$lgt_debugger.reset_invocation_number',
+	'$lgt_debugger.reset_invocation_number'(_),
 	'$lgt_report_settings_file',
 	'$lgt_check_prolog_version'
 )).
