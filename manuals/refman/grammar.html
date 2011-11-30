@@ -328,7 +328,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 				<dd>"<code>[</code>" complemented_object_sequence "<code>]</code>"</dd>
 		</dl>
 
-	<h3 id="grammar_scope">Entity scope</h3>
+	<h3 id="grammar_scope">Entity and predicate scope</h3>
 		<dl>
 			<dt>scope ::=</dt>
 				<dd>"<code>public</code>" |</dd>
@@ -1020,6 +1020,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 	<dl>
 		<dt>predicate_property ::=</dt>
 			<dd>"<code>static</code>" | "<code>dynamic</code>" |</dd>
+			<dd>"<code>scope(</code>" scope "<code>)</code>" |</dd>
 			<dd>"<code>private</code>" | "<code>protected</code>" | "<code>public</code>" |</dd>
 			<dd>"<code>logtalk</code>" | "<code>prolog</code>" |</dd>
 			<dd>"<code>coinductive</code>" |</dd>
@@ -1039,7 +1040,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: August 16, 2011</span>
+		<span>Last updated on: November 30, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>

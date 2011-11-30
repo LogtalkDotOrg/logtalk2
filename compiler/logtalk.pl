@@ -2187,6 +2187,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 
 '$lgt_predicate_property_user'(logtalk, _, _, _, _, _, _, _, _).
+'$lgt_predicate_property_user'(scope(Scope), _, Scope, _, _, _, _, _, _).
 '$lgt_predicate_property_user'((public), _, (public), _, _, _, _, _, _).
 '$lgt_predicate_property_user'(protected, _, protected, _, _, _, _, _, _).
 '$lgt_predicate_property_user'(private, _, private, _, _, _, _, _, _).
@@ -2240,6 +2241,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 
 '$lgt_predicate_property_built_in_method'(logtalk, _, _, _, _).
+'$lgt_predicate_property_built_in_method'(scope(Scope), _, Scope, _, _).
 '$lgt_predicate_property_built_in_method'((public), _, (public), _, _).
 '$lgt_predicate_property_built_in_method'(protected, _, protected, _, _).
 '$lgt_predicate_property_built_in_method'(private, _, private, _, _).
