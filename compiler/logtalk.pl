@@ -16004,6 +16004,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 % '$lgt_valid_predicate_property'(@nonvar)
 
+'$lgt_valid_predicate_property'(scope(_)).				% predicate scope
 '$lgt_valid_predicate_property'((public)).				% public predicate
 '$lgt_valid_predicate_property'(protected).				% protected predicate
 '$lgt_valid_predicate_property'(private).				% private predicate
