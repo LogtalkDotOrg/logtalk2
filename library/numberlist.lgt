@@ -4,9 +4,9 @@
 	extends(list)).
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
+		date is 2011/12/04,
 		comment is 'List of numbers predicates.']).
 
 	average([], 0.0).
@@ -55,6 +55,31 @@
 	sum([X| Xs], Acc, Sum) :-
 		Acc2 is Acc + X,
 		sum(Xs, Acc2, Sum).
+
+	euclidean_norm(List, Norm) :-
+		euclidean_norm(List, 0, Norm).
+
+	euclidean_norm([], SquareSum, Norm) :-
+		Norm is sqrt(SquareSum).
+	euclidean_norm([X| Xs], SquareSum0, Norm) :-
+		SquareSum1 is SquareSum0 + X * X,
+		euclidean_norm(Xs, SquareSum1, Norm).
+
+	manhattan_norm(List, Norm) :-
+		manhattan_norm(List, 0, Norm).
+
+	manhattan_norm([], Norm, Norm).
+	manhattan_norm([X| Xs], Norm0, Norm) :-
+		Norm1 is Norm0 + abs(X),
+		manhattan_norm(Xs, Norm1, Norm).
+
+	scalar_product(List1, List2, Product) :-
+		scalar_product(List1, List2, 0, Product).
+
+	scalar_product([], [], Product, Product).
+	scalar_product([X| Xs], [Y| Ys], Product0, Product) :-
+		Product1 is Product0 + X * Y,
+		scalar_product(Xs, Ys, Product1, Product).
 
 	valid((-)) :-		% catch variables and lists with unbound tails
 		!,
