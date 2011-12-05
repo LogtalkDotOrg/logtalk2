@@ -43,7 +43,8 @@ RELEASE NOTES
     SWI-Prolog support for just-in-time multi-argument indexing.
 
     Added a predicate subsequence/4 for generating subsequences of a list
-    with a given length to the library "listp" and "list" entities.
+    with a given length and a predicate substitute/4 for replacing elements
+    in a list to the library "listp" and "list" entities.
 
     Added euclidean_norm/2, manhattan_norm/2, and scalar_product/3 to the
     library "numberlistp" and "numberlist" entities.

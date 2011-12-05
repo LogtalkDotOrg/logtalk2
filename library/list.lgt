@@ -363,6 +363,17 @@
 		N > 0,
 		subsequence(Tail, N, Subsequence, Remaining).
 
+	substitute(Old, List, New, NewList) :-
+		substitute_aux(List, Old, New, NewList).
+
+	substitute_aux([], _, _, []).
+	substitute_aux([Head0| Tail0], Old, New, [Head1| Tail1]) :-
+		(	Head0 == Old ->
+			Head1 = New
+		;	Head1 = Head0
+		),
+		substitute_aux(Tail0, Old, New, Tail1).
+
 	subtract([], _, []).
 	subtract([Head| Tail], List, Rest) :-
 		(	memberchk(Head, List) ->

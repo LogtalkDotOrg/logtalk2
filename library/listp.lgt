@@ -231,6 +231,12 @@
 		[comment is 'Generates subsequences of a given length from a list. Also returns the remaining elements. Element order is preserved.',
 		 argnames is ['List', 'Length', 'Subsequence', 'Remaining']]).
 
+	:- public(substitute/4).
+	:- mode(substitute(@term, @list, @term, -list), one).
+	:- info(substitute/4,
+		[comment is 'Substitutes all occurences of Old in List by New, returning NewList. Uses term equakity for element comparison.',
+		 argnames is ['Old', 'List', 'New', 'NewList']]).
+
 	:- public(subtract/3).
 	:- mode(subtract(+list, +list, -list), one).
 	:- info(subtract/3,
