@@ -53,6 +53,9 @@ RELEASE NOTES
     object predicates is_bin_digit/1, is_octal_digit/1, is_dec_digit/1, and
     is_hex_digit/1.
 
+    Updated the library "all_loader.lgt" loader file to also load the
+    "meta_compiler_loader.lgt" loader file.
+
 
 2.43.2 - October 4, 2011
 

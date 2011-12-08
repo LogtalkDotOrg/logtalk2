@@ -12,6 +12,7 @@
 		random_loader,
 		statistics_loader,
 		intervals_loader,
-		logging_loader
+		logging_loader,
+		meta_compiler_loader
 	])
 ).
