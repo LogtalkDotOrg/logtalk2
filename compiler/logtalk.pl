@@ -10023,6 +10023,16 @@ current_logtalk_flag(version, version(2, 43, 3)).
 		DPred = '$lgt_debugger.goal'(current_predicate(':'(Module, Pred)), TPred, ExCtx)
 	).
 
+'$lgt_tr_body'(current_predicate(Term), TCond, DCond, Ctx) :-
+	nonvar(Term),
+	'$lgt_must_be'(predicate_indicator, Term),
+	Term = AliasFunctor/Arity,
+	functor(Alias, AliasFunctor, Arity),
+	'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+	!,
+	functor(Head, HeadFunctor, Arity),
+	'$lgt_tr_body'(Obj::current_predicate(HeadFunctor/Arity), TCond, DCond, Ctx).
+
 '$lgt_tr_body'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), '$lgt_debugger.goal'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
@@ -10042,6 +10052,13 @@ current_logtalk_flag(version, version(2, 43, 3)).
 		TPred = '$lgt_final_goal'(predicate_property(':'(Module, Pred), Prop)),
 		DPred = '$lgt_debugger.goal'(predicate_property(':'(Module, Pred), Prop), TPred, ExCtx)
 	).
+
+'$lgt_tr_body'(predicate_property(Alias, Prop), TCond, DCond, Ctx) :-
+	nonvar(Alias),
+	'$lgt_must_be'(callable, Alias),
+	'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
+	!,
+	'$lgt_tr_body'(Obj::predicate_property(Head, Prop), TCond, DCond, Ctx).
 
 '$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), '$lgt_debugger.goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), ExCtx), Ctx) :-
 	!,

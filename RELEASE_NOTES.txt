@@ -15,6 +15,11 @@ RELEASE NOTES
 
 2.43.3 - December ??, 2011
 
+    Changed the compiler to take into account the uses/2 directive when
+    compiling calls to the reflection built-in methods. This change extends
+    the semantics of the uses/2 directive and allows easier migration from
+    plain Prolog applications to Logtalk.
+
     Updated the implementation of the predicate_property/2 built-in method,
     adding a scope/1 property.
 
