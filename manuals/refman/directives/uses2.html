@@ -30,7 +30,7 @@ uses(Object, NonTerminalsAndAliases)</pre>
 <p>
 Declares that all calls (made from predicates defined in the category or object containing the directive) to the specified predicates are to be interpreted as messages to the specified object. Thus, this directive may be used to simplify writing of predicate definitions by allowing the programmer to omit the <code>Object::</code> prefix when using the predicates listed in the directive (as long as the predicate calls do not occur as arguments for non-standard Prolog meta-predicates not declared on the config files).
 </p>
-This directive is also used when compiling calls to the database built-in methods. 
+This directive is also used when compiling calls to the database and reflection built-in methods. 
 <p>
 It is possible to specify a predicate alias using the notation <code>Functor/Arity::Alias/Arity</code>. Aliases may be used either for avoiding conflicts between predicates specified in several <code>uses/2</code> directives or for giving more meaningful names considering the using context of the predicates.
 </p>
@@ -70,7 +70,7 @@ btree_to_queue :-
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: August 25, 2011</span>
+		<span>Last updated on: December 13, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="synchronized1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#directives">next</a></span><br/>
