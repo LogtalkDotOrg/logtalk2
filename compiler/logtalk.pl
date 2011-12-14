@@ -10025,8 +10025,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 
 '$lgt_tr_body'(current_predicate(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
-	'$lgt_must_be'(predicate_indicator, Term),
-	Term = AliasFunctor/Arity,
+	'$lgt_valid_predicate_indicator'(Term, AliasFunctor, Arity),
 	functor(Alias, AliasFunctor, Arity),
 	'$lgt_pp_uses_predicate_'(Obj, Head, Alias),
 	!,
