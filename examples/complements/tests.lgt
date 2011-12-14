@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/05/01,
+		date is 2011/12/14,
 		comment is 'Unit tests for the "complements" example.']).
 
 	test(complements_1) :-
@@ -24,11 +24,11 @@
 	test(complements_4) :-
 		findall(Property, employee::predicate_property(predicates(_), Property), Properties),
 		list::msort(Properties, PropertiesSorted),
-		PropertiesSorted = [logtalk, public, static, declared_in(logging), defined_in(logging)].
+		PropertiesSorted = [logtalk, public, static, declared_in(logging), defined_in(logging), scope(public)].
 
 	test(complements_5) :-
 		findall(Property, employee::predicate_property(income(_), Property), Properties),
 		list::msort(Properties, PropertiesSorted),
-		PropertiesSorted = [logtalk, public, static, alias_of(salary(_)), declared_in(employee), defined_in(employee)].
+		PropertiesSorted = [logtalk, public, static, alias_of(salary(_)), declared_in(employee), defined_in(employee), scope(public)].
 
 :- end_object.
