@@ -6,7 +6,7 @@
 	:- info([
 		version is 2.3,
 		author is 'Paulo Moura',
-		date is 2011/11/15,
+		date is 2011/12/15,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -60,6 +60,17 @@
 		flatten(Tail, List, Aux),
 		flatten(Head, Aux, Flatted).
 	flatten(Head, Tail, [Head| Tail]).
+
+	hamming_distance(List1, List2, Distance) :-
+		hamming_distance(List1, List2, 0, Distance).
+
+	hamming_distance([], [], Distance, Distance).
+	hamming_distance([X| Xs], [Y| Ys], Distance0, Distance) :-
+		(	X == Y ->
+			Distance1 is Distance0
+		;	Distance1 is Distance0 + 1
+		),
+		hamming_distance(Xs, Ys, Distance1, Distance).
 
 	keysort(List, Sorted) :-
 		{keysort(List, Sorted)}.		

@@ -6,7 +6,7 @@
 	:- info([
 		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2011/12/04,
+		date is 2011/12/15,
 		comment is 'List of numbers predicates.']).
 
 	average([], 0.0).
@@ -56,8 +56,9 @@
 		Acc2 is Acc + X,
 		sum(Xs, Acc2, Sum).
 
-	euclidean_norm(List, Norm) :-
-		euclidean_norm(List, 0, Norm).
+	euclidean_norm([X| Xs], Norm) :-
+		SquareSum0 is X * X,
+		euclidean_norm(Xs, SquareSum0, Norm).
 
 	euclidean_norm([], SquareSum, Norm) :-
 		Norm is sqrt(SquareSum).
@@ -65,16 +66,49 @@
 		SquareSum1 is SquareSum0 + X * X,
 		euclidean_norm(Xs, SquareSum1, Norm).
 
-	manhattan_norm(List, Norm) :-
-		manhattan_norm(List, 0, Norm).
+	manhattan_norm([X| Xs], Norm) :-
+		Norm0 is abs(X),
+		manhattan_norm(Xs, Norm0, Norm).
 
 	manhattan_norm([], Norm, Norm).
 	manhattan_norm([X| Xs], Norm0, Norm) :-
 		Norm1 is Norm0 + abs(X),
 		manhattan_norm(Xs, Norm1, Norm).
 
-	scalar_product(List1, List2, Product) :-
-		scalar_product(List1, List2, 0, Product).
+	euclidean_distance([X| Xs], [Y| Ys], Distance) :-
+		Distance0 is (X - Y) * (X - Y),
+		euclidean_distance(Xs, Ys, Distance0, Distance).
+
+	euclidean_distance([], [], Sum, Distance) :-
+		Distance is sqrt(Sum).
+	euclidean_distance([X| Xs], [Y| Ys], Sum0, Distance) :-
+		Sum1 is Sum0 + (X - Y) * (X - Y),
+		euclidean_distance(Xs, Ys, Sum1, Distance).
+
+	chebyshev_distance([X| Xs], [Y| Ys], Distance) :-
+		Distance0 is abs(X - Y),
+		chebyshev_distance(Xs, Ys, Distance0, Distance).
+
+	chebyshev_distance([], [], Distance, Distance).
+	chebyshev_distance([X| Xs], [Y| Ys], Distance0, Distance) :-
+		(	abs(X - Y) > Distance0 ->
+			Distance1 is abs(X - Y)
+		;	Distance1 is Distance0
+		),
+		chebyshev_distance(Xs, Ys, Distance1, Distance).
+
+	manhattan_distance([X| Xs], [Y| Ys], Distance) :-
+		Distance0 is abs(X - Y),
+		manhattan_distance(Xs, Ys, Distance0, Distance).
+
+	manhattan_distance([], [], Distance, Distance).
+	manhattan_distance([X| Xs], [Y| Ys], Distance0, Distance) :-
+		Distance1 is Distance0 + abs(X - Y),
+		manhattan_distance(Xs, Ys, Distance1, Distance).
+
+	scalar_product([X| Xs], [Y| Ys], Product) :-
+		Product0 is X * Y,
+		scalar_product(Xs, Ys, Product0, Product).
 
 	scalar_product([], [], Product, Product).
 	scalar_product([X| Xs], [Y| Ys], Product0, Product) :-

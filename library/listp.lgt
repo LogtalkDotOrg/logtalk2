@@ -4,7 +4,7 @@
 	:- info([
 		version is 1.8,
 		author is 'Paulo Moura',
-		date is 2011/11/15,
+		date is 2011/12/15,
 		comment is 'List protocol.']).
 
 	:- public(append/2).
@@ -42,6 +42,12 @@
 	:- info(flatten/2,
 		[comment is 'Flattens a list of lists into a list.',
 		 argnames is ['List', 'Flatted']]).
+
+	:- public(hamming_distance/3).
+	:- mode(hamming_distance(+list, +list, -integer), zero_or_one).
+	:- info(hamming_distance/3,
+		[comment is 'Calculates the Hamming distance between two lists (using equality to compare list elements). Fails if the two lists are not of the same length.',
+		 argnames is ['List1', 'List2', 'Distance']]).
 
 	:- public(keysort/2).
 	:- mode(keysort(+list, -list), one).
