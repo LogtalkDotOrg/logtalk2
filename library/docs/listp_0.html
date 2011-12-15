@@ -23,11 +23,11 @@
           </dd>
           <dt class="key">version:</dt>
           <dd class="value">
-            <code>1.7</code>
+            <code>1.8</code>
           </dd>
           <dt class="key">date:</dt>
           <dd class="value">
-            <code>2011/5/14</code>
+            <code>2011/12/15</code>
           </dd>
         </dl>
         <dl class="properties">
@@ -159,6 +159,26 @@
             <dt class="key">mode &ndash; number of solutions:</dt>
             <dd class="value">
               <code>flatten(+list,-list) &ndash; one</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h3 class="code">hamming_distance/3</h3>
+          <blockquote>
+            <p class="comment">Calculates the Hamming distance between two lists (using equality to compare list elements). Fails if the two lists are not of the same length.</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>hamming_distance(List1,List2,Distance)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>hamming_distance(+list,+list,-integer) &ndash; zero_or_one</code>
             </dd>
           </dl>
         </div>
@@ -765,6 +785,46 @@
             <dt class="key">mode &ndash; number of solutions:</dt>
             <dd class="value">
               <code>subsequence(?list,?list,?list) &ndash; zero_or_more</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h3 class="code">subsequence/4</h3>
+          <blockquote>
+            <p class="comment">Generates subsequences of a given length from a list. Also returns the remaining elements. Element order is preserved.</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>subsequence(List,Length,Subsequence,Remaining)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>subsequence(+list,+integer,?list,?list) &ndash; zero_or_more</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h3 class="code">substitute/4</h3>
+          <blockquote>
+            <p class="comment">Substitutes all occurences of Old in List by New, returning NewList. Uses term equakity for element comparison.</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>substitute(Old,List,New,NewList)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>substitute(@term,@list,@term,-list) &ndash; one</code>
             </dd>
           </dl>
         </div>
