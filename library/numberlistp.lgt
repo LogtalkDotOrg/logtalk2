@@ -31,6 +31,13 @@
 		[comment is 'Calculates the Euclidean norm of a list of numbers. Fails if the list is empty.',
 		 argnames is ['List', 'Norm']]).
 
+	:- public(chebyshev_norm/2).
+	:- mode(chebyshev_norm(+list(integer), -integer), zero_or_one).
+	:- mode(chebyshev_norm(+list(float), -float), zero_or_one).
+	:- info(chebyshev_norm/2,
+		[comment is 'Calculates the Chebyshev norm of a list of numbers. Fails if the list is empty.',
+		 argnames is ['List', 'Norm']]).
+
 	:- public(manhattan_norm/2).
 	:- mode(manhattan_norm(+list(integer), -integer), zero_or_one).
 	:- mode(manhattan_norm(+list(float), -float), zero_or_one).

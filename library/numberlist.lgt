@@ -66,6 +66,18 @@
 		SquareSum1 is SquareSum0 + X * X,
 		euclidean_norm(Xs, SquareSum1, Norm).
 
+	chebyshev_norm([X| Xs], Norm) :-
+		Norm0 is abs(X),
+		chebyshev_norm(Xs, Norm0, Norm).
+
+	chebyshev_norm([], Norm, Norm).
+	chebyshev_norm([X| Xs], Norm0, Norm) :-
+		(	abs(X) > Norm0 ->
+			Norm1 is abs(X)
+		;	Norm1 is Norm0
+		),
+		chebyshev_norm(Xs, Norm1, Norm).
+
 	manhattan_norm([X| Xs], Norm) :-
 		Norm0 is abs(X),
 		manhattan_norm(Xs, Norm0, Norm).

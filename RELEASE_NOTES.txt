@@ -51,9 +51,10 @@ RELEASE NOTES
     with a given length), substitute/4 (for replacing elements in a list),
     and hamming_distance/3 to the library "listp" and "list" entities.
 
-    Added euclidean_norm/2, manhattan_norm/2, euclidean_distance/3,
-    chebyshev_distance/3, manhattan_distance/3, and scalar_product/3
-    predicates to the library "numberlistp" and "numberlist" entities.
+    Added euclidean_norm/2, chebyshev_norm/2, manhattan_norm/2,
+    euclidean_distance/3, chebyshev_distance/3, manhattan_distance/3, and
+    scalar_product/3 predicates to the library "numberlistp" and "numberlist"
+    entities.
 
     Corrected some silly bugs in the definition of the "character" library
     object predicates is_bin_digit/1, is_octal_digit/1, is_dec_digit/1, and
