@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.43.3 - December ??, 2011
+2.43.3 - December 21, 2011
 
     Changed the compiler to take into account the uses/2 directive when
     compiling calls to the reflection built-in methods. This change extends

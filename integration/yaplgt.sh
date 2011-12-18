@@ -63,7 +63,7 @@ if [ -d "$LOGTALKUSER" ]; then
 		logtalk_user_setup
 	else
 		current=`cat $LOGTALKUSER/VERSION.txt | sed 's/\.//g'`
-		if [ $current -lt 2430 ]; then
+		if [ $current -lt 2433 ]; then
 			echo "Logtalk user directory at $LOGTALKUSER is outdated!"
 			echo "Creating an up-to-date Logtalk user directory..."
 			logtalk_user_setup
