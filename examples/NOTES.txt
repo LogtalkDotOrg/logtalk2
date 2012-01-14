@@ -159,6 +159,9 @@ errors
 expansion
 	example illustrating the term and goal expansion mechanisms
 
+hailstone
+	example of computing Hailstone sequences
+
 hello_world
 	the unavoidable "hello world" programming example
 

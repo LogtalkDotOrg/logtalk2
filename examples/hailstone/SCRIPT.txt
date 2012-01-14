@@ -1,0 +1,36 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.43.3
+
+Copyright (c) 1998-2011 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% load the example:
+
+| ?- logtalk_load(hailstone(loader)).
+...
+
+
+% generating a sequence:
+
+| ?- hailstone::sequence(10).
+10 5 16 8 4 2 1
+true
+
+
+% calculating the length of a sequence:
+
+| ?- hailstone::length(27, Length).
+Length = 112
+true
+
+
+% finding the longest sequence in an interval:
+ 
+| ?- hailstone::longest(1, 100000, N, Length).
+N = 77031, Length = 351
+true
