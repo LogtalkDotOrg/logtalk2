@@ -132,20 +132,20 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 /*
 :- if(current_logtalk_flag(prolog_dialect, swi)).
 
-:- initialization((
-	set_logtalk_flag(debug, off),
-	set_logtalk_flag(smart_compilation, off),
-	set_logtalk_flag(reload, always),
-	set_logtalk_flag(unknown, warning),
-	set_logtalk_flag(misspelt, warning),
-	set_logtalk_flag(singletons, warning),
-	set_logtalk_flag(missing_directives, warning),
-	set_logtalk_flag(context_switching_calls, allow),
-	set_logtalk_flag(code_prefix, '.'),
-	set_logtalk_flag(optimize, off),
-	set_logtalk_flag(source_data, on),
-	set_prolog_flag(optimise, off)
-)).
+	:- initialization((
+		set_logtalk_flag(debug, off),
+		set_logtalk_flag(smart_compilation, off),
+		set_logtalk_flag(reload, always),
+		set_logtalk_flag(unknown, warning),
+		set_logtalk_flag(misspelt, warning),
+		set_logtalk_flag(singletons, warning),
+		set_logtalk_flag(missing_directives, warning),
+		set_logtalk_flag(context_switching_calls, allow),
+		set_logtalk_flag(code_prefix, '.'),
+		set_logtalk_flag(optimize, off),
+		set_logtalk_flag(source_data, on),
+		set_prolog_flag(optimise, off)
+	)).
 
 :- endif.
 */
@@ -185,7 +185,8 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 */
 
 
-%  To develop portable Logtalk applications uncomment the following lines:
+%  To develop portable Logtalk applications uncomment the following lines
+%  to help you catch possible non-portable built-in predicate calls:
 
 /*
 :- initialization((
