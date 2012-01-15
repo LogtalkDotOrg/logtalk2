@@ -8,59 +8,80 @@
 		comment is 'Hailstone sequence. Coded for a contribution to the Rosetta Stone website.'
 	]).
 
-	:- public(sequence/1).
-	:- mode(sequence(+natural), zero_or_one).
-	:- info(sequence/1, [
-		comment is 'Writes to the standard output the Hailstone sequence that start with its argument. Fails if the argument is not a natural number.',
+	:- public(generate_sequence/2).
+	:- mode(generate_sequence(+natural, -list(natural)), zero_or_one).
+	:- info(generate_sequence/2, [
+		comment is 'Generates the Hailstone sequence that starts with its first argument. Fails if the argument is not a natural number.',
+		argnames is ['Start', 'Sequence']
+	]).
+
+	:- public(write_sequence/1).
+	:- mode(write_sequence(+natural), zero_or_one).
+	:- info(write_sequence/1, [
+		comment is 'Writes to the standard output the Hailstone sequence that starts with its argument. Fails if the argument is not a natural number.',
 		argnames is ['Start']
 	]).
 
-	:- public(length/2).
-	:- mode(length(+natural, -natural), zero_or_one).
-	:- info(length/2, [
-		comment is 'Calculates the length of the Hailstone sequence that start with its argument. Fails if the argument is not a natural number.',
+	:- public(sequence_length/2).
+	:- mode(sequence_length(+natural, -natural), zero_or_one).
+	:- info(sequence_length/2, [
+		comment is 'Calculates the length of the Hailstone sequence that starts with its first argument. Fails if the argument is not a natural number.',
 		argnames is ['Start', 'Length']
 	]).
 
-	:- public(longest/4).
-	:- mode(longest(+natural, +natural, -natural, -natural), zero_or_one).
-	:- info(length/4, [
+	:- public(longest_sequence/4).
+	:- mode(longest_sequence(+natural, +natural, -natural, -natural), zero_or_one).
+	:- info(longest_sequence/4, [
 		comment is 'Calculates the longest Hailstone sequence in the interval [Start, End]. Fails if the interval is not valid.',
 		argnames is ['Start', 'End', 'N', 'Length']
 	]).
 
-	sequence(Start) :-
+	generate_sequence(Start, Sequence) :-
 		integer(Start),
 		Start >= 1,
-		write_sequence(Start).
+		sequence(Start, Sequence).
 
-	write_sequence(1) :-
+	sequence(1, [1]) :-
+		!. 
+	sequence(N, [N| Sequence]) :-
+		(	N mod 2 =:= 0 ->
+			M is N // 2
+		;	M is (3 * N) + 1
+		),
+		sequence(M, Sequence).
+
+	write_sequence(Start) :-
+		integer(Start),
+		Start >= 1,
+		sequence(Start).
+
+	sequence(1) :-
 		!,
 		write(1), nl. 
-	write_sequence(N) :-
+	sequence(N) :-
 		write(N), write(' '),
 		(	N mod 2 =:= 0 ->
 			M is N // 2
 		;	M is (3 * N) + 1
 		),
-		write_sequence(M).
+		sequence(M).
 
-	length(Start, Length) :-
+	sequence_length(Start, Length) :-
 		integer(Start),
 		Start >= 1,
-		calculate_length(Start, 1, Length).
+		sequence_length(Start, 1, Length).
 
-	calculate_length(1, Length, Length) :-
+	sequence_length(1, Length, Length) :-
 		!.
-	calculate_length(N, Length0, Length) :-
+	sequence_length(N, Length0, Length) :-
 		Length1 is Length0 + 1,
 		(	N mod 2 =:= 0 ->
 			M is N // 2
 		;	M is (3 * N) + 1
 		),
-		calculate_length(M, Length1, Length).
+		sequence_length(M, Length1, Length).
 
-	longest(Start, End, N, Length) :-
+	longest_sequence(Start, End, N, Length) :-
 		integer(Start),
 		integer(End),
 		Start >= 1,
@@ -71,7 +92,7 @@
 		Current > End,
 		!.
 	longest_sequence(Current, End, N0, N, Length0, Length) :-
-		length(Current, CurrentLength),
+		sequence_length(Current, 1, CurrentLength),
 		Next is Current + 1,
 		(	CurrentLength > Length0 ->
 			longest_sequence(Next, End, Current, N, CurrentLength, Length)
