@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	August 18, 2011
+" Last Change:	February 4, 2012
 
 
 " Quit when a syntax file was already loaded:
@@ -13,6 +13,8 @@ elseif exists("b:current_syntax")
 	finish
 endif
 
+let s:cpo_save = &cpo
+set cpo&vim
 
 " Logtalk is case sensitive:
 
@@ -443,3 +445,6 @@ endif
 
 
 let b:current_syntax = "logtalk"
+
+let &cpo = s:cpo_save
+unlet s:cpo_save
