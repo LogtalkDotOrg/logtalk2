@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.01,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2011/01/27,
+		date is 2012/02/17,
 		comment is 'Unit tests for the "chr" example.']).
 
 	:- if(current_object(dom)).
@@ -53,6 +53,11 @@
 	:- if(current_object(primes)).
 	test(chr_primes_1) :-
 		primes::candidate(29).
+	:- endif.
+
+	:- if(current_object(foo)).
+	test(chr_combining_1) :-
+		foo::foo(1).
 	:- endif.
 
 :- end_object.

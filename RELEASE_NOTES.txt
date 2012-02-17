@@ -13,6 +13,14 @@ RELEASE NOTES
 =============
 
 
+    Added an example of combining constraints defined in different objects
+    to the "chr" example based on sample code posted by Gergö Barany on the
+    SWI-Prolog mailing list.
+
+    Updated the Vim syntax file for Logtalk, applying the patch contributed
+    by Thilo Six.
+
+
 2.43.3 - December 21, 2011
 
     Changed the compiler to take into account the uses/2 directive when

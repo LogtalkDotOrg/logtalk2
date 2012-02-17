@@ -50,7 +50,8 @@
 		logtalk_load(fibonacci, [hook(chr_hook)]),
 		logtalk_load(gcd, [hook(chr_hook)]),
 		logtalk_load(leq, [hook(chr_hook)]),
-		logtalk_load(primes, [hook(chr_hook)])
+		logtalk_load(primes, [hook(chr_hook)]),
+		logtalk_load(combining, [hook(chr_hook)])	% requires Qu-Prolog
 	)).
 
 :- else.

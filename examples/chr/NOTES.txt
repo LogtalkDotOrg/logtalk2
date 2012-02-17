@@ -23,3 +23,6 @@ or category containing CHR code at a time. For details on these
 CHR implementations see:
 
 	http://people.cs.kuleuven.be/~tom.schrijvers/CHR/
+
+The example in the "combining.lgt" file currently requires Qu-Prolog and
+illustrates how to combine constraints defined in different objects.

@@ -104,3 +104,16 @@ primes::prime(29)
 true .
 
 
+% calling constraints defined in an object from another object:
+
+| ?- foo::foo(1).
+
+
+constraints:
+
+baz :: bar(2)
+baz :: baz(3)
+foo :: foo(1)
+
+yes
+
