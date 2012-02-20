@@ -2,16 +2,16 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.43.3
+## Release 2.43.4
 ## 
-## Copyright (c) 1998-2011 Paulo Moura.        All Rights Reserved.
+## Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
 ## Logtalk is free software.  You can redistribute it and/or modify
 ## it under the terms of the "Artistic License 2.0" as published by 
 ## The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ## ================================================================
 
 echo
-echo "Uninstalling Logtalk 2.43.3 system-level files..."
+echo "Uninstalling Logtalk 2.43.4 system-level files..."
 echo
 
 if ! [ "$LOGTALKHOME" ]; then
@@ -88,6 +88,6 @@ rm -f xsbmtlgt.1.gz
 rm -f yaplgt.1.gz
 
 
-echo "Logtalk 2.43.3 system-level uninstall completed. For uninstalling user-level"
+echo "Logtalk 2.43.4 system-level uninstall completed. For uninstalling user-level"
 echo "Logtalk files simply delete the LOGTALKUSER directories."
 echo

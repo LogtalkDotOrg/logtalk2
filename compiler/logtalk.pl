@@ -2,9 +2,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.43.3
+%  Release 2.43.4
 %
-%  Copyright (c) 1998-2011 Paulo Moura.        All Rights Reserved.
+%  Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
 %  it under the terms of the "Artistic License 2.0" as published by
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
@@ -19060,7 +19060,7 @@ current_logtalk_flag(version, version(2, 43, 3)).
 '$lgt_banner' :-
 	current_logtalk_flag(version, version(Major, Minor, Patch)),
 	nl, write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
-	write('Copyright (c) 1998-2011 Paulo Moura'), nl, nl.
+	write('Copyright (c) 1998-2012 Paulo Moura'), nl, nl.
 
 
 
