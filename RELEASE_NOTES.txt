@@ -15,6 +15,8 @@ RELEASE NOTES
 
 2.43.4 - March ??, 2012
 
+    Allow open lists of terminals in the body of grammar rules.
+
     Added an example of combining constraints defined in different objects
     to the "chr" example based on sample code posted by Gergö Barany on the
     SWI-Prolog mailing list.

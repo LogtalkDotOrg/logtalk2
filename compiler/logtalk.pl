@@ -2052,7 +2052,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 43, 3)).
+current_logtalk_flag(version, version(2, 43, 4)).
 
 
 
@@ -16573,9 +16573,14 @@ current_logtalk_flag(version, version(2, 43, 3)).
 %
 % translates a list of terminals:
 
-'$lgt_dcg_terminals'(Terminals, S0, S, S0 = List) :-
-	'$lgt_must_be'(list, Terminals),
-	'$lgt_append'(Terminals, S, List).
+'$lgt_dcg_terminals'(Terminals, S0, S, Goal) :-
+	'$lgt_must_be'(nonvar, Terminals),
+	(	'$lgt_is_list'(Terminals) ->
+		'$lgt_append'(Terminals, S, List),
+		Goal = (S0 = List)
+	;	'$lgt_must_be'(list_or_partial_list, Terminals),
+		Goal = {'$lgt_append'(Terminals, S, S0)}
+	).
 
 
 
