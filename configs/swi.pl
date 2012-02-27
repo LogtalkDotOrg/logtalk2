@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: September 23, 2011
+%  last updated: February 27, 2012
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -92,7 +92,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 % forall(+callable, +callable) -- built-in
 
 
-% call/2-9 -- built-in
+% call/2-7 -- built-in
 
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: September 23, 2011
+%  last updated: February 27, 2012
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -73,7 +73,7 @@ term_variables(Term, Variables) :-
 % forall(+callable, +callable) -- built-in
 
 
-% call/2-9 -- built-in
+% call/2-7 -- built-in
 
 
 

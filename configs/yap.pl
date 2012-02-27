@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: September 23, 2011
+%  last updated: February 27, 2012
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -145,7 +145,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 % forall(+callable, +callable) -- built-in
 
 
-% call/2-9 -- built-in
+% call/2-7 -- built-in
 
 
 

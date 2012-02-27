@@ -11,7 +11,7 @@
 %
 %  configuration file for MasterProLog 4.1
 %
-%  last updated: September 23, 2011
+%  last updated: February 27, 2012
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -142,7 +142,7 @@ forall(Generate, Test) :-
 	\+ (Generate, \+ Test).
 
 
-% call/2-9 -- built-in
+% call/2-7 -- built-in
 
 
 

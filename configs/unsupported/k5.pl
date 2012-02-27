@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 5.1.5 and later 5.1.x versions
 %
-%  last updated: September 23, 2011
+%  last updated: February 27, 2012
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -87,7 +87,7 @@ retractall(Head) :-
 	).
 
 
-% call/2-9 -- built-in
+% call/2-7 -- built-in
 
 
 

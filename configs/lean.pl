@@ -11,7 +11,7 @@
 %
 %  configuration file for Lean Prolog 2.19.0 and later versions
 %
-%  last updated: November 14, 2011
+%  last updated: February 27, 2012
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -121,7 +121,7 @@ setup_call_cleanup(_, _, _) :-
 % retractall(+callable) -- built-in
 
 
-% call/2-9 -- built-in
+% call/2-7 -- built-in
 
 
 

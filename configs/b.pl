@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.5#8 and later versions
 %
-%  last updated: September 23, 2011
+%  last updated: February 27, 2012
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -77,7 +77,7 @@
 % forall(+callable, +callable) -- built-in
 
 
-% call/2-9 -- built-in
+% call/2-7 -- built-in
 
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: September 23, 2011
+%  last updated: February 27, 2012
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -78,7 +78,7 @@ setup_call_cleanup(_, _, _) :-
 % forall(+callable, +callable) -- built-in
 
 
-% call/2-9 -- built-in
+% call/2-7 -- built-in
 
 
 
