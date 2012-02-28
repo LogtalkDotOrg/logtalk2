@@ -15,6 +15,11 @@ RELEASE NOTES
 
 2.43.4 - March ??, 2012
 
+    Corrected a bug in the processing of meta-calls for meta-predicates where
+    the calling context would be set to "this" instead of "sender" whenever a
+    meta-argument is one of the ::/2, {}/1, <</2, or :/2 control constructs.
+    Thanks to Daniel Lyons for the bug report.
+
     Allow open lists of terminals in the body of grammar rules.
 
     Added an example of combining constraints defined in different objects
