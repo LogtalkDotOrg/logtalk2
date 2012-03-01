@@ -8,6 +8,10 @@
 
 :- object(employee).
 
+	% we can ensure that an object is compiled by allowing complementing
+	% categories by writing:
+	:- set_logtalk_flag(complements, allow).
+
 	:- public([name/1, age/1, salary/1]).
 
 	name(john).
