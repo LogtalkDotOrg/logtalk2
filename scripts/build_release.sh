@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.43.4
+## Release 2.44.0
 ## 
 ## Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
 ## Logtalk is free software.  You can redistribute it and/or modify
@@ -12,23 +12,23 @@
 
 dir=`PWD`
 
-svn export http://svn.logtalk.org/logtalk/trunk lgt2433
+svn export http://svn.logtalk.org/logtalk/trunk lgt2440
 
-cd lgt2433
+cd lgt2440
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 
 cd ..
-cp -R lgt2433/manuals man2433
-tar -czf man2433.tgz man2433
-tar -cjf lgt2433.tar.bz2 lgt2433
+cp -R lgt2440/manuals man2440
+tar -czf man2440.tgz man2440
+tar -cjf lgt2440.tar.bz2 lgt2440
 
 mkdir -p debian/usr/bin
 mkdir -p debian/usr/share/doc/logtalk
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
 mkdir -p debian/DEBIAN
-cd lgt2433/scripts
+cd lgt2440/scripts
 ./install.sh $dir/debian/usr
 rm -rf $dir/debian/usr/share/mime
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
@@ -47,32 +47,32 @@ cp debian/postinst $dir/debian/DEBIAN
 cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
 cd $dir
-dpkg-deb --build debian logtalk_2.43.4-1_all.deb
+dpkg-deb --build debian logtalk_2.44.0-1_all.deb
 
-md5="`md5 -q lgt2433.tar.bz2`"
-sha1="`openssl sha1 -r lgt2433.tar.bz2 | xargs -L 1 | sed 's/*lgt2433.tar.bz2//g'`"
-rmd160="`openssl rmd160 -r lgt2433.tar.bz2 | xargs -L 1 | sed 's/*lgt2433.tar.bz2//g'`"
+md5="`md5 -q lgt2440.tar.bz2`"
+sha1="`openssl sha1 -r lgt2440.tar.bz2 | xargs -L 1 | sed 's/*lgt2440.tar.bz2//g'`"
+rmd160="`openssl rmd160 -r lgt2440.tar.bz2 | xargs -L 1 | sed 's/*lgt2440.tar.bz2//g'`"
 sudo mkdir -p /opt/local/var/macports/distfiles/logtalk
-sudo cp -f lgt2433.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2433.tar.bz2
+sudo cp -f lgt2440.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2440.tar.bz2
 cd /opt/local/var/macports/sources/rsync.macports.org/release/ports/lang/logtalk/
 sudo mv -f Portfile Portfile.old
-sudo cp $dir/lgt2433/scripts/macosx/Portfile .
-sudo sed -e 's/^version.*/version 2.43.4/' -i '' Portfile
+sudo cp $dir/lgt2440/scripts/macosx/Portfile .
+sudo sed -e 's/^version.*/version 2.44.0/' -i '' Portfile
 sudo sed -e "s/sha1.*/sha1 $sha1 \\\/" -i '' Portfile
 sudo sed -e "s/rmd160.*/rmd160 $rmd160/" -i '' Portfile
 sudo port clean --archive logtalk
 sudo port destroot logtalk
 sudo port pkg logtalk
-cp -R work/logtalk-2.43.4.pkg $dir
+cp -R work/logtalk-2.44.0.pkg $dir
 sudo port clean logtalk
 
 cd $dir
-mkdir manpdf2433
-cd man2433/userman
+mkdir manpdf2440
+cd man2440/userman
 ./userman.sh
-mv userman.pdf ../../manpdf2433/lgtuserman2433.pdf
+mv userman.pdf ../../manpdf2440/lgtuserman2440.pdf
 cd ../refman
 ./refman.sh
-mv refman.pdf ../../manpdf2433/lgtrefman2433.pdf
+mv refman.pdf ../../manpdf2440/lgtrefman2440.pdf
 cd ../..
-tar -czf manpdf2433.tgz manpdf2433
+tar -czf manpdf2440.tgz manpdf2440

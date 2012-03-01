@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.43.4
+## Release 2.44.0
 ## 
 ## Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
 ## Logtalk is free software.  You can redistribute it and/or modify
@@ -13,7 +13,7 @@
 dir="$PWD"
 
 cd ../..
-tar -cjf ~/rpmbuild/SOURCES/lgt2433.tar.bz2 .
+tar -cjf ~/rpmbuild/SOURCES/lgt2440.tar.bz2 .
 mkdir -p ~/rpmbuild/RPMS/noarch
 
 cd "$dir"
