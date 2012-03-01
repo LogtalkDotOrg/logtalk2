@@ -93,6 +93,7 @@ logtalk_library_path(mtbatch, threads('mtbatch/')).
 logtalk_library_path(multifile, examples('multifile/')).
 logtalk_library_path(nondet, threads('nondet/')).
 logtalk_library_path(operators, examples('operators/')).
+logtalk_library_path(patching, examples('patching/')).
 logtalk_library_path(parametric, examples('parametric/')).
 logtalk_library_path(people, examples('people/')).
 logtalk_library_path(philosophers, threads('philosophers/')).

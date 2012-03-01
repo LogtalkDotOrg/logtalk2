@@ -1,0 +1,24 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.43.4
+
+Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT.txt file.
+
+This folder contains an example that shows how to use a complementing
+category to patch broken object predicate declarations and definitions 
+(without modifying its source code), thus providing functionality similar
+to Objective-C categories.
+
+The complemented objects need to be compiled with the flag "complements" 
+set to "allow" (its default value is "deny"). This solution was adapted
+to improve performance of applications that doesn't use complementing
+categories and to provide a solution for preventing the use of categories
+to break object encapsulation. Note that the "complements" flag can be
+set on a per-object basis.

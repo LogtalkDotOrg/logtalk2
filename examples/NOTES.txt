@@ -235,6 +235,10 @@ multifile
 operators
 	example of using operators local to objects and categories
 
+patching
+	example of using complementing categories to patch broken
+	object code
+
 parametric
 	simple example of parametric objects
 
