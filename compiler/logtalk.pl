@@ -12323,6 +12323,19 @@ current_logtalk_flag(version, version(2, 43, 4)).
 	'$lgt_term_template'(Obj, Ctg),
 	throw(permission_error(complement, self, Obj)).
 
+'$lgt_tr_complements_category'([Obj| _], Ctg, _, _, _) :-
+	once((	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Flags)
+		;	'$lgt_pp_file_runtime_clause_'('$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Flags))
+	)),
+	Flags /\ 32 =\= 32,
+	\+ '$lgt_compiler_flag'(report, off),
+	'$lgt_report_warning_in_new_line',
+	'$lgt_inc_compile_warnings_counter',
+	write('%         WARNING!  Complementing category will be ignored: '), writeq(Ctg), nl,
+	write('%                   Complemented object, '), writeq(Obj), write(', compiled'), nl,
+	write('%                   with complementing categories support turned off'), nl,
+	fail.
+
 '$lgt_tr_complements_category'([Obj| Objs], Ctg, Dcl, Def, Rnm) :-
 	'$lgt_add_referenced_object'(Obj),
 	assertz('$lgt_pp_complemented_object_'(Obj)),
