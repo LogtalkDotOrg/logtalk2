@@ -67,7 +67,7 @@ A category may explicitly complement one or more existing objects, thus providin
     ...
 :- end_category.</pre>
 <p>
-This allows us to add new functionality to existing objects without requiring access or modifications to their source code. Common uses are adding logging or debugging predicates to a set of objects. Complementing categories may also be used to define aliases for complemented object predicates. Complemented objects need to be compiled with the <code>complements</code> compiler option switched on.
+This allows us to patch existing functionality or add new functionality to existing objects without requiring access or modifications to their source code. Common uses are adding logging or debugging predicates to a set of objects. Complementing categories may also be used to define aliases for complemented object predicates. Complemented objects need to be compiled with the <code>complements</code> compiler option switched on.
 </p>
 <p>
 When you want to use static binding with a <em>complemented</em> object, be sure to compile and load the <em>complementing</em> category before the object (otherwise the new functionality added by the category will be ignored by the object clients).
@@ -393,7 +393,7 @@ Note that access to category parameters is only possible using the <code>paramet
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 1, 2011</span>
+		<span>Last updated on: March 1, 2012</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="protocols.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="predicates.html">next</a></span><br/>

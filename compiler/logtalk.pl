@@ -13323,11 +13323,23 @@ current_logtalk_flag(version, version(2, 43, 4)).
 
 '$lgt_gen_prototype_dcl_clauses' :-
 	'$lgt_gen_local_dcl_clauses'(Local),
+	'$lgt_gen_prototype_complements_dcl_clauses',
 	'$lgt_gen_prototype_linking_dcl_clauses'(Local),
 	'$lgt_gen_prototype_implements_dcl_clauses',
 	'$lgt_gen_prototype_imports_dcl_clauses',
 	'$lgt_gen_prototype_extends_dcl_clauses',
 	'$lgt_gen_object_catchall_dcl_clauses'(Local).
+
+
+
+'$lgt_gen_prototype_complements_dcl_clauses' :-
+	(	'$lgt_compiler_flag'(complements, allow) ->
+		'$lgt_pp_object_'(Obj, _, Dcl, _, _, _, _, _, _, _, _),
+		Head =.. [Dcl, Pred, Scope, Meta, Flags, SCtn, TCtn],
+		Lookup = '$lgt_complemented_object'(Obj, Dcl, Pred, Scope, Meta, Flags, SCtn, TCtn),
+		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
+	;	true
+	).
 
 
 
@@ -13403,14 +13415,7 @@ current_logtalk_flag(version, version(2, 43, 4)).
 	),
 	fail.
 
-'$lgt_gen_prototype_imports_dcl_clauses' :-
-	(	'$lgt_compiler_flag'(complements, allow) ->
-		'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, _, _),
-		Head =.. [ODcl, Pred, Scope, Meta, Flags, SCtn, TCtn],
-		Lookup = '$lgt_complemented_object'(Obj, ODcl, Pred, Scope, Meta, Flags, SCtn, TCtn),
-		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
-	;	true
-	).
+'$lgt_gen_prototype_imports_dcl_clauses'.
 
 
 
@@ -13444,10 +13449,22 @@ current_logtalk_flag(version, version(2, 43, 4)).
 		Local = true
 	;	Local = false
 	),
+	'$lgt_gen_prototype_complements_def_clauses',
 	'$lgt_gen_prototype_linking_def_clauses'(Local),
 	'$lgt_gen_prototype_imports_def_clauses',
 	'$lgt_gen_prototype_extends_def_clauses',
 	'$lgt_gen_object_catchall_def_clauses'(Local).
+
+
+
+'$lgt_gen_prototype_complements_def_clauses' :-
+	(	'$lgt_compiler_flag'(complements, allow) ->
+		'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),
+		Head =.. [Def, Pred, ExCtx, Call, Ctn],
+		Lookup = '$lgt_complemented_object'(Def, Pred, ExCtx, Call, Ctn),
+		assertz('$lgt_pp_final_def_'((Head:-Lookup)))
+	;	true
+	).
 
 
 
@@ -13483,14 +13500,7 @@ current_logtalk_flag(version, version(2, 43, 4)).
 	),
 	fail.
 
-'$lgt_gen_prototype_imports_def_clauses' :-
-	(	'$lgt_compiler_flag'(complements, allow) ->
-		'$lgt_pp_object_'(_, _, _, ODef, _, _, _, _, _, _, _),
-		Head =.. [ODef, Pred, ExCtx, Call, Ctn],
-		Lookup = '$lgt_complemented_object'(ODef, Pred, ExCtx, Call, Ctn),
-		assertz('$lgt_pp_final_def_'((Head:-Lookup)))
-	;	true
-	).
+'$lgt_gen_prototype_imports_def_clauses'.
 
 
 
@@ -13599,10 +13609,22 @@ current_logtalk_flag(version, version(2, 43, 4)).
 % generates instance/class inherited declaration clauses
 
 '$lgt_gen_ic_idcl_clauses'(Local) :-
+	'$lgt_gen_ic_complements_idcl_clauses',
 	'$lgt_gen_ic_linking_idcl_clauses'(Local),
-	'$lgt_gen_ic_protocol_idcl_clauses',
-	'$lgt_gen_ic_category_idcl_clauses',
+	'$lgt_gen_ic_implements_idcl_clauses',
+	'$lgt_gen_ic_imports_idcl_clauses',
 	'$lgt_gen_ic_hierarchy_idcl_clauses'.
+
+
+
+'$lgt_gen_ic_complements_idcl_clauses' :-
+	(	'$lgt_compiler_flag'(complements, allow) ->
+		'$lgt_pp_object_'(Obj, _, _, _, _, IDcl, _, _, _, _, _),
+		Head =.. [IDcl, Pred, Scope, Meta, Flags, SCtn, TCtn],
+		Lookup = '$lgt_complemented_object'(Obj, IDcl, Pred, Scope, Meta, Flags, SCtn, TCtn),
+		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
+	;	true
+	).
 
 
 
@@ -13634,7 +13656,7 @@ current_logtalk_flag(version, version(2, 43, 4)).
 
 
 
-'$lgt_gen_ic_protocol_idcl_clauses' :-
+'$lgt_gen_ic_implements_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, Rnm, _),
 	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EntityScope),
 	(	EntityScope == (public) ->
@@ -13654,11 +13676,11 @@ current_logtalk_flag(version, version(2, 43, 4)).
 	),
 	fail.
 
-'$lgt_gen_ic_protocol_idcl_clauses'.
+'$lgt_gen_ic_implements_idcl_clauses'.
 
 
 
-'$lgt_gen_ic_category_idcl_clauses' :-
+'$lgt_gen_ic_imports_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, Rnm, _),
 	'$lgt_pp_imported_category_'(Ctg, _, CDcl, _, EntityScope),
 	(	EntityScope == (public) ->
@@ -13678,14 +13700,7 @@ current_logtalk_flag(version, version(2, 43, 4)).
 	),
 	fail.
 
-'$lgt_gen_ic_category_idcl_clauses' :-
-	(	'$lgt_compiler_flag'(complements, allow) ->
-		'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, _, _),
-		Head =.. [OIDcl, Pred, Scope, Meta, Flags, SCtn, TCtn],
-		Lookup = '$lgt_complemented_object'(Obj, OIDcl, Pred, Scope, Meta, Flags, SCtn, TCtn),
-		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
-	;	true
-	).
+'$lgt_gen_ic_imports_idcl_clauses'.
 
 
 
@@ -13719,11 +13734,23 @@ current_logtalk_flag(version, version(2, 43, 4)).
 		Local = true
 	;	Local = false
 	),
+	'$lgt_gen_ic_complements_def_clauses',
 	'$lgt_gen_ic_linking_def_clauses'(Local),
 	'$lgt_gen_ic_imports_def_clauses',
 	'$lgt_gen_ic_hierarchy_def_clauses',
 	'$lgt_gen_ic_idef_clauses'(Local),
 	'$lgt_gen_object_catchall_def_clauses'(Local).
+
+
+
+'$lgt_gen_ic_complements_def_clauses' :-
+	(	'$lgt_compiler_flag'(complements, allow) ->
+		'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),
+		Head =.. [Def, Pred, ExCtx, Call, Ctn],
+		Lookup = '$lgt_complemented_object'(Def, Pred, ExCtx, Call, Ctn),
+		assertz('$lgt_pp_final_def_'((Head:-Lookup)))
+	;	true
+	).
 
 
 
@@ -13759,14 +13786,7 @@ current_logtalk_flag(version, version(2, 43, 4)).
 	),
 	fail.
 
-'$lgt_gen_ic_imports_def_clauses' :-
-	(	'$lgt_compiler_flag'(complements, allow) ->
-		'$lgt_pp_object_'(_, _, _, ODef, _, _, _, _, _, _, _),
-		Head =.. [ODef, Pred, ExCtx, Call, Ctn],
-		Lookup = '$lgt_complemented_object'(ODef, Pred, ExCtx, Call, Ctn),
-		assertz('$lgt_pp_final_def_'((Head:-Lookup)))
-	;	true
-	).
+'$lgt_gen_ic_imports_def_clauses'.
 
 
 
@@ -13793,9 +13813,22 @@ current_logtalk_flag(version, version(2, 43, 4)).
 
 
 '$lgt_gen_ic_idef_clauses'(Local) :-
+	'$lgt_gen_ic_complements_idef_clauses',
 	'$lgt_gen_ic_linking_idef_clauses'(Local),
-	'$lgt_gen_ic_category_idef_clauses',
+	'$lgt_gen_ic_imports_idef_clauses',
 	'$lgt_gen_ic_hierarchy_idef_clauses'.
+
+
+
+'$lgt_gen_ic_complements_idef_clauses' :-
+	(	'$lgt_compiler_flag'(complements, allow) ->
+		'$lgt_pp_object_'(Obj, _, _, _, _, _, IDef, _, _, _, _),
+		'$lgt_exec_ctx_this'(ExCtx, Obj),
+		Head =.. [IDef, Pred, ExCtx, Call, Ctn],
+		Lookup = '$lgt_complemented_object'(IDef, Pred, ExCtx, Call, Ctn),
+		assertz('$lgt_pp_final_def_'((Head:-Lookup)))
+	;	true
+	).
 
 
 
@@ -13815,7 +13848,7 @@ current_logtalk_flag(version, version(2, 43, 4)).
 
 
 
-'$lgt_gen_ic_category_idef_clauses' :-
+'$lgt_gen_ic_imports_idef_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, Rnm, _),
 	% when working with parametric entities, we must connect the object parameters
 	% with the category parameters:
@@ -13832,15 +13865,7 @@ current_logtalk_flag(version, version(2, 43, 4)).
 	),
 	fail.
 
-'$lgt_gen_ic_category_idef_clauses' :-
-	(	'$lgt_compiler_flag'(complements, allow) ->
-		'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, _, _),
-		'$lgt_exec_ctx_this'(ExCtx, Obj),
-		Head =.. [OIDef, Pred, ExCtx, Call, Ctn],
-		Lookup = '$lgt_complemented_object'(OIDef, Pred, ExCtx, Call, Ctn),
-		assertz('$lgt_pp_final_def_'((Head:-Lookup)))
-	;	true
-	).
+'$lgt_gen_ic_imports_idef_clauses'.
 
 
 

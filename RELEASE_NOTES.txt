@@ -15,6 +15,12 @@ RELEASE NOTES
 
 2.43.4 - March ??, 2012
 
+    Changed the semantics of complementing categories to allow patching both
+    predicate declarations and predicate definitions of complemented objects.
+    This is accomplished by ensuring that predicate declaration and definition
+    lookups start at the complementing categories before looking into the
+    complemented object itself or into its related entities.
+
     Updated the Logtalk compiler in order to generate a warning when compiling
     a complementing category for a complemented object that was compiled with
     support for complementing categories turned off.
@@ -25,6 +31,10 @@ RELEASE NOTES
     Thanks to Daniel Lyons for the bug report.
 
     Allow open lists of terminals in the body of grammar rules.
+
+    Added an example, "patching", of using complementing categories to patch
+    broken predicate declarations and predicate definitions of complemented
+    classes and prototypes.
 
     Added an example of combining constraints defined in different objects
     to the "chr" example based on sample code posted by Gergö Barany on the
