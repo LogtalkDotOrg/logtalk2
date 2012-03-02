@@ -10,18 +10,17 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 This folder contains minimal support for using Exuberant Ctags 
-(http://ctags.sourceforge.net/) with Logtalk. There are two files 
-that you will need to rename and copy to your home directory:
+(http://ctags.sourceforge.net/) with Logtalk. There is one file
+that you will need to copy to your home directory:
 
 	ctags
-		Rename this file to "$HOME/.ctags" or append its contents to
+		Copy this file to "$HOME/.ctags" or append its contents to
 		the "$HOME/.ctags" file if it already exists
 
-	ctags.tmcodebrowser
-		Rename this file to "$HOME/.ctags.tmcodebrowser" or append its 
-		contents to "$HOME/.ctags.tmcodebrowser" if it already exists 
-		in order to use the MacOS X TextMate text editor and its 
-		TmCodeBrowser plug-in (http://www.cocoabits.com/TmCodeBrowser/)
+If you're using the MacOS X TextMate and its TmCodeBrowser plug-in
+(http://www.cocoabits.com/TmCodeBrowser/), copy the "ctags" file to
+"$HOME/.ctags.tmcodebrowser" or append its contents to the
+"$HOME/.ctags.tmcodebrowser" file if it already exists.
 
 If you're using the Vim text editor, you can install the "Tag List"
 plugin in order to enable a source code browser for Logtalk (and other)

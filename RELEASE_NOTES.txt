@@ -40,6 +40,9 @@ RELEASE NOTES
     to the "chr" example based on sample code posted by Gergö Barany on the
     SWI-Prolog mailing list.
 
+    Updated the support for Exuberant ctags. Declared predicates are now
+    listed using the Functor/Arity notation.
+
     Updated the Vim syntax file for Logtalk, applying the patch contributed
     by Thilo Six.
 
