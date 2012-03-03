@@ -3671,6 +3671,9 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	).
 
 '$lgt_metacall'(::Closure, ExtraArgs, MetaCallCtx, _, Sender0, This, Self) :-
+	% passing ::/1 goals to meta-predicates will fail to work as the user-expected
+	% as the value of "self" is lost during the roundtrip to the object that defines
+	% the meta-predicate when the meta-call should take place on the "sender"
 	!,
 	(	\+ '$lgt_member'(::Closure, MetaCallCtx) ->
 		Sender = This
@@ -3857,8 +3860,9 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	\+ callable(Goal),
 	throw(error(type_error(callable, Goal), logtalk(call(Goal), This))).
 
-'$lgt_metacall'({Goal}, _, _, _, _, _) :-					% pre-compiled meta-calls or calls
-	!,														% in "user" (compiler bypass)
+'$lgt_metacall'({Goal}, _, _, _, _, _) :-
+	% pre-compiled meta-calls or calls in "user" (compiler bypass)
+	!,
 	call(Goal).
 
 '$lgt_metacall'(':'(Module, Goal), _, _, _, _, _) :-
@@ -3866,13 +3870,28 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	':'(Module, Goal).
 
 '$lgt_metacall'(Goal, MetaCallCtx, Prefix, Sender, This, Self) :-
+	% as the meta-call context can include existentially-quantified goals, we cannot
+	% simply test for membership of the meta-call to decide if it should take place
+	% in "this" or in "sender"; thus, we "reverse" the test (the computational cost
+	% is essentially the same)
 	(	\+ (	'$lgt_member'(QMetaCall, MetaCallCtx),
-				'$lgt_decompose_existentially_quantified_goal'(QMetaCall, MetaCall),
+				'$existentially_quantified_goal_to_goal'(QMetaCall, MetaCall),
 				Goal = MetaCall
 	 	) ->
 		'$lgt_metacall_this'(Goal, Prefix, Sender, This, Self)
 	;	'$lgt_metacall_sender'(Goal, Sender, This, [])
 	).
+
+
+'$existentially_quantified_goal_to_goal'(Goal, Goal) :-
+	var(Goal),
+	!.
+
+'$existentially_quantified_goal_to_goal'(_^Term, Goal) :-
+	!,
+	'$existentially_quantified_goal_to_goal'(Term, Goal).
+
+'$existentially_quantified_goal_to_goal'(Goal, Goal).
 
 
 
@@ -9640,8 +9659,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	'$lgt_comp_ctx'(Ctx, Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode, Stack),
 	(	var(QGoal), '$lgt_member_var'(QGoal, MetaVars) ->
 		'$lgt_comp_ctx'(Ctx2, Head, Sender, This, Self, Prefix, [Goal| MetaVars], MetaCallCtx, ExCtx, Mode, Stack),
-		TPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Goal, TQGoal, TGoal), bagof(Term, TQGoal, List)),
-		DPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Goal, TQGoal, TGoal), bagof(Term, TQGoal, List)),
+		TPred = ('$lgt_convert_existentially_quantified_goal'(QGoal, Goal, TQGoal, TGoal), bagof(Term, TQGoal, List)),
+		DPred = ('$lgt_convert_existentially_quantified_goal'(QGoal, Goal, TQGoal, TGoal), bagof(Term, TQGoal, List)),
 		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx2)
 	;	TPred = bagof(Term, TGoal, List),
 		DPred = bagof(Term, DGoal, List),
@@ -9665,8 +9684,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	'$lgt_comp_ctx'(Ctx, Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode, Stack),
 	(	var(QGoal), '$lgt_member_var'(QGoal, MetaVars) ->
 		'$lgt_comp_ctx'(Ctx2, Head, Sender, This, Self, Prefix, [Goal| MetaVars], MetaCallCtx, ExCtx, Mode, Stack),
-		TPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Goal, TQGoal, TGoal), setof(Term, TQGoal, List)),
-		DPred = ('$lgt_decompose_existentially_quantified_goal'(QGoal, Goal, TQGoal, TGoal), setof(Term, TQGoal, List)),
+		TPred = ('$lgt_convert_existentially_quantified_goal'(QGoal, Goal, TQGoal, TGoal), setof(Term, TQGoal, List)),
+		DPred = ('$lgt_convert_existentially_quantified_goal'(QGoal, Goal, TQGoal, TGoal), setof(Term, TQGoal, List)),
 		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx2)
 	;	TPred = setof(Term, TGoal, List),
 		DPred = setof(Term, DGoal, List),
@@ -10884,35 +10903,19 @@ current_logtalk_flag(version, version(2, 44, 0)).
 
 
 
-% '$lgt_decompose_existentially_quantified_goal'(@callable, -callable, -callable, -callable)
+% '$lgt_convert_existentially_quantified_goal'(@callable, -callable, -callable, -callable)
 %
-% decompose a ^/2 goal (used with bagof/3 and setof/3)
+% converts a ^/2 goal at runtime (used with bagof/3 and setof/3)
 
-'$lgt_decompose_existentially_quantified_goal'(Goal, Goal, TGoal, TGoal) :-
+'$lgt_convert_existentially_quantified_goal'(Goal, Goal, TGoal, TGoal) :-
 	var(Goal),
 	!.
 
-'$lgt_decompose_existentially_quantified_goal'(Var^Term, Goal, Var^TTerm, TGoal) :-
+'$lgt_convert_existentially_quantified_goal'(Var^Term, Goal, Var^TTerm, TGoal) :-
 	!,
-	'$lgt_decompose_existentially_quantified_goal'(Term, Goal, TTerm, TGoal).
+	'$lgt_convert_existentially_quantified_goal'(Term, Goal, TTerm, TGoal).
 
-'$lgt_decompose_existentially_quantified_goal'(Goal, Goal, TGoal, TGoal).
-
-
-
-% '$lgt_decompose_existentially_quantified_goal'(@callable, -callable)
-%
-% decompose a ^/2 goal (used with bagof/3 and setof/3)
-
-'$lgt_decompose_existentially_quantified_goal'(Goal, Goal) :-
-	var(Goal),
-	!.
-
-'$lgt_decompose_existentially_quantified_goal'(_^Term, Goal) :-
-	!,
-	'$lgt_decompose_existentially_quantified_goal'(Term, Goal).
-
-'$lgt_decompose_existentially_quantified_goal'(Goal, Goal).
+'$lgt_convert_existentially_quantified_goal'(Goal, Goal, TGoal, TGoal).
 
 
 
@@ -16330,8 +16333,6 @@ current_logtalk_flag(version, version(2, 44, 0)).
 '$lgt_valid_flag_value'(events, allow) :- !.
 '$lgt_valid_flag_value'(events, deny) :- !.
 
-'$lgt_valid_flag_value'(startup_message, flags(compact)) :- !.	% deprecated
-'$lgt_valid_flag_value'(startup_message, flags(verbose)) :- !.	% deprecated
 '$lgt_valid_flag_value'(startup_message, flags) :- !.
 '$lgt_valid_flag_value'(startup_message, banner) :- !.
 '$lgt_valid_flag_value'(startup_message, none) :- !.
@@ -19122,11 +19123,6 @@ current_logtalk_flag(version, version(2, 44, 0)).
 '$lgt_startup_message' :-
 	'$lgt_compiler_flag'(startup_message, Flag),
 	'$lgt_startup_message'(Flag).
-
-
-'$lgt_startup_message'(flags(_)) :-		% deprecated
-	'$lgt_banner',
-	'$lgt_default_flags'.
 
 '$lgt_startup_message'(flags) :-
 	'$lgt_banner',

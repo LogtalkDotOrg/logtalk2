@@ -34,6 +34,8 @@ RELEASE NOTES
     the bagof/3 and setof/3 built-in methods where the meta-argument contains
     multiple existentially qualified variables.
 
+    Removed support for the deprecated "startup_message" flag flags/1 value.
+
     Allow open lists of terminals in the body of grammar rules.
 
     Added an example, "patching", of using complementing categories to patch
