@@ -27,8 +27,12 @@ RELEASE NOTES
 
     Corrected a bug in the processing of meta-calls for meta-predicates where
     the calling context would be set to "this" instead of "sender" whenever a
-    meta-argument is one of the ::/2, {}/1, <</2, or :/2 control constructs.
-    Thanks to Daniel Lyons for the bug report.
+    meta-argument is one of the ::/2, {}/1, or <</2 control constructs. Thanks
+    to Daniel Lyons for the bug report.
+
+    Corrected a bug in the processing of meta-calls when using wrappers for
+    the bagof/3 and setof/3 built-in methods where the meta-argument contains
+    multiple existentially qualified variables.
 
     Allow open lists of terminals in the body of grammar rules.
 
