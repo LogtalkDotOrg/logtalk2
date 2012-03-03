@@ -110,9 +110,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2011/05/07,
+		date is 2012/03/03,
 		comment is 'Unit tests for the "metapredicates" example.']).
 
 	% This example defines a plain Prolog predicate even_integer/1. As the
@@ -231,6 +231,10 @@
 
 	test(metapredicates_23) :-
 		object::p(L),
+		L == [1, 2, 3].
+
+	test(metapredicates_24) :-
+		object::q(L),
 		L == [1, 2, 3].
 
 :- end_object.

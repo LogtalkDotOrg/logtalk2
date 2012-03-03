@@ -23,4 +23,12 @@
 	p(2, two).
 	p(3, three).
 
+	:- public(q/1).
+	q(L) :-
+		wrappers::my_setof(X, Y^Z^q(X, Y, Z), L).
+
+	q(1, one, 'ONE').
+	q(2, two, 'TWO').
+	q(3, three, 'THREE').
+
 :- end_object.
