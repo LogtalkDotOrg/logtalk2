@@ -361,6 +361,8 @@
 				<string>[[:space:]]+(pi)[[:space:]]+</string>
 				<string>[[:space:]]+(rem)[[:space:]]+</string>
 				<string>[[:space:]]+(mod)[[:space:]]+</string>
+				<string>[^A-Za-z0-9_](max)\(</string>
+				<string>[^A-Za-z0-9_](min)\(</string>
 				<string>[^A-Za-z0-9_](rem)\(</string>
 				<string>[^A-Za-z0-9_](mod)\(</string>
 				<string>[^A-Za-z0-9_](abs)\(</string>
@@ -376,6 +378,8 @@
 				<string>[[:space:]]+(\*\*)[[:space:]]+</string>
 				<string>[^A-Za-z0-9_](sin)\(</string>
 				<string>[^A-Za-z0-9_](cos)\(</string>
+				<string>[^A-Za-z0-9_](acos)\(</string>
+				<string>[^A-Za-z0-9_](asin)\(</string>
 				<string>[^A-Za-z0-9_](atan)\(</string>
 				<string>[^A-Za-z0-9_](exp)\(</string>
 				<string>[^A-Za-z0-9_](log)\(</string>

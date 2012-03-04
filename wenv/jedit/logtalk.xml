@@ -7,7 +7,7 @@
 	written by		Paulo Moura
 	version			1.98
 	created on		May 5, 2002
-	last revised	July 24, 2011
+	last revised	March 4, 2012
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -92,12 +92,12 @@
 		<!-- Term creation and decomposition -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(functor|arg|copy_term|numbervars)(?=[(])</SEQ_REGEXP>
 		<!-- Evaluable functors -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(rem|mod|abs|sign)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(rem|m(ax|in|od)|abs|sign)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bfloat(_(integer|fractional)_part)?(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(floor|truncate|round|ceiling)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(e|pi|rem|mod)\b</SEQ_REGEXP>
 		<!-- Other arithmetic functors -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(cos|atan|exp|log|s(in|qrt))(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(cos|a(cos|sin|tan)|exp|log|s(in|qrt))(?=[(])</SEQ_REGEXP>
 		<!-- Term testing -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(])</SEQ_REGEXP>
 		<!-- Term comparison -->
@@ -388,6 +388,8 @@
 			<NULL>writeq</NULL>
 			<NULL>write_canonical</NULL>
 			<NULL>abs</NULL>
+			<NULL>acos</NULL>
+			<NULL>asin</NULL>
 			<NULL>atan</NULL>
 			<NULL>ceiling</NULL>
 			<NULL>cos</NULL>
@@ -398,6 +400,8 @@
 			<NULL>log</NULL>
 			<NULL>e</NULL>
 			<NULL>pi</NULL>
+			<NULL>max</NULL>
+			<NULL>min</NULL>
 			<NULL>mod</NULL>
 			<NULL>rem</NULL>
 			<NULL>round</NULL>

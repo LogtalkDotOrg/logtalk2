@@ -4,8 +4,8 @@
 #
 #  Author: Paulo Moura
 #    Mail: pmoura@logtalk.org
-#    Date: 2011.07.24
-# Version: 1.11
+#    Date: 2012.03.04
+# Version: 1.12
 # ------------------------------------------
 # This file is a part of highlight, a free source code converter released under the GPL.
 #
@@ -68,11 +68,11 @@ $KEYWORDS(kwc)=regex((unify_with_occurs_check)(?=[(]), 1)
 # term creation and decomposition
 $KEYWORDS(kwc)=regex((functor|arg|copy_term|numbervars)(?=[(]), 1)
 # evaluable functors
-$KEYWORDS(kwc)=regex((rem|mod|abs|sign)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((rem|m(ax|in|od)|abs|sign)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((float(_(integer|fractional)_part)?)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((floor|truncate|round|ceiling)(?=[(]), 1)
 # other arithmetic functors
-$KEYWORDS(kwc)=regex((cos|atan|exp|log|s(in|qrt))(?=[(]), 1)
+$KEYWORDS(kwc)=regex((cos|a(cos|sin|tan)|exp|log|s(in|qrt))(?=[(]), 1)
 # term testing
 $KEYWORDS(kwc)=regex((var|atomic|atom|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(]), 1)
 # term comparison

@@ -4,9 +4,11 @@ abolish_events
 abolish_object
 abolish_protocol
 abs
+acos
 after
 alias
 arg
+asin
 asserta
 assertz
 atan
@@ -103,8 +105,10 @@ logtalk_compile
 logtalk_library_path
 logtalk_load
 logtalk_load_context
+max
 meta_predicate
 meta_non_terminal
+min
 mod
 mode
 multifile

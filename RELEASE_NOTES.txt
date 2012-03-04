@@ -38,6 +38,9 @@ RELEASE NOTES
 
     Allow open lists of terminals in the body of grammar rules.
 
+    Added (+)/1, min/2, max/2, acos/1, and asin/1 to the list of ISO Prolog
+    built-in functions used by the portability flag.
+
     Added an example, "patching", of using complementing categories to patch
     broken predicate declarations and predicate definitions of complemented
     classes and prototypes.
@@ -45,6 +48,9 @@ RELEASE NOTES
     Added an example of combining constraints defined in different objects
     to the "chr" example based on sample code posted by Gergö Barany on the
     SWI-Prolog mailing list.
+
+    Added syntax coloring support for the min/2, max/2, acos/1, and asin/1
+    functions to all supported text editors and syntax highlighters.
 
     Updated the support for Exuberant ctags. Declared predicates are now
     listed using the Functor/Arity notation.

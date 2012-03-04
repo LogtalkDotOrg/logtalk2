@@ -21,7 +21,7 @@
 
 	function Brush()
 	{
-		// Contributed by Paulo Moura (pmoura@logtalk.org); last revised on July 24, 2011
+		// Contributed by Paulo Moura (pmoura@logtalk.org); last revised on March 4, 2012
 		// http://logtalk.org/  
 
 		this.regexList = [
@@ -71,10 +71,10 @@
       // term creation and decomposition built-in predicates
       { regex: new RegExp("\\b(functor|arg|copy_term|numbervars)(?=[(])", 'g'), css: 'keyword'},
       // evaluable functors
-      { regex: new RegExp("\\b(rem|mod|abs|sign)(?=[(])", 'g'), css: 'keyword'},
+      { regex: new RegExp("\\b(rem|m(ax|in|od)|abs|sign)(?=[(])", 'g'), css: 'keyword'},
       { regex: new RegExp("\\b(float_(integer|fractional)_part|float)(?=[(])", 'g'), css: 'keyword'},
       { regex: new RegExp("\\b(floor|truncate|round|ceiling)(?=[(])", 'g'), css: 'keyword'},
-      { regex: new RegExp("\\b(cos|atan|exp|log|s(in|qrt))(?=[(])", 'g'), css: 'keyword'},
+      { regex: new RegExp("\\b(cos|a(cos|sin|tan)|exp|log|s(in|qrt))(?=[(])", 'g'), css: 'keyword'},
       { regex: new RegExp("\\b(e|pi|is|rem|mod)\\b", 'g'), css: 'keyword'},
       // term type built-in predicates
       { regex: new RegExp("\\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(])", 'g'), css: 'keyword'},

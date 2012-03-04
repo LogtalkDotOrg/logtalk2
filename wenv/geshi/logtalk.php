@@ -4,7 +4,7 @@
  * -----------
  *
  * Author: Paulo Moura (pmoura@logtalk.org)
- * Copyright: (c) 2009-2011 Paulo Moura (http://logtalk.org/)
+ * Copyright: (c) 2009-2012 Paulo Moura (http://logtalk.org/)
  * Release Version: 1.0.8.6
  * Date Started: 2009/10/24
  *
@@ -12,6 +12,8 @@
  *
  * CHANGES
  * -------
+ * 2012/03/04 (1.1.7)
+ *  -  Added syntax coloring of acos/1, asin/1, min/2, and max/2 functions
  * 2011/07/24 (1.1.6)
  *  -  Added syntax coloring of include/1
  * 2011/01/18 (1.1.5)
@@ -195,7 +197,8 @@ $language_data = array(
         6 => array(
             'float_integer_part', 'float_fractional_part',
             'rem', 'mod', 'abs', 'sign', 'floor', 'truncate', 'round', 'ceiling',
-            'cos', 'atan', 'exp', 'log', 'sin', 'sqrt'
+            'cos', 'acos', 'asin', 'atan', 'exp', 'log', 'sin', 'sqrt',
+            'min', 'max'
             ),
         // Evaluable functors (no arguments)
         7 => array(

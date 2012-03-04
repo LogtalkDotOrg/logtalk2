@@ -1,7 +1,7 @@
 ; Superedi syntax definitions for Logtalk (http://logtalk.org/)
 ; 
 ; Author: 			Paulo Moura
-; Last changed in: 	February 13, 2007
+; Last changed in: 	March 4, 2012
 
 
 C=1
@@ -316,6 +316,8 @@ halt
 *
 //
 /
+max
+min
 rem
 mod
 abs
@@ -332,6 +334,8 @@ ceiling
 **
 sin
 cos
+acos
+asin
 atan
 exp
 log

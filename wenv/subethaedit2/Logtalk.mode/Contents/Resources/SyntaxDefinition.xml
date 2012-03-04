@@ -133,7 +133,7 @@
 				<regex>\b(rem)\b</regex>
 				<regex>\b(mod)\b</regex>
 				<regex>\b(rem)\(</regex>
-				<regex>\b(mod)\(</regex>
+				<regex>\b(m(?:ax|in|od))\(</regex>
 				<regex>\b(abs)\(</regex>
 				<regex>\b(sign)\(</regex>
 				<regex>\b(float(?:_(?:integer|fractional)_part)?)\(</regex>
@@ -145,7 +145,7 @@
 				<regex>(\*\*)</regex>
 				<regex>\b(sin)\(</regex>
 				<regex>\b(cos)\(</regex>
-				<regex>\b(atan)\(</regex>
+				<regex>\b(a(?:cos|sin|tan))\(</regex>
 				<regex>\b(exp)\(</regex>
 				<regex>\b(log)\(</regex>
 				<regex>\b(sqrt)\(</regex>

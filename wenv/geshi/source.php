@@ -49,9 +49,9 @@ comment
 	extends(parent)).
 
 	:- info([
-		version is 1.6,
+		version is 1.8,
 		author is 'Paulo Moura',
-		date is 2011/02/07,
+		date is 2012/03/04,
 		comment is 'Sample prototype for testing syntax coloring.']).
 
 	:- threaded.
@@ -227,19 +227,20 @@ comment
 		X1 is 13, X2 is -13, X3 is +13,
 		Y1 is 13.13, Y2 is -13.13, Y3 is +13.13,
 		Z1 is 13.13e-23, Z2 is -13.13e-23, Z3 is +13.13e-23,
-		C1 is 0'A, C2 is 0'', C3 is 0'\",
+		C1 is 0'A, C2 is 0'', C3 is 0'",
 		B is 0b1011101,
 		O is 0o1234560,
 		H is 0x1234567890abcDEF.
 
 	functions :-
-		A is atan(3.14) + sin(0.77) - cos(123.23),
+		A is atan(3.14) + acos(0.5) + asin(0.5) + sin(0.77) - cos(123.23),
 		B is sign(-12) * abs(35/78),
 		C is truncate(3.14) + round(-7.8) - ceiling(111.88),
 		D is exp(3.8) - log(123.98) / sqrt(33) * 23 ** 4,
 		E is rem(3, 2) + mod(5, 3) * 2 rem 2 // 5 mod 3 + pi * e,
 		F is float_fractional_part(3.14) + float_integer_part(3.14),
-		G is float(33) + floor(99.99).
+		G is float(33) + floor(99.99),
+		I is min(3,4) + max(4,5).
 
 	bitwise :-
 		A is 16 >> 2,

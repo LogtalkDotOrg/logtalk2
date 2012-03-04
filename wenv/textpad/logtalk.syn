@@ -1,7 +1,7 @@
 ; TextPad syntax definitions for Logtalk (http://logtalk.org/)
 ; 
 ; Author: 			Paulo Moura
-; Last changed in: 	May 07, 2011
+; Last changed in: 	March 4, 2012
 ;
 ; Tags used and sugested colors:
 ;   Keywords 1	message sending operators	blue
@@ -316,6 +316,8 @@ halt
 *
 //
 /
+max
+min
 rem
 mod
 abs
@@ -332,6 +334,8 @@ ceiling
 **
 sin
 cos
+acos
+asin
 atan
 exp
 log

@@ -1,11 +1,11 @@
 ;; logtalk.el -- font lock support for Logtalk (http://logtalk.org/)
 
-;; Copyright (C) 2003-2011 Paulo Moura
+;; Copyright (C) 2003-2012 Paulo Moura
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: July 24, 2011
-;; Version: 1.18
+;; Last modification date: March 4, 2012
+;; Version: 1.19
 
 ;; Installation:
 ;;
@@ -26,7 +26,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.18"
+(defvar logtalk-mode-version "1.19"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -175,7 +175,7 @@
 		;;
 		;; evaluable functors:
 		;;
-		("\\<\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|m\\(?:ax\\|in\\|od\\)\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("//\\|[*/]" 0 'logtalk-built-in-predicate-face)
 		("\\([^eE]\\)\\([+]\\)" 2 'logtalk-built-in-predicate-face)
 		("\\([^:eE]\\)\\([-]\\)" 2 'logtalk-built-in-predicate-face)
@@ -183,7 +183,7 @@
 		;;
 		;; other arithemtic functors:
 		;;
-		("\\<\\(atan\\|cos\\|exp\\|log\\|s\\(?:in\\|qrt\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(a\\(?:cos\\|sin\\|tan\\)\\|cos\\|exp\\|log\\|s\\(?:in\\|qrt\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\*\\*" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; stream selection and control:

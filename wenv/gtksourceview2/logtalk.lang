@@ -2,7 +2,7 @@
 <!--
 
  Author: Paulo Moura <pmoura@logtalk.org>
- Copyright (C) 2007-2011 Paulo Moura <pmoura@logtalk.org>
+ Copyright (C) 2007-2012 Paulo Moura <pmoura@logtalk.org>
 
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Library General Public
@@ -201,7 +201,7 @@
 			<keyword>pi</keyword>
 			<keyword>(rem)(?=[(])</keyword>
 			<keyword>rem</keyword>
-			<keyword>(mod)(?=[(])</keyword>
+			<keyword>(m(ax|in|od))(?=[(])</keyword>
 			<keyword>mod</keyword>
 			<keyword>(abs)(?=[(])</keyword>
 			<keyword>(sign)(?=[(])</keyword>
@@ -213,7 +213,7 @@
 			<!-- Other arithemtic functors -->
 			<keyword>(sin)(?=[(])</keyword>
 			<keyword>(cos)(?=[(])</keyword>
-			<keyword>(atan)(?=[(])</keyword>
+			<keyword>(a(cos|sin|tan))(?=[(])</keyword>
 			<keyword>(exp)(?=[(])</keyword>
 			<keyword>(log)(?=[(])</keyword>
 			<keyword>(sqrt)(?=[(])</keyword>

@@ -182,6 +182,8 @@
 			<string>keysort</string>
 			<string>sort</string>
 			<string>abs</string>
+			<string>acos</string>
+			<string>asin</string>
 			<string>atan</string>
 			<string>ceiling</string>
 			<string>cos</string>
@@ -190,6 +192,8 @@
 			<string>float_integer_part</string>
 			<string>floor</string>
 			<string>log</string>
+			<string>max</string>
+			<string>min</string>
 			<string>mod</string>
 			<string>rem</string>
 			<string>round</string>

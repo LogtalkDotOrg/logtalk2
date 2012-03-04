@@ -244,6 +244,8 @@ halt().
 halt.
 
 abs()
+acos()
+asin()
 atan()
 ceiling()
 cos()
@@ -252,6 +254,8 @@ float_fractional_part()
 float_integer_part()
 floor()
 log()
+max(, )
+min(, )
 mod(, )
 rem(, )
 round()

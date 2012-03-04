@@ -15,7 +15,7 @@ class LogtalkLexer(RegexLexer):
     """
     For `Logtalk <http://logtalk.org/>`_ source code.
 
-    :copyright: 2008-2011 by Paulo Moura, Clara Dimene.
+    :copyright: 2008-2012 by Paulo Moura, Clara Dimene.
     :license: BSD, see LICENSE for more details.
     """
 
@@ -79,11 +79,11 @@ class LogtalkLexer(RegexLexer):
             # Term creation and decomposition
             (r'(functor|arg|copy_term|numbervars)(?=[(])', Keyword),
             # Evaluable functors
-            (r'(rem|mod|abs|sign)(?=[(])', Keyword),
+            (r'(rem|m(ax|in|od)|abs|sign)(?=[(])', Keyword),
             (r'float(_(integer|fractional)_part)?(?=[(])', Keyword),
             (r'(floor|truncate|round|ceiling)(?=[(])', Keyword),
             # Other arithmetic functors
-            (r'(cos|atan|exp|log|s(in|qrt))(?=[(])', Keyword),
+            (r'(cos|a(cos|sin|tan)|exp|log|s(in|qrt))(?=[(])', Keyword),
             # Term testing
             (r'(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(])', Keyword),
             # Term comparison

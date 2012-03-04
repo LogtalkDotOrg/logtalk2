@@ -18077,6 +18077,11 @@ current_logtalk_flag(version, version(2, 44, 0)).
 
 '$lgt_iso_spec_function'(pi).
 '$lgt_iso_spec_function'(e).
+'$lgt_iso_spec_function'('+'(_)).
+'$lgt_iso_spec_function'(acos(_)).
+'$lgt_iso_spec_function'(asin(_)).
+'$lgt_iso_spec_function'(max(_, _)).
+'$lgt_iso_spec_function'(min(_, _)).
 
 
 

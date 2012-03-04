@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="2.10" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="2.11" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -47,11 +47,11 @@
 				<!-- Term creation and decomposition -->
 				<RegExpr String = "\b(functor|arg|copy_term|numbervars)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Evaluable functors -->
-				<RegExpr String = "\b(rem|mod|abs|sign)(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\b(rem|m(ax|in|od)|abs|sign)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bfloat(_(integer|fractional)_part)?(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(floor|truncate|round|ceiling)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Other arithmetic functors -->
-				<RegExpr String = "\b(cos|atan|exp|log|s(in|qrt))(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\b(cos|a(cos|sin|tan)|exp|log|s(in|qrt))(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term testing -->
 				<RegExpr String = "\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term comparison -->
