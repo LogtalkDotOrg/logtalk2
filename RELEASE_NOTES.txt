@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.44.0 - March ??, 2012
+2.44.0 - March 5, 2012
 
     Changed the semantics of complementing categories to allow patching both
     predicate declarations and predicate definitions of complemented objects.
@@ -27,8 +27,8 @@ RELEASE NOTES
 
     Corrected a bug in the processing of meta-calls for meta-predicates where
     the calling context would be set to "this" instead of "sender" whenever a
-    meta-argument is one of the ::/2, {}/1, or <</2 control constructs. Thanks
-    to Daniel Lyons for the bug report.
+    meta-argument was one of the ::/2, {}/1, <</2, or :/2 control constructs.
+    Thanks to Daniel Lyons for the bug report.
 
     Corrected a bug in the processing of meta-calls when using wrappers for
     the bagof/3 and setof/3 built-in methods where the meta-argument contains
@@ -49,7 +49,7 @@ RELEASE NOTES
     Updated the support for Exuberant ctags. Declared predicates are now
     listed using the Functor/Arity notation.
 
-    Updated the Vim syntax file for Logtalk, applying the patch contributed
+    Updated the Vim syntax file for Logtalk, applying a patch contributed
     by Thilo Six.
 
 

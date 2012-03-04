@@ -185,7 +185,7 @@ In this case, although the directive is not copied to the generated Prolog file,
 <h2 id="migration_calling">Calling Prolog module predicates</h2>
 
 <p>
-Prolog module predicates can be called from within objects or categories by simply using explicit module qualification, i.e. by writing <code>Module:Goal</code>. Logtalk also supports the use of <code>use_module/2</code> directives in object and categories. In this case, these directives are parsed in a similar way to Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directives, with calls to the specified module predicates being automatically translated to <code>Module:Goal</code> calls. For example, assume a <code>clpfd</code> Prolog module implementing a finite domain constraint solver. You could write:
+Prolog module predicates can be called from within objects or categories by simply using explicit module qualification, i.e. by writing <code>Module:Goal</code>. Logtalk also supports the use of <code>use_module/2</code> directives in object and categories (with the restriction that the first argument of the directive must be the actual module name and not the module file name or the module file path). In this case, these directives are parsed in a similar way to Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directives, with calls to the specified module predicates being automatically translated to <code>Module:Goal</code> calls. For example, assume a <code>clpfd</code> Prolog module implementing a finite domain constraint solver. You could write:
 </p>
 <pre>
 :- object(puzzle).
@@ -257,7 +257,7 @@ The Logtalk compiler will print a warning if the <code>multifile/1</code> direct
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 11, 2011</span>
+		<span>Last updated on: March 4, 2012</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="programming.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
