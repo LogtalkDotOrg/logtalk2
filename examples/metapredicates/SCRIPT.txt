@@ -63,6 +63,11 @@ yes
 L = [1, 2, 3]
 yes
 
+| ?- object::q(L).
+
+L = [1, 2, 3]
+yes
+
 
 % call the meta-predicate apply/2 directly:
 

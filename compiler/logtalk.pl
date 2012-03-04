@@ -857,9 +857,11 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	),
 	'$lgt_tr_object_identifier'(Obj),
 	'$lgt_tr_object_relations'(Rels, Obj),
-	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context for compiling
-	'$lgt_tr_directives'([(dynamic)| Dirs], Ctx),	% the object directives and clauses
-	'$lgt_tr_terms'(Clauses, Ctx),					% the list of clauses may also include grammar rules
+	% set the initial compilation context for compiling the object directives and clauses
+	'$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_tr_directives'([(dynamic)| Dirs], Ctx),
+	% the list of clauses may also include grammar rules
+	'$lgt_tr_terms'(Clauses, Ctx),
 	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_predicates',
 	'$lgt_fix_predicate_calls',
@@ -903,9 +905,11 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	),
 	'$lgt_tr_category_identifier'(Ctg),
 	'$lgt_tr_category_relations'(Rels, Ctg),
-	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context for compiling
-	'$lgt_tr_directives'([(dynamic)| Dirs], Ctx),	% the category directives and clauses
-	'$lgt_tr_terms'(Clauses, Ctx),					% the list of clauses may also include grammar rules
+	% set the initial compilation context for compiling the category directives and clauses
+	'$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_tr_directives'([(dynamic)| Dirs], Ctx),
+	% the list of clauses may also include grammar rules
+	'$lgt_tr_terms'(Clauses, Ctx),
 	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_predicates',
 	'$lgt_fix_predicate_calls',
@@ -948,8 +952,9 @@ create_protocol(Ptc, Rels, Dirs) :-
 	),
 	'$lgt_tr_protocol_identifier'(Ptc),
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
-	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context
-	'$lgt_tr_directives'([(dynamic)| Dirs], Ctx),	% for compiling the protocol directives
+	% set the initial compilation context for compiling the protocol directives
+	'$lgt_comp_ctx_mode'(Ctx, runtime),			
+	'$lgt_tr_directives'([(dynamic)| Dirs], Ctx),
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
@@ -5754,22 +5759,27 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	'$lgt_pp_cc_if_found_'(Goal),
 	throw(directive_missing(endif, if(Goal))).
 
-'$lgt_tr_file'(end_of_file, _, _) :-							% allow for term-expansion
-	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),				% set the initial compilation context
-	'$lgt_tr_term'(end_of_file, Ctx),							% for compiling the end_of_file term
+'$lgt_tr_file'(end_of_file, _, _) :-
+	% set the initial compilation context for compiling the read term
+	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),
+	% allow for term-expansion of the end_of_file term
+	'$lgt_tr_term'(end_of_file, Ctx),
 	!.
 
 '$lgt_tr_file'(Term, _, Input) :-
-	'$lgt_pp_cc_skipping_',										% we're performing conditional compilation and skipping terms
-	\+ '$lgt_lgt_cc_directive'(Term),							% except for conditional compilation directives itself
+	'$lgt_pp_cc_skipping_',
+	\+ '$lgt_lgt_cc_directive'(Term),
+	% we're performing conditional compilation and skipping terms
+	% except for conditional compilation directives itself
 	!,
 	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)]),
 	'$lgt_tr_file'(Next, NextSingletons, Input).
 
 '$lgt_tr_file'(Term, Singletons, Input) :-
 	'$lgt_report_singletons'(Singletons, Term),
-	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),				% set the initial compilation context
-	'$lgt_tr_term'(Term, Ctx),									% for compiling the read term
+	% set the initial compilation context for compiling the read term
+	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),				
+	'$lgt_tr_term'(Term, Ctx),
 	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)]),
 	'$lgt_tr_file'(Next, NextSingletons, Input).
 
@@ -6521,8 +6531,9 @@ current_logtalk_flag(version, version(2, 44, 0)).
 
 '$lgt_tr_terms'([], _).
 '$lgt_tr_terms'([Term| Terms], Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, Mode),			% only the compilation context mode should
-	'$lgt_comp_ctx_mode'(NewCtx, Mode),			% be shared between different terms
+	% only the compilation context mode should be shared between different terms
+	'$lgt_comp_ctx_mode'(Ctx, Mode),
+	'$lgt_comp_ctx_mode'(NewCtx, Mode),	
 	'$lgt_tr_term'(Term, NewCtx),
 	'$lgt_tr_terms'(Terms, Ctx).
 
@@ -6583,7 +6594,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 '$lgt_tr_expanded_term'(end_of_file, _) :-
 	!.
 
-'$lgt_tr_expanded_term'({Term}, _) :-	% bypass control construct; expanded term is final
+'$lgt_tr_expanded_term'({Term}, _) :-
+	% bypass control construct; expanded term is final
 	!,
 	(	var(Term) ->
 		throw(error(instantiantion_error, {Term}))
@@ -6659,8 +6671,9 @@ current_logtalk_flag(version, version(2, 44, 0)).
 '$lgt_tr_directives'([], _).
 
 '$lgt_tr_directives'([Dir| Dirs], Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, Mode),			% only the compilation context mode should
-	'$lgt_comp_ctx_mode'(NewCtx, Mode),			% be shared between different directives
+	% only the compilation context mode should be shared between different directives
+	'$lgt_comp_ctx_mode'(Ctx, Mode),
+	'$lgt_comp_ctx_mode'(NewCtx, Mode),
 	'$lgt_tr_directive'(Dir, NewCtx),
 	'$lgt_tr_directives'(Dirs, Ctx).
 
@@ -6679,7 +6692,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 
 '$lgt_tr_directive'(if(Goal), Ctx) :-
 	'$lgt_must_be'(callable, Goal, directive(if(Goal))),
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),		% only expand goals when compiling a source file
+	% only expand goals when compiling a source file
+	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
 	'$lgt_tr_directive'(if(EGoal), Ctx).
@@ -6723,7 +6737,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 
 '$lgt_tr_directive'(elif(Goal), Ctx) :-
 	'$lgt_must_be'(callable, Goal, directive(elif(Goal))),
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),			% only expand goals when compiling a source file
+	% only expand goals when compiling a source file
+	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
 	'$lgt_tr_directive'(elif(EGoal), Ctx).
@@ -8239,8 +8254,10 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	\+ '$lgt_pp_uses_predicate_'(_, _, TAlias),
 	\+ '$lgt_pp_use_module_predicate_'(_, _, TAlias),
 	!,
-	TOriginal =.. [_| Args], TAlias =.. [_| Args],									% unify args of TOriginal and TAlias
-	'$lgt_tr_clause'((TAlias :- Obj::TOriginal), Ctx),								% allow for runtime use
+	% unify args of TOriginal and TAlias
+	TOriginal =.. [_| Args], TAlias =.. [_| Args],
+	% allow for runtime use
+	'$lgt_tr_clause'((TAlias :- Obj::TOriginal), Ctx),
 	assertz('$lgt_pp_uses_predicate_'(Obj, TOriginal, TAlias)).
 
 '$lgt_tr_uses_directive_predicate_arg'(_, AFunctor, Arity, _, _) :-
@@ -8255,8 +8272,10 @@ current_logtalk_flag(version, version(2, 44, 0)).
 		\+ '$lgt_pp_use_module_non_terminal_'(_, _, TOriginal),
 		\+ '$lgt_pp_uses_predicate_'(_, _, TPred),
 		\+ '$lgt_pp_use_module_predicate_'(_, _, TPred) ->
-		TOriginal =.. [_| Args], TAlias =.. [_| Args],						% unify args of TOriginal and TAlias
-		'$lgt_dcg_rule_to_clause'((TAlias --> Obj::TOriginal), Clause),		% allow for runtime use
+		% unify args of TOriginal and TAlias
+		TOriginal =.. [_| Args], TAlias =.. [_| Args],
+		% allow for runtime use
+		'$lgt_dcg_rule_to_clause'((TAlias --> Obj::TOriginal), Clause),
 		'$lgt_tr_clause'(Clause, Ctx),
 		assertz('$lgt_pp_uses_non_terminal_'(Obj, TOriginal, TAlias))
 	;	throw(permission_error(modify, uses_object_non_terminal, AFunctor//Arity))
@@ -8357,8 +8376,10 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	\+ '$lgt_pp_uses_predicate_'(_, _, TAlias),
 	\+ '$lgt_pp_use_module_predicate_'(_, _, TAlias),
 	!,
-	TOriginal =.. [_| Args], TAlias =.. [_| Args],									% unify args of TOriginal and TAlias
-	'$lgt_tr_clause'((TAlias :- ':'(Module, TOriginal)), Ctx),						% allow for runtime use
+	% unify args of TOriginal and TAlias
+	TOriginal =.. [_| Args], TAlias =.. [_| Args],
+	% allow for runtime use
+	'$lgt_tr_clause'((TAlias :- ':'(Module, TOriginal)), Ctx),
 	assertz('$lgt_pp_use_module_predicate_'(Module, TOriginal, TAlias)).
 
 '$lgt_tr_use_module_directive_predicate_arg'(_, AFunctor, Arity, _, _) :-
@@ -8373,8 +8394,10 @@ current_logtalk_flag(version, version(2, 44, 0)).
 		\+ '$lgt_pp_use_module_non_terminal_'(_, _, TOriginal),
 		\+ '$lgt_pp_uses_predicate_'(_, _, TPred),
 		\+ '$lgt_pp_use_module_predicate_'(_, _, TPred) ->
-		TOriginal =.. [_| Args], TAlias =.. [_| Args],								% unify args of TOriginal and TAlias
-		'$lgt_dcg_rule_to_clause'((TAlias --> ':'(Module, TOriginal)), Clause),		% allow for runtime use
+		% unify args of TOriginal and TAlias
+		TOriginal =.. [_| Args], TAlias =.. [_| Args],
+		% allow for runtime use
+		'$lgt_dcg_rule_to_clause'((TAlias --> ':'(Module, TOriginal)), Clause),
 		'$lgt_tr_clause'(Clause, Ctx),
 		assertz('$lgt_pp_use_module_non_terminal_'(Module, TOriginal, TAlias))
 	;	throw(permission_error(modify, uses_module_non_terminal, AFunctor//Arity))
@@ -8827,8 +8850,9 @@ current_logtalk_flag(version, version(2, 44, 0)).
 '$lgt_tr_clauses'([], _).
 
 '$lgt_tr_clauses'([Clause| Clauses], Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, Mode),			% only the compilation context mode should
-	'$lgt_comp_ctx_mode'(NewCtx, Mode),			% be shared between different clauses
+	% only the compilation context mode should be shared between different clauses
+	'$lgt_comp_ctx_mode'(Ctx, Mode),
+	'$lgt_comp_ctx_mode'(NewCtx, Mode),
 	'$lgt_tr_clause'(Clause, NewCtx),
 	'$lgt_tr_clauses'(Clauses, Ctx).
 
@@ -8837,9 +8861,11 @@ current_logtalk_flag(version, version(2, 44, 0)).
 % '$lgt_tr_clause'(+clause, +compilation_context)
 
 '$lgt_tr_clause'(Clause, Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, Mode),			% only the compilation context mode should
-	'$lgt_comp_ctx_mode'(NewCtx, Mode),			% be shared between different clauses
-	'$lgt_tr_clause'(Clause, NewCtx, NewCtx).	% assume for now that the head and the body compilation contexts are the same
+	% only the compilation context mode should be shared between different clauses
+	'$lgt_comp_ctx_mode'(Ctx, Mode),
+	'$lgt_comp_ctx_mode'(NewCtx, Mode),
+	% assume for now that the head and the body compilation contexts are the same
+	'$lgt_tr_clause'(Clause, NewCtx, NewCtx).
 
 
 
@@ -8849,15 +8875,18 @@ current_logtalk_flag(version, version(2, 44, 0)).
 % this is required in order to correctly compile clauses for e.g. coinductive predicates
 
 '$lgt_tr_clause'(Clause, _, _) :-
-	\+ '$lgt_pp_entity'(_, _, _, _, _),			% all clauses occuring before an opening entity directive
+	\+ '$lgt_pp_entity'(_, _, _, _, _),
+	% clause occurs before an opening entity directive
 	!,
 	'$lgt_pp_term_location'(Location),
-	assertz('$lgt_pp_prolog_term_'(Clause, Location)).	% are copied unchanged to the generated Prolog file
+	% copy it unchanged to the generated Prolog file
+	assertz('$lgt_pp_prolog_term_'(Clause, Location)).
 
 '$lgt_tr_clause'(Clause, HeadCtx, BodyCtx) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
-	(	Type == object, compound(Entity) ->		% if the entity is a parametric object we need
-		'$lgt_comp_ctx_this'(HeadCtx, Entity),	% "this" for inline compilation of parameter/2
+	(	Type == object, compound(Entity) ->
+		% entity is a parametric object; we require "this" for inline compilation of parameter/2
+		'$lgt_comp_ctx_this'(HeadCtx, Entity),
 		'$lgt_comp_ctx_this'(BodyCtx, Entity)
 	;	true
 	),
@@ -9491,7 +9520,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 '$lgt_tr_body'(call(Goal), call(TGoal), '$lgt_debugger.goal'(call(Goal), call(DGoal), ExCtx), Ctx) :-
-	!,		% we must keep the call/1 wrapper in order to preserve cut semantics
+	!,
+	% we must keep the call/1 wrapper in order to preserve cut semantics
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx).
 
@@ -9505,8 +9535,9 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	var(Closure),
 	'$lgt_comp_ctx'(Ctx, Head, _, _, _, _, MetaVars, _, _, _, _),
 	nonvar(Head),
-	Head \= ':'(_, _),	% ignore multifile
-	Head \= _::_,		% predicates
+	% ignore multifile predicates
+	Head \= ':'(_, _),
+	Head \= _::_,
 	'$lgt_term_template'(Head, Meta),
 	'$lgt_pp_meta_predicate_'(Meta),			% if we're compiling a clause for a meta-predicate and
 	once('$lgt_member_var'(Closure, MetaVars)),	% our closure is a meta-argument then check that the
@@ -10604,8 +10635,9 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	Meta =.. [_| MetaArgs],
 	'$lgt_comp_ctx_head'(Ctx, Head),
 	nonvar(Head),
-	Head \= ':'(_, _),	% ignore multifile
-	Head \= _::_,		% predicates
+	% ignore multifile predicates
+	Head \= ':'(_, _),
+	Head \= _::_,
 	'$lgt_term_template'(Head, HeadMeta),
 	'$lgt_pp_meta_predicate_'(HeadMeta),
 	Head =.. [_| HeadArgs],
@@ -12946,7 +12978,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 
 '$lgt_gen_dynamic_entity_dynamic_predicate_directives' :-
 	'$lgt_pp_final_def_'(Clause),
-	Clause \= (_ :- _),		% only local table; reject linking clauses
+	% only local table; reject linking clauses
+	Clause \= (_ :- _),
 	arg(3, Clause, Call),
 	functor(Call, Functor, Arity),
 	assertz('$lgt_pp_directive_'(dynamic(Functor/Arity))),
@@ -14194,19 +14227,23 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	TPred = Call.
 
 '$lgt_fix_predicate_calls'('$lgt_call_built_in'(Pred, MetaExPred, ExCtx), TPred, _) :-
-	!,												% calls to Logtalk and Prolog built-in (meta-)predicates
+	% calls to Logtalk and Prolog built-in (meta-)predicates
+	!,
 	(	'$lgt_pp_redefined_built_in_'(Pred, ExCtx, TPred) ->
 		true
 	;	'$lgt_fix_predicate_calls'(MetaExPred, TPred, false)
 	).
 
 '$lgt_fix_predicate_calls'('$lgt_debugger.goal'(Pred, DPred, ExCtx), '$lgt_debugger.goal'(Pred, TPred, ExCtx), Annotation) :-
-	!,												% calls in debug mode
+	% calls in debug mode
+	!,
 	'$lgt_fix_predicate_calls'(DPred, TPred, Annotation).
 
-'$lgt_fix_predicate_calls'(Pred, fail, false) :-	% calls to static, declared but undefined predicates;
-	functor(Pred, Functor, Arity),					% must fail instead of throwing an exception
+'$lgt_fix_predicate_calls'(Pred, fail, false) :-
+	functor(Pred, Functor, Arity),
 	'$lgt_undefined_predicate_call'(_, Functor/Arity),
+	% calls to static, declared but undefined predicates;
+	% must fail instead of throwing an exception
 	!.
 
 '$lgt_fix_predicate_calls'(Pred, TPred, _) :-
@@ -14230,9 +14267,10 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	'$lgt_built_in_method'(Pred, _, _, _),
 	!.
 
-'$lgt_fix_predicate_calls'(Pred, TPred, _) :-		% calls to non-standard Prolog built-in meta-predicates
+'$lgt_fix_predicate_calls'(Pred, TPred, _) :-
 	'$lgt_pl_built_in'(Pred),
 	'$lgt_pl_meta_predicate'(Pred, Meta, _),
+	% call to a non-standard Prolog built-in meta-predicate
 	!,
 	Pred =.. [Functor| Args],
 	Meta =.. [Functor| MArgs],
@@ -14390,8 +14428,10 @@ current_logtalk_flag(version, version(2, 44, 0)).
 
 
 '$lgt_missing_dynamic_directive'(Functor/Arity) :-
+	% detected dynamic predicate
 	'$lgt_pp_missing_dynamic_directive_'(Functor, Arity),
-	\+ '$lgt_pp_dynamic_'(Functor, Arity).		% check for out-of-place dynamic/1 directive
+	% but check for out-of-place dynamic/1 directive
+	\+ '$lgt_pp_dynamic_'(Functor, Arity).
 
 
 
@@ -14423,8 +14463,10 @@ current_logtalk_flag(version, version(2, 44, 0)).
 
 
 '$lgt_missing_discontiguous_directive'(Functor/Arity) :-
+	% detected discontiguous predicate
 	'$lgt_pp_missing_discontiguous_directive_'(Functor, Arity),
-	\+ '$lgt_pp_discontiguous_'(Functor, Arity).		% check for out-of-place dynamic/1 directive
+	% but check for out-of-place discontiguous/1 directive
+	\+ '$lgt_pp_discontiguous_'(Functor, Arity).
 
 
 
@@ -15117,12 +15159,14 @@ current_logtalk_flag(version, version(2, 44, 0)).
 % used mainly in conjunction with goal_expansion/2 hooks
 
 '$lgt_compile_aux_clauses'(Clauses) :-
+	% protocols cannot contain predicate clauses
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		true
 	;	'$lgt_pp_category_'(_, Prefix, _, _, _, _)
-	),												% protocols cannot contain predicate clauses
+	),
 	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
-	'$lgt_comp_ctx_mode'(Ctx, compile(aux)),		% avoid making a predicate discontiguous by accident
+	% avoid making a predicate discontiguous by accident
+	'$lgt_comp_ctx_mode'(Ctx, compile(aux)),
 	'$lgt_compile_aux_clauses'(Clauses, Ctx).
 
 
@@ -15272,7 +15316,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	;	true
 	),
 	atom_concat(Prefix, Functor, TFunctor),
-	Arity is TArity - 1,		% subtract execution context argument
+	% subtract execution context argument
+	Arity is TArity - 1,
 	Arity >= 0,
 	functor(Head, Functor, Arity),
 	'$lgt_unify_head_thead_args'(Arity, Head, THead),
@@ -15365,7 +15410,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 
 '$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity) :-
 	atom_concat(Prefix, Functor, TFunctor),
-	TArity is Arity + 1.		% add execution context argument
+	% add execution context argument
+	TArity is Arity + 1.
 
 
 
@@ -15410,7 +15456,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	;	true
 	),
 	atom_concat(Prefix, Functor, TFunctor),
-	Arity is TArity - 1,		% subtract execution context argument
+	% subtract execution context argument
+	Arity is TArity - 1,
 	Arity >= 0,
 	!.
 
@@ -18230,8 +18277,10 @@ current_logtalk_flag(version, version(2, 44, 0)).
 			thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, success, Id)),
 			thread_get_message(Message),
 			(	Message == '$lgt_next' ->
-				fail	% backtrack to the catch(Goal, ...) to try to find an alternative solution
-			;	true	% otherwise assume Message = '$lgt_exit' and terminate thread
+				% backtrack to the catch(Goal, ...) to try to find an alternative solution
+				fail
+			;	% otherwise assume Message = '$lgt_exit' and terminate thread
+				true
 			)
 		;	% Goal generated an exception, which was already reported
 			true
