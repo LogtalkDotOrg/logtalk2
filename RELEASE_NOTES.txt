@@ -52,7 +52,8 @@ RELEASE NOTES
 
     Added syntax coloring support for the min/2, max/2, acos/1, and asin/1
     functions and the term_variables/2 predicate to all supported text
-    editors and syntax highlighters.
+    editors and syntax highlighters. Updated the syntax highlighting test
+    source file to include de facto standard Prolog module directives.
 
     Updated the support for Exuberant ctags. Declared predicates are now
     listed using the Functor/Arity notation.

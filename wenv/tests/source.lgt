@@ -359,16 +359,13 @@ comment
 :- end_object.
 
 
-
 :- object(class,
 	implements(protected::protocol),
 	imports(private::category),
 	instantiates(metaclass),
 	specializes(superclass)).
 
-
 :- end_object.
-
 
 
 :- object(parametric(Parameter, "String", 33.78),
@@ -376,22 +373,28 @@ comment
 	imports(category),
 	extends(parent(Parameter))).
 
-
 :- end_object.
-
 
 
 :- category(category,
 	implements(protocol),
 	extends(other_category)).
 
-
 :- end_category.
-
 
 
 :- protocol(extended,
 	extends(minimal)).
 
-
 :- end_protocol.
+
+
+:- module(module, [foo/1, bar/2]).
+
+:- use_module(library).
+:- use_module(library, [baz/3]).
+
+:- reexport(library).
+:- reexport(library, [qux/4]).
+
+:- export(quux/5).
