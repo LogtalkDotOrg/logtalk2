@@ -18754,18 +18754,20 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	;	'$lgt_static_binding_entity_'(Obj),
 		'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 		call(Dcl, Pred, p(p(p)), Meta, Flags, _, DclCtn), !,
-		(	Flags /\ 2 =:= 0 ->
-			% Type == static
-			true
-		;	% Type == (dynamic)
-			Obj = DclCtn
-		),
 		'$lgt_term_template'(Obj, GObj),
 		'$lgt_term_template'(Pred, GPred),
 		'$lgt_goal_meta_vars'(GPred, Meta, GMetaVars),
 		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, GMetaVars, []),
-		call(Def, GPred, GExCtx, GCall, DefCtn),
-		!,
+		call(Def, GPred, GExCtx, GCall, DefCtn), !,
+		(	Flags /\ 2 =:= 0 ->
+			% Type == static
+			true
+		;	% Type == (dynamic)
+			Obj = DclCtn ->
+			true
+		;	Obj = DefCtn,
+			'$lgt_static_binding_entity_'(DclCtn)
+		),
 		% predicate definition found; use it only if it's safe
 		'$lgt_safe_static_binding_paths'(Obj, DclCtn, DefCtn),
 		(	Meta == no ->

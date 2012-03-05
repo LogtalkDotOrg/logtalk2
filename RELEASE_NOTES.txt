@@ -25,6 +25,10 @@ RELEASE NOTES
     a complementing category for a complemented object that was compiled with
     support for complementing categories turned off.
 
+    Allow the use of static binding when compiling messages for statically
+    declared dynamic methods where both the method declaration and the method
+    definition are found on static binding entities.
+
     Allow the use of static binding when compiling hook object definitions of
     the term_expansion/2 and goal_expansion/2 predicates.
 
