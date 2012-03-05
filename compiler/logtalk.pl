@@ -1898,8 +1898,14 @@ logtalk_compile(Files, Flags) :-
 		;	catch(current_module(Entity), _, fail), \+ current_object(Entity) ->
 			TermExpansionGoal = ':'(Entity, term_expansion(Term, Terms)),
 			GoalExpansionGoal = ':'(Entity, goal_expansion(Goal, EGoal))
-		;	'$lgt_tr_msg'(term_expansion(Term, Terms), Entity, TermExpansionGoal, user),
-			'$lgt_tr_msg'(goal_expansion(Goal, EGoal), Entity, GoalExpansionGoal, user)
+		;	(	'$lgt_send_to_obj_static_binding_cache'(Entity, term_expansion(Term, Terms), user, TermExpansionGoal) ->
+				true
+			;	'$lgt_tr_msg'(term_expansion(Term, Terms), Entity, TermExpansionGoal, user)
+			),
+			(	'$lgt_send_to_obj_static_binding_cache'(Entity, goal_expansion(Goal, EGoal), user, GoalExpansionGoal) ->
+				true
+			;	'$lgt_tr_msg'(goal_expansion(Goal, EGoal), Entity, GoalExpansionGoal, user)
+			)
 		),
 		assertz(('$lgt_pp_hook_term_expansion_'(Term, Terms) :- catch(TermExpansionGoal, _, fail))),
 		assertz(('$lgt_pp_hook_goal_expansion_'(Goal, EGoal) :- catch(GoalExpansionGoal, _, fail)))

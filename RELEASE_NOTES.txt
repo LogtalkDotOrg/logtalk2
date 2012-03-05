@@ -25,6 +25,9 @@ RELEASE NOTES
     a complementing category for a complemented object that was compiled with
     support for complementing categories turned off.
 
+    Allow the use of static binding when compiling hook object definitions of
+    the term_expansion/2 and goal_expansion/2 predicates.
+
     Corrected a bug in the processing of meta-calls for meta-predicates where
     the calling context would be set to "this" instead of "sender" whenever a
     meta-argument was one of the ::/2, {}/1, <</2, or :/2 control constructs.
