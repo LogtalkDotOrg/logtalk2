@@ -222,6 +222,7 @@ float
 atomic
 callable
 compound
+ground
 nonvar
 number
 
@@ -239,6 +240,8 @@ functor
 arg
 =..
 copy_term
+numbervars
+term_variables
 
 ; Arithemtic evaluation
 is
@@ -250,6 +253,10 @@ is
 =<
 >
 >=
+
+; Sorting
+keysort
+sort
 
 ; Stream selection and control
 current_input

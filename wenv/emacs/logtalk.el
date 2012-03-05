@@ -4,7 +4,7 @@
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: March 4, 2012
+;; Last modification date: March 5, 2012
 ;; Version: 1.19
 
 ;; Installation:
@@ -154,7 +154,7 @@
 		;;
 		;; term creation and decomposition:
 		;;
-		("\\<\\(arg\\|copy_term\\|functor\\|numbervars\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(arg\\|copy_term\\|functor\\|numbervars\\|term_variables\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("=\\.\\." 0 'logtalk-built-in-predicate-face)
 		;;
 		;; arithemtic evaluation:

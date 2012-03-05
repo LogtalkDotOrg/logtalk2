@@ -1,7 +1,7 @@
 ; TextPad syntax definitions for Logtalk (http://logtalk.org/)
 ; 
 ; Author: 			Paulo Moura
-; Last changed in: 	March 4, 2012
+; Last changed in: 	March 5, 2012
 ;
 ; Tags used and sugested colors:
 ;   Keywords 1	message sending operators	blue
@@ -239,6 +239,8 @@ functor
 arg
 =..
 copy_term
+numbervars
+term_variables
 
 ; Arithemtic evaluation
 is
@@ -250,6 +252,10 @@ is
 =<
 >
 >=
+
+; Sorting
+keysort
+sort
 
 ; Stream selection and control
 current_input

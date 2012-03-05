@@ -236,6 +236,7 @@ arg(, , )
 copy_term(, )
 functor(, , )
 numbervars(, , )
+term_variables(, )
 
 keysort(, )
 sort(, )

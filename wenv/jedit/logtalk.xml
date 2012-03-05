@@ -7,7 +7,7 @@
 	written by		Paulo Moura
 	version			1.98
 	created on		May 5, 2002
-	last revised	March 4, 2012
+	last revised	March 5, 2012
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -90,7 +90,7 @@
 		<!-- Term unification -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bunify_with_occurs_check(?=[(])</SEQ_REGEXP>
 		<!-- Term creation and decomposition -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(functor|arg|copy_term|numbervars)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(functor|arg|copy_term|numbervars|term_variables)(?=[(])</SEQ_REGEXP>
 		<!-- Evaluable functors -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(rem|m(ax|in|od)|abs|sign)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bfloat(_(integer|fractional)_part)?(?=[(])</SEQ_REGEXP>
@@ -370,6 +370,7 @@
 			<NULL>synchronized</NULL>
 			<NULL>goal_expansion</NULL>
 			<NULL>term_expansion</NULL>
+			<NULL>term_variables</NULL>
 			<NULL>this</NULL>
 			<NULL>threaded</NULL>
 			<NULL>threaded_call</NULL>

@@ -169,6 +169,7 @@ stream_property
 sub_atom
 synchronized
 term_expansion
+term_variables
 this
 threaded
 threaded_call

@@ -194,6 +194,7 @@
 			<keyword>(arg)(?=[(])</keyword>
 			<keyword>(copy_term)(?=[(])</keyword>
 			<keyword>(numbervars)(?=[(])</keyword>
+			<keyword>(term_variables)(?=[(])</keyword>
 			<!-- Arithemtic evaluation -->
 			<keyword>is</keyword>
 			<!-- Evaluable functors -->

@@ -120,6 +120,7 @@
 			<string>copy_term</string>
 			<string>functor</string>
 			<string>numbervars</string>
+			<string>term_variables</string>
 			<string>current_predicate</string>
 			<string>predicate_property</string>
 			<string>abolish</string>

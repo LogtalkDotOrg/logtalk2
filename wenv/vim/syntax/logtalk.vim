@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	March 4, 2012
+" Last Change:	March 5, 2012
 
 
 " Quit when a syntax file was already loaded:
@@ -222,6 +222,7 @@ syn match	logtalkKeyword		"\<arg\ze("
 syn match	logtalkOperator		"=\.\."
 syn match	logtalkKeyword		"\<copy_term\ze("
 syn match	logtalkKeyword		"\<numbervars\ze("
+syn match	logtalkKeyword		"\<term_variables\ze("
 
 
 " Arithemtic evaluation

@@ -51,7 +51,7 @@ comment
 	:- info([
 		version is 1.8,
 		author is 'Paulo Moura',
-		date is 2012/03/04,
+		date is 2012/03/05,
 		comment is 'Sample prototype for testing syntax coloring.']).
 
 	:- threaded.
@@ -280,7 +280,8 @@ comment
 		arg(N, Term, Arg),
 		Term =.. [Functor| Args],
 		copy_term(Term, Copy),
-		numbervars(Term, Start, End).
+		numbervars(Term, Start, End),
+		term_variables(Term, Variables).
 
 	arithemtic_evaluation :-
 		X is Expression.

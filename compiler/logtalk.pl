@@ -18025,6 +18025,7 @@ current_logtalk_flag(version, version(2, 44, 0)).
 '$lgt_iso_spec_pred'(sort(_, _)).
 % term creation and decomposition
 '$lgt_iso_spec_pred'(numbervars(_, _, _)).
+'$lgt_iso_spec_pred'(term_variables(_, _)).
 
 
 

@@ -240,7 +240,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(arg|copy_term|functor|numbervars)(?=[(])</string>
+			<string>\b(arg|copy_term|functor|numbervars|term_variables)(?=[(])</string>
 			<key>name</key>
 			<string>support.function.term-creation-and-decomposition.logtalk</string>
 		</dict>

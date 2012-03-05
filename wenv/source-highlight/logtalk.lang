@@ -1,7 +1,7 @@
 # highlighting for Logtalk source files (http://logtalk.org/)
 #
 #	written by Paulo Moura (pmoura@logtalk.org)
-#	last revised on March 4, 2012
+#	last revised on March 5, 2012
 
 comment start "%"
 comment delim "/*" "*/" multiline nested
@@ -32,7 +32,7 @@ keyword =	'\<(after|before)(?=\()',
 			'\<((bag|set)of|f(ind|or)all)(?=\()',
 			'\<threaded(_(call|once|ignore|exit|peek|wait|notify))?(?=\()',
 			'\<unify_with_occurs_check(?=\()',
-			'\<(functor|arg|copy_term|numbervars)(?=\()',
+			'\<(functor|arg|copy_term|numbervars|term_variables)(?=\()',
 			'\<(rem|m(ax|in|od)|abs|sign)(?=\()',
 			'\<(float_(integer|fractional)_part|float)(?=\()',
 			'\<(floor|truncate|round|ceiling)(?=\()',

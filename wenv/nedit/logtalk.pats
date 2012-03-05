@@ -2,7 +2,7 @@
 !
 ! Author: Paulo Moura (pmoura at logtalk.org)
 !
-! Last changed in: March 4, 2012
+! Last changed in: March 5, 2012
 !
 !
 ! To install this patterns file:
@@ -51,7 +51,7 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Term unification:"=|\\\\=":::Subroutine::\n\
 	Term unification:"<unify_with_occurs_check(?=[(])":::Subroutine::\n\
 	Term comparison:"@=\\<|==|\\\\==|@\\>=|@\\<|@\\>":::Subroutine::\n\
-	Term creation and decomposition:"<(functor|arg|copy_term|numbervars)(?=[(])":::Subroutine::\n\
+	Term creation and decomposition:"<(functor|arg|copy_term|numbervars|term_variables)(?=[(])":::Subroutine::\n\
 	Term creation and decomposition:"=\\.\\.":::Subroutine::\n\
 	Mode operators:"\\?|@":::Subroutine::\n\
 	Stream selection and control:"<(current_input|current_output|set_input|set_output|open|close|flush_output|stream_property|at_end_of_stream|set_stream_position)(?=[(])":::Subroutine::\n\

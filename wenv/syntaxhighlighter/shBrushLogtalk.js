@@ -21,7 +21,7 @@
 
 	function Brush()
 	{
-		// Contributed by Paulo Moura (pmoura@logtalk.org); last revised on March 4, 2012
+		// Contributed by Paulo Moura (pmoura@logtalk.org); last revised on March 5, 2012
 		// http://logtalk.org/  
 
 		this.regexList = [
@@ -69,7 +69,7 @@
       // term unification built-in predicates
       { regex: new RegExp("\\bunify_with_occurs_check(?=[(])", 'g'), css: 'keyword'},
       // term creation and decomposition built-in predicates
-      { regex: new RegExp("\\b(functor|arg|copy_term|numbervars)(?=[(])", 'g'), css: 'keyword'},
+      { regex: new RegExp("\\b(functor|arg|copy_term|numbervars|term_variables)(?=[(])", 'g'), css: 'keyword'},
       // evaluable functors
       { regex: new RegExp("\\b(rem|m(ax|in|od)|abs|sign)(?=[(])", 'g'), css: 'keyword'},
       { regex: new RegExp("\\b(float_(integer|fractional)_part|float)(?=[(])", 'g'), css: 'keyword'},

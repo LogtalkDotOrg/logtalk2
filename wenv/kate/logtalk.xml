@@ -45,7 +45,7 @@
 				<!-- Term unification -->
 				<RegExpr String = "\bunify_with_occurs_check(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term creation and decomposition -->
-				<RegExpr String = "\b(functor|arg|copy_term|numbervars)(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\b(functor|arg|copy_term|numbervars|term_variables)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Evaluable functors -->
 				<RegExpr String = "\b(rem|m(ax|in|od)|abs|sign)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bfloat(_(integer|fractional)_part)?(?=[(])" attribute = "Built-in" context = "#stay" />

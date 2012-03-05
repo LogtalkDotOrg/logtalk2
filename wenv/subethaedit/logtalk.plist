@@ -342,6 +342,7 @@
 				<string>[[:space:]]+(=\.\.)[[:space:]]+</string>
 				<string>[^A-Za-z0-9_](copy_term)\(</string>
 				<string>[^A-Za-z0-9_](numbervars)\(</string>
+				<string>[^A-Za-z0-9_](term_variables)\(</string>
 				<!-- Arithemtic evaluation -->
 				<string>[[:space:]]+(is)[[:space:]]+</string>
 				<!-- Arithemtic comparison -->

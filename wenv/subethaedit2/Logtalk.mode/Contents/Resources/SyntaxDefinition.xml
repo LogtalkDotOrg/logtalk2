@@ -113,6 +113,7 @@
 				<regex>(=\.\.)</regex>
 				<regex>\b(copy_term)\(</regex>
 				<regex>\b(numbervars)\(</regex>
+				<regex>\b(term_variables)\(</regex>
 				<!-- Arithemtic evaluation -->
 				<regex>\s(is)\s</regex>
 				<!-- Arithemtic comparison -->

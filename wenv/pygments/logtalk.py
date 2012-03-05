@@ -77,7 +77,7 @@ class LogtalkLexer(RegexLexer):
             # Term unification
             (r'unify_with_occurs_check(?=[(])', Keyword),
             # Term creation and decomposition
-            (r'(functor|arg|copy_term|numbervars)(?=[(])', Keyword),
+            (r'(functor|arg|copy_term|numbervars|term_variables)(?=[(])', Keyword),
             # Evaluable functors
             (r'(rem|m(ax|in|od)|abs|sign)(?=[(])', Keyword),
             (r'float(_(integer|fractional)_part)?(?=[(])', Keyword),

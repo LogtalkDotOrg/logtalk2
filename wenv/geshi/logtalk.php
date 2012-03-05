@@ -12,8 +12,9 @@
  *
  * CHANGES
  * -------
- * 2012/03/04 (1.1.7)
+ * 2012/03/05 (1.1.7)
  *  -  Added syntax coloring of acos/1, asin/1, min/2, and max/2 functions
+ *  -  Added syntax coloring of term_variables/2 predicate
  * 2011/07/24 (1.1.6)
  *  -  Added syntax coloring of include/1
  * 2011/01/18 (1.1.5)
@@ -156,7 +157,7 @@ $language_data = array(
             'number_chars', 'number_codes',
             'char_code',
             // term creation and decomposition
-            'arg', 'copy_term', 'functor', 'numbervars',
+            'arg', 'copy_term', 'functor', 'numbervars', 'term_variables',
             // term testing
             'atom', 'atomic', 'callable', 'compound', 'float', 'ground', 'integer', 'nonvar', 'number', 'sub_atom', 'var',
             // term comparison

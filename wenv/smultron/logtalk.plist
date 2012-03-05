@@ -99,12 +99,17 @@
 			<string>atomic</string>
 			<string>callable</string>
 			<string>compound</string>
+			<string>ground</string>
 			<string>nonvar</string>
 			<string>number</string>
 			<string>compare</string>
+			<string>keysort</string>
+			<string>sort</string>
 			<string>arg</string>
 			<string>copy_term</string>
 			<string>functor</string>
+			<string>numbervars</string>
+			<string>term_variables</string>
 			<string>current_predicate</string>
 			<string>predicate_property</string>
 			<string>abolish</string>
