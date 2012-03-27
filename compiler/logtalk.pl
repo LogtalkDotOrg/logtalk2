@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.44.0
+%  Release 2.44.1
 %
 %  Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -2063,7 +2063,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 44, 0)).
+current_logtalk_flag(version, version(2, 44, 1)).
 
 
 
@@ -10052,6 +10052,8 @@ current_logtalk_flag(version, version(2, 44, 0)).
 '$lgt_tr_body'(':'(Module, Pred), TPred, DPred, Ctx) :-
 	'$lgt_compiler_flag'(modules, supported),
 	!,
+	'$lgt_must_be'(var_or_atom, Module),
+	'$lgt_must_be'(var_or_callable, Pred),
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::Pred, TPred, DPred, Ctx)
@@ -10084,6 +10086,18 @@ current_logtalk_flag(version, version(2, 44, 0)).
 		TPred = ':'(Module, Pred),
 		DPred = '$lgt_debugger.goal'(':'(Module, Pred), TPred, ExCtx)
 	).
+
+'$lgt_tr_body'('@'(Pred, Module), TPred, '$lgt_debugger.goal'('@'(Pred, Module), TPred, ExCtx), Ctx) :-
+	'$lgt_compiler_flag'(modules, supported),
+	'$lgt_pl_built_in'('@'(_, _)),
+	'$lgt_pp_module_'(_),
+	% we're compiling a module as an object
+	!,
+	'$lgt_must_be'(var_or_atom, Module),
+	'$lgt_must_be'(var_or_callable, Pred),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	% not perfect as it requires that <</2 are allowed
+	'$lgt_tr_body'(Module<<Pred, TPred, _, Ctx).
 
 
 % "reflection" built-in predicates
@@ -18928,6 +18942,14 @@ current_logtalk_flag(version, version(2, 44, 0)).
 	;	callable(Term) ->
 		true
 	;	throw(error(type_error(callable, Term), Context))
+	).
+
+'$lgt_must_be'(var_or_atom, Term, Context) :-
+	(	var(Term) ->
+		true
+	;	atom(Term) ->
+		true
+	;	throw(error(type_error(atom, Term), Context))
 	).
 
 '$lgt_must_be'(var_or_callable, Term, Context) :-

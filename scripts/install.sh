@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.44.0
+## Release 2.44.1
 ## 
 ## Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
 ## Logtalk is free software.  You can redistribute it and/or modify
@@ -38,20 +38,20 @@ echo
 
 mkdir -p $prefix/share
 
-rm -rf $prefix/share/lgt2440
+rm -rf $prefix/share/lgt2441
 rm -f $prefix/share/logtalk
 
-mkdir $prefix/share/lgt2440
+mkdir $prefix/share/lgt2441
 
 cd ..
-cp -R * $prefix/share/lgt2440
+cp -R * $prefix/share/lgt2441
 
-cd $prefix/share/lgt2440
+cd $prefix/share/lgt2441
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 
 cd ..
-ln -sf lgt2440 logtalk
+ln -sf lgt2441 logtalk
 
 mkdir -p $prefix/bin
 cd $prefix/bin
@@ -124,7 +124,7 @@ echo
 if [ "`which update-mime-database`" != "" ]; then
 	mkdir -p $prefix/share/mime/packages
 	rm -f $prefix/share/mime/packages/logtalk.xml
-	cp $prefix/share/lgt2440/scripts/freedesktop/logtalk.xml $prefix/share/mime/packages/logtalk.xml
+	cp $prefix/share/lgt2441/scripts/freedesktop/logtalk.xml $prefix/share/mime/packages/logtalk.xml
 	update-mime-database $prefix/share/mime
 	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
 	echo
