@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.44.1 - April ??, 2012
 
+    Added support for the @/2 control construct used in some Prolog module
+    systems such as ECLiPSe. It requires compilation of source files with
+    the "context_switching_calls" flag set to "allow" and the @/2 control
+    construct also recognized as a built-in predicate.
 
 
 2.44.1 - March 7, 2012
