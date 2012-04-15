@@ -1,5 +1,5 @@
 
-:- module(meta, [meta/1]).
+:- module(metapreds, [meta/1]).
 
 :- meta_predicate(meta(0)).
 

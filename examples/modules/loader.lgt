@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load([exports, lists, meta, test])).
+	logtalk_load([exports, lists, metapreds, test])).
