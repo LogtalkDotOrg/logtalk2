@@ -23,7 +23,7 @@
 
 % define a category that adds new functionality to the "employee" object:
 
-:- category(logging,
+:- category(add_on,
 	implements(monitoring),		% built-in protocol for event handler methods
 	complements(employee)).		% add the category predicates to the employee object
 

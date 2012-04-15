@@ -10,7 +10,7 @@
 
 	test(complements_1) :-
 		complements_object(Category, Object),
-		Category == logging, Object == employee.
+		Category == add_on, Object == employee.
 
 	test(complements_2) :-
 		employee::name(Name),
@@ -24,7 +24,7 @@
 	test(complements_4) :-
 		findall(Property, employee::predicate_property(predicates(_), Property), Properties),
 		list::msort(Properties, PropertiesSorted),
-		PropertiesSorted = [logtalk, public, static, declared_in(logging), defined_in(logging), scope(public)].
+		PropertiesSorted = [logtalk, public, static, declared_in(add_on), defined_in(add_on), scope(public)].
 
 	test(complements_5) :-
 		findall(Property, employee::predicate_property(income(_), Property), Properties),
