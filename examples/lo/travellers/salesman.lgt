@@ -132,7 +132,7 @@
 
 	split(0, Route, Town, Route-Town).
 	split(IX, Route-Town1, Town, S-Town1) :-
-		IX2 is IX -1,
+		IX2 is IX - 1,
 		split(IX2, Route, Town, S).
 	split(1, Route, Town, Town-Route).
 

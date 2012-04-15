@@ -44,7 +44,7 @@
 :- object(city).
 
 	:- public(step/3).
-	:- mode(step(+, +, -), zero_or_more).
+	:- mode(step(+city, +city, -path), zero_or_more).
 
 	:- public(airport/1).
 	:- mode(airport(?atom), zero_or_more).
@@ -71,10 +71,10 @@
 :- object(airport).
 
 	:- public(fly/1).
-	:- mode(fly(?), zero_or_more).
+	:- mode(fly(?city), zero_or_more).
 
 	:- public(airport/1).
-	:- mode(airport(?), zero_or_more).
+	:- mode(airport(?city), zero_or_more).
 
 	airport(Airport) :-
 		self(Airport).
@@ -85,7 +85,7 @@
 :- object(fly).
 
 	:- public(step/3).
-	:- mode(step(+, +, -), zero_or_more).
+	:- mode(step(+city, +city, -path), zero_or_more).
 
 	step(From, To, fly(From, To)) :-
 		From::fly(To).
