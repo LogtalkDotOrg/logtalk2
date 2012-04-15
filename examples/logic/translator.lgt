@@ -24,11 +24,11 @@
 	:- dynamic(gensym_counter_/1).
 
 
-	:- op(10,  fy, ~ ).		% negation
-	:- op(20, yfx, & ).		% conjunction
-	:- op(30, yfx, v ).		% disjunction
-	:- op(40, xfx, =>).		% implication
-	:- op(40, xfx, <=>).	% equivalence
+	:- op(10,  fy, '~' ).	% negation
+	:- op(20, yfx, '&' ).	% conjunction
+	:- op(30, yfx, 'v' ).	% disjunction
+	:- op(40, xfx, '=>').	% implication
+	:- op(40, xfx, '<=>').	% equivalence
 
 
 	translate(P, Cs) :-
