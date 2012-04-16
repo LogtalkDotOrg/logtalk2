@@ -2,8 +2,8 @@
 :- object(xml).
 
 	:- info([
-		version is 1.0,
-		date is 2003/7/7,
+		version is 1.01,
+		date is 2012/04/16,
 		author is 'Paulo Moura',
 		comment is 'Conversion between compound terms and XML.']).
 
@@ -57,7 +57,7 @@
 	characters([]) --> [].
 	characters([Code| Codes]) --> [Code], {character(Code)}, characters(Codes).
 
-	character(Code) :- Code @>= 0'a, Code @=< 0'z, !.
-	character(Code) :- Code @>= 0'A, Code @=< 0'Z.
+	character(Code) :- Code >= 0'a, Code =< 0'z, !.
+	character(Code) :- Code >= 0'A, Code =< 0'Z.
 
 :- end_object.
