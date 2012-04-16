@@ -240,7 +240,7 @@
 	:- public(substitute/4).
 	:- mode(substitute(@term, @list, @term, -list), one).
 	:- info(substitute/4,
-		[comment is 'Substitutes all occurences of Old in List by New, returning NewList. Uses term equakity for element comparison.',
+		[comment is 'Substitutes all occurrences of Old in List by New, returning NewList. Uses term equality for element comparison.',
 		 argnames is ['Old', 'List', 'New', 'NewList']]).
 
 	:- public(subtract/3).

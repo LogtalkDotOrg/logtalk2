@@ -16,7 +16,7 @@
 	:- public(delete/3).
 	:- mode(delete(@list, @term, ?list), one).
 	:- info(delete/3,
-		[comment is 'Deletes from a list all ocurrences of an element returning the list of remaining elements.',
+		[comment is 'Deletes from a list all occurrences of an element returning the list of remaining elements.',
 		 argnames is ['List', 'Element', 'Remaining']]).
 
 	:- public(empty/1).

@@ -40,7 +40,7 @@
 	:- public(stream/2).
 	:- mode(stream(?atom, ?stream), zero_or_more).
 	:- info(stream/2, [
-		comment is 'Current debugger input or ouput streams.',
+		comment is 'Current debugger input or output streams.',
 		argnames is ['Kind', 'Stream']]).
 
 	:- public(set_stream/2).

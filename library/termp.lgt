@@ -10,7 +10,7 @@
 	:- public(depth/2).
 	:- mode(depth(@term, ?integer), zero_or_one).
 	:- info(depth/2, [
-		comment is 'True if the depth of Term is Depth. The depth of atomic terms is zero; the depth of a compound term is one plus the maximium depth of its sub-terms.',
+		comment is 'True if the depth of Term is Depth. The depth of atomic terms is zero; the depth of a compound term is one plus the maximum depth of its sub-terms.',
 		argnames is ['Term', 'Depth']]).
 
 	:- public(ground/1).

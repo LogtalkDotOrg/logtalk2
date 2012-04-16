@@ -121,14 +121,14 @@
 	:- meta_predicate(map(2, *, *)).
 	:- mode(map(@callable, +dictionary, -dictionary), zero_or_more).
 	:- info(map/3, [
-		comment is 'Maps a closure over each dictionary key-value pair, returning the new dictionary. Fails if the mapped closure atempts to modify the keys.',
+		comment is 'Maps a closure over each dictionary key-value pair, returning the new dictionary. Fails if the mapped closure attempts to modify the keys.',
 		argnames is ['Closure', 'OldDictionary', 'NewDictionary']]).
 
 	:- public(apply/4).
 	:- meta_predicate(apply(2, *, *, *)).
 	:- mode(apply(+callable, +dictionary, +key, -dictionary), zero_or_one).
 	:- info(apply/4,
-		[comment is 'Applies a closure to a specific key-value pair, returning the new dictionary. Fails if the key cannot be found or if the mapped closure atempts to modify the key.',
+		[comment is 'Applies a closure to a specific key-value pair, returning the new dictionary. Fails if the key cannot be found or if the mapped closure attempts to modify the key.',
 		 argnames is ['Closure', 'OldDictionary', 'Key', 'NewDictionary']]).
 
 	:- public(size/2).
