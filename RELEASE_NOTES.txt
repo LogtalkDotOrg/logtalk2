@@ -20,6 +20,10 @@ RELEASE NOTES
     the "context_switching_calls" flag set to "allow" and the @/2 control
     construct also recognized as a built-in predicate.
 
+    Updated the ECLiPSe config file to detect when running on Windows 64
+    bits systems and to ignore non-predicate and non-operator exports when
+    pre-processing lib/1 directives.
+
     Updated the TextMate bundle to disable the automatic indent corrections
     introduced in the development version of TextMate 2.0.
 

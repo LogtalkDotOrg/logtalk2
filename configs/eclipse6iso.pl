@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: September 23, 2011
+%  last updated: April 20, 2012
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -271,9 +271,9 @@ forall(Generate, Test) :-
 % directories compilation flags:
 '$lgt_default_flag'(altdirs, on).
 '$lgt_default_flag'(tmpdir, TmpDir) :-
-	(	get_flag(hostarch, HostArch), atom_string(i386_nt, HostArch) ->
+	(	getenv('COMSPEC', _) ->		% Windows systems define this environment variable...
 		TmpDir = 'lgt_tmp/'
-	;	TmpDir = '.lgt_tmp/'
+	;	TmpDir = '.lgt_tmp/'		% ... but not POSIX systems
 	).
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 % other compilation flags:
@@ -674,9 +674,15 @@ forall(Generate, Test) :-
 	'$lgt_eclipse_filter_exports'(Interface, Exports).
 
 '$lgt_eclipse_filter_exports'([export(Functor/Arity)| Interface], [Functor/Arity| Exports]) :-
+	!,
 	'$lgt_eclipse_filter_exports'(Interface, Exports).
 
 '$lgt_eclipse_filter_exports'([export(op(Priority, Spec, Operators))| Interface], [op(Priority, Spec, Operators)| Exports]) :-
+	!,
+	'$lgt_eclipse_filter_exports'(Interface, Exports).
+
+'$lgt_eclipse_filter_exports'([export(_)| Interface], Exports) :-
+	!,
 	'$lgt_eclipse_filter_exports'(Interface, Exports).
 
 
