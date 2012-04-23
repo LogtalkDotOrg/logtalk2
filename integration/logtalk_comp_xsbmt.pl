@@ -39,7 +39,7 @@
 :- thread_shared('$lgt_complemented_object_'/5).
 
 % table of loaded files
-:- thread_shared('$lgt_loaded_file_'/2).
+:- thread_shared('$lgt_loaded_file_'/3).
 
 % debugger status and tables
 :- thread_shared('$lgt_debugging_entity_'/1).
@@ -48,7 +48,7 @@
 :- thread_shared('$lgt_debugger.tracing_'/0).
 :- thread_shared('$lgt_debugger.skipping_'/0).
 :- thread_shared('$lgt_debugger.spying_'/2).
-:- thread_shared('$lgt_debugger.spying_'/3).
+:- thread_shared('$lgt_debugger.spying_'/4).
 :- thread_shared('$lgt_debugger.leashing_'/1).
 
 % runtime flags
