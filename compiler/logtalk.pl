@@ -25,22 +25,22 @@
 % message sending operators
 
 :- op(600, xfy, ::).	% send to object
-:- op(600,  fy, ::).	% send to self
+:- op(600,  fy, ::).	% send to "self"
 
 :- op(600,  fy, ^^).	% "super" call (calls an overriden, inherited method definition)
 
 
 % mode operators
 
-:- op(200, fy, (+)).	% input argument (instantiated)
+:- op(200, fy, (+)).	% input argument (instantiated); ISO Prolog standard operator
 :- op(200, fy, (?)).	% input/output argument
 :- op(200, fy, (@)).	% input argument (not modified by the call)
-:- op(200, fy, (-)).	% output argument (not instantiated)
+:- op(200, fy, (-)).	% output argument (not instantiated); ISO Prolog standard operator
 
 
 % bitwise left-shift operator (used for context-switching calls)
 
-:- op(400, yfx, <<).	% some back-end Prolog compilers don't declare this operator
+:- op(400, yfx, <<).	% some back-end Prolog compilers don't declare this ISO Prolog standard operator
 
 
 % imported category predicate call operator
@@ -50,7 +50,7 @@
 
 % bitwise right-shift operator (used for lambda expressions)
 
-:- op(400, yfx, >>).	% some back-end Prolog compilers don't declare this operator
+:- op(400, yfx, >>).	% some back-end Prolog compilers don't declare this ISO Prolog standard operator
 
 
 
@@ -4987,7 +4987,7 @@ current_logtalk_flag(version, version(2, 44, 1)).
 		'$lgt_debugger.suspend'(Tracing),
 		break,
 		'$lgt_debugger.resume'(Tracing)
-	;	write('  break no supportd by the back-end Prolog compiler.'), nl
+	;	write('  break/0 not supported by the back-end Prolog compiler.'), nl
 	),
 	fail.
 
