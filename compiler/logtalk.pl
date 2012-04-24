@@ -1890,6 +1890,12 @@ logtalk_compile(Files, Flags) :-
 		asserta('$lgt_pp_file_compiler_flag_'(clean, off))
 	;	true
 	),
+	(	'$lgt_pp_file_compiler_flag_'(clean, on) ->
+		% clean flag on requires smart_compilation flag off
+		retractall('$lgt_pp_file_compiler_flag_'(smart_compilation, _)),
+		assertz('$lgt_pp_file_compiler_flag_'(smart_compilation, off))
+	;	true
+	),
 	(	'$lgt_pp_file_compiler_flag_'(hook, Entity) ->
 		% pre-compile hooks in order to speed up entity compilation
 		(	Entity == user ->
@@ -2024,12 +2030,17 @@ set_logtalk_flag(Flag, Value) :-
 	retractall('$lgt_current_flag_'(Flag, _)),
 	assertz('$lgt_current_flag_'(Flag, Value)),
 	(	Flag == debug, Value == on ->
+		% debug flag on requires the smart_compilation flag off and the reload flag set to always
 		retractall('$lgt_current_flag_'(smart_compilation, _)),
-		assertz('$lgt_current_flag_'(smart_compilation, off))
+		assertz('$lgt_current_flag_'(smart_compilation, off)),
+		retractall('$lgt_current_flag_'(reload, _)),
+		assertz('$lgt_current_flag_'(reload, always))
 	;	Flag == smart_compilation, Value == on ->
+		% smart_compilation flag on requires the clean flag off
 		retractall('$lgt_current_flag_'(clean, _)),
 		assertz('$lgt_current_flag_'(clean, off))
 	;	Flag == clean, Value == on ->
+		% clean flag on requires smart_compilation flag off
 		retractall('$lgt_current_flag_'(smart_compilation, _)),
 		assertz('$lgt_current_flag_'(smart_compilation, off))
 	;	Flag == hook ->
