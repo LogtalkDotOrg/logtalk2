@@ -10098,18 +10098,6 @@ current_logtalk_flag(version, version(2, 44, 1)).
 		DPred = '$lgt_debugger.goal'(':'(Module, Pred), TPred, ExCtx)
 	).
 
-'$lgt_tr_body'('@'(Pred, Module), TPred, '$lgt_debugger.goal'('@'(Pred, Module), TPred, ExCtx), Ctx) :-
-	'$lgt_compiler_flag'(modules, supported),
-	'$lgt_pl_built_in'('@'(_, _)),
-	'$lgt_pp_module_'(_),
-	% we're compiling a module as an object
-	!,
-	'$lgt_must_be'(var_or_atom, Module),
-	'$lgt_must_be'(var_or_callable, Pred),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	% not perfect as it requires that <</2 are allowed
-	'$lgt_tr_body'(Module<<Pred, TPred, _, Ctx).
-
 
 % "reflection" built-in predicates
 

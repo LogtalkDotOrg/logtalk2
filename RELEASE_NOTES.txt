@@ -22,11 +22,6 @@ RELEASE NOTES
     turn off the "smart_compilation" flag. Also, setting the "debug" flag
     on will turn off both the "smart_compilation" and "clean" flags.
 
-    Added support for the @/2 control construct used in some Prolog module
-    systems such as ECLiPSe. It requires compilation of source files with
-    the "context_switching_calls" flag set to "allow" and the @/2 control
-    construct also recognized as a built-in predicate.
-
     Updated the ECLiPSe config file to detect when running on Windows 64
     bits systems and to ignore non-predicate and non-operator exports when
     pre-processing lib/1 directives.
