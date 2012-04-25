@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 2.3,
+		version is 2.4,
 		author is 'Paulo Moura',
-		date is 2011/12/15,
+		date is 2012/04/25,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -348,6 +348,16 @@
 		merge_no_dups(Xs, Ys, C, Zs).
 	merge_no_dups(>, [X| Xs], [Y| Ys], C, [Y| Zs]) :-
 		merge_no_dups([X | Xs], Ys, C, Zs).
+
+	split(List, N, Sublists, Remaining) :-
+		N > 0,
+		split_aux(List, N, Sublists, Remaining).
+
+	split_aux(List, N, [Sublist| Sublists], Remaining) :-
+		subsequence(List, N, Sublist, Remaining0),
+		!,
+		split_aux(Remaining0, N, Sublists, Remaining).
+	split_aux(List, _, [], List).
 
 	sublist(List, List).
 	sublist(Sublist, [Head| Tail]):-

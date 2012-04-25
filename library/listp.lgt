@@ -2,9 +2,9 @@
 :- protocol(listp).
 
 	:- info([
-		version is 1.8,
+		version is 1.9,
 		author is 'Paulo Moura',
-		date is 2011/12/15,
+		date is 2012/04/25,
 		comment is 'List protocol.']).
 
 	:- public(append/2).
@@ -218,6 +218,12 @@
 	:- info(sort/3,
 		[comment is 'Sorts a list using a user-specified comparison predicate modeled on the standard compare/3 predicate (duplicated elements are removed).',
 		 argnames is ['Closure', 'List', 'Sorted']]).
+
+	:- public(split/4).
+	:- mode(split(+list, +integer, -list(list), -list), zero_or_one).
+	:- info(split/4,
+		[comment is 'Splits a list into sublists of a given length. Also returns the remaining elements. Fails if the length is zero or negative.',
+		 argnames is ['List', 'Length', 'Sublists', 'Remaining']]).
 
 	:- public(sublist/2).
 	:- mode(sublist(?list, +list), zero_or_more).

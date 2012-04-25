@@ -26,6 +26,9 @@ RELEASE NOTES
     bits systems and to ignore non-predicate and non-operator exports when
     pre-processing lib/1 directives.
 
+    Added predicate split/4 (for splitting a list into sublists with a given
+    length) to the "listp", "list", and "difflist" library entities.
+
     Updated the TextMate bundle to disable the automatic indent corrections
     introduced in the development version of TextMate 2.0.
 

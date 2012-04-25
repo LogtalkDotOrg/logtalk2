@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.6,
+		version is 1.7,
 		author is 'Paulo Moura',
-		date is 2011/05/14,
+		date is 2012/04/25,
 		comment is 'Difference list predicates.']).
 
 	:- public(add/3).
@@ -329,7 +329,17 @@
 	sort(Difflist, Sorted) :-
 		as_list(Difflist, List),
 		list::sort(List, List2),
-		list::as_difflist(List2, Sorted).		
+		list::as_difflist(List2, Sorted).
+
+	split(List, N, Sublists, Remaining) :-
+		N > 0,
+		split_aux(List, N, Sublists, Remaining).
+
+	split_aux(List, N, [Sublist| Sublists], Remaining) :-
+		subsequence(List, N, Sublist, Remaining0),
+		!,
+		split_aux(Remaining0, N, Sublists, Remaining).
+	split_aux(List, _, [], List).
 
 	sublist(Sublist, List) :-
 		unify_with_occurs_check(Sublist, List).
@@ -351,14 +361,27 @@
 
 	subsequence(List-Back, List-Back, List-Back) :-
 		List == Back.
-	subsequence(List-Back, Subsequence-Back, [Head| Remaining]-Back) :-
-		List \== Back,
-		List = [Head| Tail],
-		subsequence(Tail-Back, Subsequence-Back, Remaining-Back).
 	subsequence(List-Back, [Head| Subsequence]-Back, Remaining-Back) :-
 		List \== Back,
 		List = [Head| Tail],
 		subsequence(Tail-Back, Subsequence-Back, Remaining-Back).
+	subsequence(List-Back, Subsequence-Back, [Head| Remaining]-Back) :-
+		List \== Back,
+		List = [Head| Tail],
+		subsequence(Tail-Back, Subsequence-Back, Remaining-Back).
+
+	subsequence(List-Back, 0, Back-Back, List-Back) :- !.
+	subsequence(List-Back, N, [Head| Subsequence]-Back, Remaining-Back) :-
+		N > 0,
+		M is N - 1,
+		List \== Back,
+		List = [Head| Tail],
+		subsequence(Tail-Back, M, Subsequence-Back, Remaining-Back).
+	subsequence(List-Back, N, Subsequence-Back, [Head| Remaining]-Back) :-
+		N > 0,
+		List \== Back,
+		List = [Head| Tail],
+		subsequence(Tail-Back, N, Subsequence-Back, Remaining-Back).
 
 	subtract(List-Back, _, Result) :-
 		unify_with_occurs_check(Result, Back-Back),
