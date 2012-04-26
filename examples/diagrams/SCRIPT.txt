@@ -22,9 +22,9 @@ DefaultOptions = ...
 yes
 
 
-% load an example for testing:
+% load an example for testing but be sure that the "source_data" flag is on:
 
-| ?- logtalk_load(points(loader)).
+| ?- set_logtalk_flag(source_data, on), logtalk_load(points(loader)).
 ...
 
 % generating an entity diagram for a source file using default options:

@@ -61,3 +61,6 @@ exclude_paths(Paths)
 	list of relative paths to exclude (default is [])
 exclude_entities(Entities)
 	list of entities to exclude (default is [])
+
+Be sure to set the "source_data" flag on before compiling the libraries or files
+for which you want to generated diagrams.
