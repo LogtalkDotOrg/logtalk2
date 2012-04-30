@@ -29,6 +29,9 @@ RELEASE NOTES
     Added predicate split/4 (for splitting a list into sublists with a given
     length) to the "listp", "list", and "difflist" library entities.
 
+    Changed the names of the objects in the "mi" example to avoid a name
+    conflict when running the example unit tests.
+
     Updated the TextMate bundle to disable the automatic indent corrections
     introduced in the development version of TextMate 2.0.
 

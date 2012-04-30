@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.44.1
+Release 3.0.0
 
 Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -17,16 +17,16 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 % set a point in the space-time:
 
-| ?- space_time::rotate(1, 2, 3).
+| ?- xyzt::rotate(1, 2, 3).
 yes
 
-| ?- space_time::translate(4).
+| ?- xyzt::translate(4).
 yes
 
 
 % verify it:
 
-| ?- space_time::xyzt(X, Y, Z, T).
+| ?- xyzt::xyzt(X, Y, Z, T).
 
 T = 4,
 X = 1,
@@ -37,7 +37,7 @@ yes
 
 % enumerate space_time public predicates:
 
-| ?- space_time::(current_predicate(Functor/Arity), functor(Pred, Functor, Arity), predicate_property(Pred, declared_in(Object))).
+| ?- xyzt::(current_predicate(Functor/Arity), functor(Pred, Functor, Arity), predicate_property(Pred, declared_in(Object))).
 
 Pred = xyzt(_A,_B,_C,_D),
 Arity = 4,
@@ -70,20 +70,20 @@ no
 
 % get the origin distance from a point in the space-time(_, _, _, _):
 
-| ?- space_time(2,3,4,7)::distance(D).
+| ?- xyzt(2,3,4,7)::distance(D).
 
 D = 5.385164807134504
 yes
 
-| ?- space_time(2,3,4,7)::time(T).
+| ?- xyzt(2,3,4,7)::time(T).
 
 T = 7
 yes
 
 
-% enumerate space_time(_, _, _, _) public predicates:
+% enumerate xyzt(_, _, _, _) public predicates:
 
-| ?- space_time(2,3,4,7)::(current_predicate(Functor/Arity), functor(Pred, Functor, Arity), predicate_property(Pred, declared_in(Object))).
+| ?- xyzt(2,3,4,7)::(current_predicate(Functor/Arity), functor(Pred, Functor, Arity), predicate_property(Pred, declared_in(Object))).
 
 Pred = distance(_A),
 Arity = 1,
