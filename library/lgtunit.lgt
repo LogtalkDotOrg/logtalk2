@@ -3,9 +3,9 @@
 	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2011/07/07,
+		date is 2012/05/01,
 		comment is 'A simple unit test framework.']).
 
 	:- uses(list, [member/2]).
@@ -125,22 +125,28 @@
 		run_tests([]).
 
 	run_test(succeeds(Test)) :-
-		(	catch(::test(Test, _), _, fail) ->
-			passed_test(Test)
-		;	failed_test(Test)
-		).
-	run_test(fails(Test)) :-
-		(	catch(\+ ::test(Test, _), _, fail) ->
-			passed_test(Test)
-		;	failed_test(Test)
-		).
-	run_test(throws(Test, Error)) :-
-		(	catch(::test(Test, Error), Ball, ((subsumes(Error, Ball) -> passed_test(Test); failed_test(Test)), Throw = true)) ->
+		(	catch(::test(Test, _), Ball, (unexpected_error_expected_success(Test, Ball), Throw = true)) ->
 			(	var(Throw) ->
-				failed_test(Test)
+				passed_test(Test)
 			;	true
 			)
-		;	failed_test(Test)
+		;	unexpected_failure_expected_success(Test)
+		).
+	run_test(fails(Test)) :-
+		(	catch(::test(Test, _), Ball, (unexpected_error_expected_failure(Test, Ball), Throw = true)) ->
+			(	var(Throw) ->
+				unexpected_success_expected_failure(Test)
+			;	true
+			)
+		;	passed_test(Test)
+		).
+	run_test(throws(Test, Error)) :-
+		(	catch(::test(Test, Error), Ball, ((subsumes(Error, Ball) -> passed_test(Test); wrong_error(Test, Error, Ball)), Throw = true)) ->
+			(	var(Throw) ->
+				unexpected_success_expected_error(Test)
+			;	true
+			)
+		;	unexpected_failure_expected_error(Test)
 		).
 
 	tests_start_time :-
@@ -163,11 +169,47 @@
 		asserta(passed_(New)),
 		writeq(Test), write(': success'), nl.
 
-	failed_test(Test) :-
+	unexpected_success_expected_failure(Test) :-
 		retract(failed_(Old)) ->
 		New is Old + 1,
 		asserta(failed_(New)),
-		writeq(Test), write(': failure'), nl.
+		writeq(Test), write(': failure (test goal succeeded but should have failed)'), nl.
+
+	unexpected_success_expected_error(Test) :-
+		retract(failed_(Old)) ->
+		New is Old + 1,
+		asserta(failed_(New)),
+		writeq(Test), write(': failure (test goal succeeded but should have throw an error)'), nl.
+
+	unexpected_failure_expected_success(Test) :-
+		retract(failed_(Old)) ->
+		New is Old + 1,
+		asserta(failed_(New)),
+		writeq(Test), write(': failure (test goal failed but should have succeeded)'), nl.
+
+	unexpected_failure_expected_error(Test) :-
+		retract(failed_(Old)) ->
+		New is Old + 1,
+		asserta(failed_(New)),
+		writeq(Test), write(': failure (test goal failed but should have throw an error)'), nl.
+
+	unexpected_error_expected_failure(Test, Error) :-
+		retract(failed_(Old)) ->
+		New is Old + 1,
+		asserta(failed_(New)),
+		writeq(Test), write(': failure (test goal throws an error but should have failed: '), writeq(Error), write(')'), nl.
+
+	unexpected_error_expected_success(Test, Error) :-
+		retract(failed_(Old)) ->
+		New is Old + 1,
+		asserta(failed_(New)),
+		writeq(Test), write(': failure (test goal throws an error but should have succeeded: '), writeq(Error), write(')'), nl.
+
+	wrong_error(Test, Error, Ball) :-
+		retract(failed_(Old)) ->
+		New is Old + 1,
+		asserta(failed_(New)),
+		writeq(Test), write(': failure (test goal throws the wrong error: got '), writeq(Ball), write(' instead of '),  writeq(Error), write(')'), nl.
 
 	broken(Step, Error) :-
 		self(Self),

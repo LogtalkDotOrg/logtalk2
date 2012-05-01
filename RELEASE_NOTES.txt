@@ -26,6 +26,9 @@ RELEASE NOTES
     bits systems and to ignore non-predicate and non-operator exports when
     pre-processing lib/1 directives.
 
+    Updated the unit test framework to print more informative messages for
+    failed unit tests.
+
     Added predicate split/4 (for splitting a list into sublists with a given
     length) to the "listp", "list", and "difflist" library entities.
 
