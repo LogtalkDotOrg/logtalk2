@@ -11,9 +11,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.31,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2011/09/06,
+		date is 2012/05/01,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -628,8 +628,11 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, cx)).
 
-		shell(_, _) :-
-			throw(not_available(shell/2)).
+		shell(Command, Status) :-
+			(	{os_run(Command)} ->
+				Status = 0
+			;	Status = 1
+			).
 
 		shell(Command) :-
 			{os_run(Command)}.

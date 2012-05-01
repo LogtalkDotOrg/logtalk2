@@ -32,6 +32,9 @@ RELEASE NOTES
     Added predicate split/4 (for splitting a list into sublists with a given
     length) to the "listp", "list", and "difflist" library entities.
 
+    Updated the "cc" example with a definition for the shell/2 predicate for
+    CxProlog.
+
     Changed the names of the objects in the "mi" example to avoid a name
     conflict when running the example unit tests.
 
