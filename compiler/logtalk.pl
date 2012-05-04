@@ -9101,7 +9101,8 @@ current_logtalk_flag(version, version(2, 44, 1)).
 
 '$lgt_add_predicate_first_clause_line_property'(N, Other::Head) :-
 	!,
-	(	'$lgt_compiler_flag'(source_data, on) ->
+	(	'$lgt_compiler_flag'(source_data, on),
+		'$lgt_pp_term_position_'(_) ->
 		functor(Head, Functor, Arity),
 		retract('$lgt_pp_entity_runtime_clause_'('$lgt_predicate_property_'(Other, Functor/Arity, line_clauses_from(DefLine,_,Entity)))),
 		assertz('$lgt_pp_entity_runtime_clause_'('$lgt_predicate_property_'(Other, Functor/Arity, line_clauses_from(DefLine,N,Entity))))

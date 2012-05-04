@@ -22,6 +22,10 @@ RELEASE NOTES
     turn off the "smart_compilation" flag. Also, setting the "debug" flag
     on will turn off both the "smart_compilation" and "clean" flags.
 
+    Corrected a Logtalk compiler bug when the "source_data" flag is on with
+    back-end Prolog compilers where is not possible to retrieve the position
+    of a read term.
+
     Updated the ECLiPSe config file to detect when running on Windows 64
     bits systems and to ignore non-predicate and non-operator exports when
     pre-processing lib/1 directives.
