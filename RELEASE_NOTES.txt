@@ -42,6 +42,9 @@ RELEASE NOTES
     Changed the names of the objects in the "mi" example to avoid a name
     conflict when running the example unit tests.
 
+    Corrected a bug in the Windows installer that prevented detection of
+    YAP 64 bits versions. Thanks to Stepan Ipatov for the bug report.
+
     Updated the TextMate bundle to disable the automatic indent corrections
     introduced in the development version of TextMate 2.0.
 
