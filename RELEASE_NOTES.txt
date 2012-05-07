@@ -26,6 +26,9 @@ RELEASE NOTES
     back-end Prolog compilers where is not possible to retrieve the position
     of a read term.
 
+    Corrected a bug in the compilation of the meta_non_terminal/1 directive
+    where only the first meta-argument would be correctly processed.
+
     Updated the ECLiPSe config file to detect when running on Windows 64
     bits systems and to ignore non-predicate and non-operator exports when
     pre-processing lib/1 directives.

@@ -7916,10 +7916,9 @@ current_logtalk_flag(version, version(2, 44, 1)).
 	'$lgt_valid_meta_predicate_template'(NonTerminal),
 	!,
 	'$lgt_must_be'(entity_identifier, Entity),
-	NonTerminal =.. [Functor, Arg1| Args],
-	Arg2 is Arg1 + 2,
-	'$lgt_append'([Arg2| Args], [*, *], FullArgs),
-	Pred =.. [Functor| FullArgs],
+	NonTerminal =.. [Functor| Args],
+	'$lgt_tr_meta_non_terminal_directive_args'(Args, Args2),
+	Pred =.. [Functor| Args2],
 	assertz('$lgt_pp_meta_predicate_'(Entity::Pred)),
 	'$lgt_tr_meta_non_terminal_directive'(NonTerminals).
 
@@ -7927,10 +7926,9 @@ current_logtalk_flag(version, version(2, 44, 1)).
 	'$lgt_valid_meta_predicate_template'(NonTerminal),
 	!,
 	'$lgt_must_be'(atom, Module),
-	NonTerminal =.. [Functor, Arg1| Args],
-	Arg2 is Arg1 + 2,
-	'$lgt_append'([Arg2| Args], [*, *], FullArgs),
-	Pred =.. [Functor| FullArgs],
+	NonTerminal =.. [Functor| Args],
+	'$lgt_tr_meta_non_terminal_directive_args'(Args, Args2),
+	Pred =.. [Functor| Args2],
 	assertz('$lgt_pp_meta_predicate_'(':'(Module, Pred))),
 	'$lgt_tr_meta_non_terminal_directive'(NonTerminals).
 
@@ -7940,10 +7938,9 @@ current_logtalk_flag(version, version(2, 44, 1)).
 	functor(NonTerminal, Functor, Arity),
 	ExtArity is Arity + 2,
 	'$lgt_check_for_directive_after_call'(Functor/ExtArity),
-	NonTerminal =.. [Functor, Arg1| Args],
-	Arg2 is Arg1 + 2,
-	'$lgt_append'([Arg2| Args], [*, *], FullArgs),
-	Pred =.. [Functor| FullArgs],
+	NonTerminal =.. [Functor| Args],
+	'$lgt_tr_meta_non_terminal_directive_args'(Args, Args2),
+	Pred =.. [Functor| Args2],
 	assertz('$lgt_pp_meta_predicate_'(Pred)),
 	'$lgt_tr_meta_non_terminal_directive'(NonTerminals).
 
@@ -7957,6 +7954,16 @@ current_logtalk_flag(version, version(2, 44, 1)).
 		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	true
 	).
+
+
+'$lgt_tr_meta_non_terminal_directive_args'([], [*, *]).
+
+'$lgt_tr_meta_non_terminal_directive_args'([Arg| Args], [Arg2| Args2]) :-
+	(	integer(Arg) ->
+		Arg2 is Arg + 2
+	;	Arg2 = Arg
+	),
+	'$lgt_tr_meta_non_terminal_directive_args'(Args, Args2).
 
 
 
