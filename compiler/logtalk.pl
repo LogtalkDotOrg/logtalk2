@@ -3276,6 +3276,15 @@ current_logtalk_flag(version, version(2, 44, 1)).
 % have already been type-checked; generates a cache entry to speed up future calls
 
 '$lgt_send_to_obj_nv'(Obj, Pred, Sender) :-
+	% call all before event handlers
+	\+ ('$lgt_before_event_'(Obj, Pred, Sender, _, Before), \+ Before),
+	% process the message; we cannot simply call '$lgt_send_to_obj_ne'/3 as the generated cache entries differ
+	'$lgt_send_to_obj_nv_inner'(Obj, Pred, Sender),
+	% call all after event handlers
+	\+ ('$lgt_after_event_'(Obj, Pred, Sender, _, After), \+ After).
+
+
+'$lgt_send_to_obj_nv_inner'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
 	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->										% lookup declaration
@@ -3288,7 +3297,7 @@ current_logtalk_flag(version, version(2, 44, 1)).
 				GGCall = '$lgt_guarded_method_call'(GObj, GPred, GSender, GCall),
 				asserta(('$lgt_send_to_obj_'(GObj, GPred, GSender) :- !, GGCall)),		% cache lookup result
 				GObj = Obj, GPred = Pred, GSender = Sender,								% unify message arguments
-				'$lgt_guarded_method_call'(Obj, Pred, Sender, GCall)					% call method
+				call(GCall)																% call method
 			;	% closed-world assumption
 				fail
 			)
@@ -3301,7 +3310,7 @@ current_logtalk_flag(version, version(2, 44, 1)).
 				GGCall = '$lgt_guarded_method_call'(GObj, GPred, GSender, GCall),
 				asserta(('$lgt_send_to_obj_'(GObj, GPred, GSender) :- !, GGCall)),		% cache lookup result
 				GObj = Obj, GPred = Pred, GSender = Sender,								% unify message arguments
-				'$lgt_guarded_method_call'(Obj, Pred, Sender, GCall)					% call method
+				call(GCall)																% call method
 			;	% closed-world assumption
 				fail
 			)
@@ -3323,18 +3332,18 @@ current_logtalk_flag(version, version(2, 44, 1)).
 		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(Obj::Pred, Sender)))
 	).
 
-'$lgt_send_to_obj_nv'({Proxy}, Pred, Sender) :-
+'$lgt_send_to_obj_nv_inner'({Proxy}, Pred, Sender) :-
 	!,
 	catch(Proxy, error(Error, _), throw(error(Error, logtalk({Proxy}::Pred, Sender)))),
 	'$lgt_send_to_obj_'(Proxy, Pred, Sender).
 
-'$lgt_send_to_obj_nv'(Obj, Pred, _) :-		% allow Obj::Pred to be used as a shortcut
+'$lgt_send_to_obj_nv_inner'(Obj, Pred, _) :-		% allow Obj::Pred to be used as a shortcut
 	atom(Obj),
-	catch(current_module(Obj), _, fail),	% for calling module predicates
+	catch(current_module(Obj), _, fail),			% for calling module predicates
 	!,
 	':'(Obj, Pred).
 
-'$lgt_send_to_obj_nv'(Obj, Pred, Sender) :-
+'$lgt_send_to_obj_nv_inner'(Obj, Pred, Sender) :-
 	throw(error(existence_error(object, Obj), logtalk(Obj::Pred, Sender))).
 
 

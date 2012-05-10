@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.44.1 - April ??, 2012
 
+    Modified the message sending mechanism to call the "before" event handlers
+    before performing the method lookup. This change should have no impact on
+    existing code but allows some interesting applications.
+
     More consistent handling of compiler flags between setting flag values
     when compiling/loading a file and when using the set_logtalk_flag/2
     built-in predicate: in both cases, setting the "smart_compilation" flag
