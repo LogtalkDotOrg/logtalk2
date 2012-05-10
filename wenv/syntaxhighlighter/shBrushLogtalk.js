@@ -1,19 +1,3 @@
-/**
- * SyntaxHighlighter
- * http://alexgorbatchev.com/SyntaxHighlighter
- *
- * SyntaxHighlighter is donationware. If you are using it, please donate.
- * http://alexgorbatchev.com/SyntaxHighlighter/donate.html
- *
- * @version
- * 3.0.83 (July 02 2010)
- * 
- * @copyright
- * Copyright (C) 2004-2010 Alex Gorbatchev.
- *
- * @license
- * Dual licensed under the MIT and GPL licenses.
- */
 ;(function()
 {
 	// CommonJS
@@ -21,8 +5,7 @@
 
 	function Brush()
 	{
-		// Contributed by Paulo Moura (pmoura@logtalk.org); last revised on March 5, 2012
-		// http://logtalk.org/  
+		// Contributed by Paulo Moura (http://logtalk.org/); last revised on May 3, 2012
 
 		this.regexList = [
 		  // variables
@@ -67,7 +50,7 @@
       // multi-threading built-in predicates
       { regex: new RegExp("\\bthreaded(_(call|once|ignore|exit|peek|wait|notify))?(?=[(])", 'g'), css: 'keyword'},
       // term unification built-in predicates
-      { regex: new RegExp("\\bunify_with_occurs_check(?=[(])", 'g'), css: 'keyword'},
+      { regex: new RegExp("\\b(subsumes_term|unify_with_occurs_check)(?=[(])", 'g'), css: 'keyword'},
       // term creation and decomposition built-in predicates
       { regex: new RegExp("\\b(functor|arg|copy_term|numbervars|term_variables)(?=[(])", 'g'), css: 'keyword'},
       // evaluable functors
@@ -77,7 +60,7 @@
       { regex: new RegExp("\\b(cos|a(cos|sin|tan)|exp|log|s(in|qrt))(?=[(])", 'g'), css: 'keyword'},
       { regex: new RegExp("\\b(e|pi|is|rem|mod)\\b", 'g'), css: 'keyword'},
       // term type built-in predicates
-      { regex: new RegExp("\\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(])", 'g'), css: 'keyword'},
+      { regex: new RegExp("\\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber)|ground|acyclic_term)(?=[(])", 'g'), css: 'keyword'},
       // term comparison built-in predicates
       { regex: new RegExp("\\bcompare(?=[(])", 'g'), css: 'keyword'},
       // stream selection and control built-in predicates
