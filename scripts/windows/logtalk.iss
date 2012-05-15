@@ -186,22 +186,6 @@ begin
   Result := GetDateTimeString('dddddd tt', '-', '-')
 end;
 
-function ShouldSkipPage(PageID: Integer): Boolean;
-var
-  LOGTALKHOME: String;
-begin
-  if IsAdminLoggedOn then
-    if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment', 'LOGTALKHOME', LOGTALKHOME) then
-      WizardForm.DirEdit.Text := LOGTALKHOME
-    else
-      WizardForm.DirEdit.Text := ExpandConstant('{pf}') + '\Logtalk'
-  else if RegQueryStringValue(HKCU, 'Environment', 'LOGTALKHOME', LOGTALKHOME) then
-    WizardForm.DirEdit.Text := LOGTALKHOME
-  else
-    WizardForm.DirEdit.Text := ExpandConstant('{localappdata}') + '\Logtalk';
-  Result := false
-end;
-
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   NewFolder: String;
@@ -546,6 +530,15 @@ var
   Version, InstalledVersion: Cardinal;
   LOGTALKHOME, LOGTALKUSER: String;
 begin
+  if IsAdminLoggedOn then
+    if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment', 'LOGTALKHOME', LOGTALKHOME) then
+      WizardForm.DirEdit.Text := LOGTALKHOME
+    else
+      WizardForm.DirEdit.Text := ExpandConstant('{pf}') + '\Logtalk'
+  else if RegQueryStringValue(HKCU, 'Environment', 'LOGTALKHOME', LOGTALKHOME) then
+    WizardForm.DirEdit.Text := LOGTALKHOME
+  else
+    WizardForm.DirEdit.Text := ExpandConstant('{localappdata}') + '\Logtalk';
   Explanation := 'Select the folder in which Setup should install Logtalk user files, then click Next.'
                  + Chr(13) + Chr(13)
                  + 'These files allows each user to independently customize Logtalk and to freely modify the provided libraries, programming examples, and other supporting files.'

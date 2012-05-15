@@ -52,6 +52,10 @@ RELEASE NOTES
     Corrected a bug in the Windows installer that prevented detection of
     YAP 64 bits versions. Thanks to Stepan Ipatov for the bug report.
 
+    Corrected a bug in the Windows installer that prevented users from
+    customizing the installation directory. Thanks to Daniel Moniz for
+    the bug report and Gavin Lambert for diagnosing the bug.
+
     Updated the TextMate bundle to disable the automatic indent corrections
     introduced in the development version of TextMate 2.0.
 
