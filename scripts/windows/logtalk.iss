@@ -563,6 +563,8 @@ begin
                + Chr(13) + Chr(13)
                + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user files to their default, pristine state.';
     WarningPage := CreateOutputMsgPage(wpWelcome, 'Information', 'Please read the following important information before continuing.', Warning);
+    WizardForm.TypesCombo.ItemIndex := 2;
+    WizardForm.TypesCombo.OnChange(WizardForm.TypesCombo)
   end;
   if RegQueryDWordValue(HKCU, 'Software\Logtalk', 'Version', Version) then
     InstalledVersion := Version
