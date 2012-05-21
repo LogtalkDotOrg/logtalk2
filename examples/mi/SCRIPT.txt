@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 3.0.0
+Release 2.44.1
 
 Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -46,22 +46,22 @@ Functor = xyzt ? ;
 
 Pred = xyz(_A,_B,_C),
 Arity = 3,
-Object = space,
+Object = xyz,
 Functor = xyz ? ;
 
 Pred = rotate(_A,_B,_C),
 Arity = 3,
-Object = space,
+Object = xyz,
 Functor = rotate ? ;
 
 Pred = t(_A),
 Arity = 1,
-Object = time,
+Object = t,
 Functor = t ? ;
 
 Pred = translate(_A),
 Arity = 1,
-Object = time,
+Object = t,
 Functor = translate ? ;
 
 no
@@ -87,12 +87,12 @@ yes
 
 Pred = distance(_A),
 Arity = 1,
-Object = space(_B,_C,_D),
+Object = xyz(_B,_C,_D),
 Functor = distance ? ;
 
 Pred = time(_A),
 Arity = 1,
-Object = time(_B),
+Object = t(_B),
 Functor = time ? ;
 
 no
