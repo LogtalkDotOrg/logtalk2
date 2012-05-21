@@ -63,6 +63,9 @@ RELEASE NOTES
     Added basic support for the LaTeX "listings "package. Added notes on the
     "minted" and "texmates" LaTeX packages.
 
+    Added basic syntax coloring and code folding support for the UltraEdit
+    text editor.
+
     Updated the TextMate bundle to disable the automatic indent corrections
     introduced in the development version of TextMate 2.0.
 
