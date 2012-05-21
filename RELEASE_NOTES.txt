@@ -60,6 +60,9 @@ RELEASE NOTES
     per-user files when run by a non-admin user on a computer where Logtalk
     is already installed.
 
+    Added basic support for the LaTeX "listings "package. Added notes on the
+    "minted" and "texmates" LaTeX packages.
+
     Updated the TextMate bundle to disable the automatic indent corrections
     introduced in the development version of TextMate 2.0.
 

@@ -1,0 +1,14 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 3.0.0
+
+Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+This folder contains support and notes for including nicely formatted
+snippets of Logtalk source code in LaTeX documents using common LaTeX
+packages.

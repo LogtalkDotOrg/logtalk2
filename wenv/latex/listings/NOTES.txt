@@ -1,0 +1,24 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 3.0.0
+
+Copyright (c) 1998-2012 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+This folder contains a simple Logtalk language definition for the
+LaTeX package "listings":
+
+	http://www.ctan.org/tex-archive/macros/latex/contrib/listings/
+
+To use the language definition copy the "lstlang0.sty" to the same
+folder where you have the LaTeX source files that you're typesetting
+and add the following line to your main LaTeX file:
+
+\usepackage{textcomp}
+
+This package is required as the Logtalk language definition sets the
+"upquote" option to true.
