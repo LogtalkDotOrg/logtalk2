@@ -15,11 +15,18 @@
 :- multifile(logtalk_library_path/2).		% logtalk_library_path(Library, Path)
 :- dynamic(logtalk_library_path/2).			% paths must always end with a "/"
 
-logtalk_library_path(home, '$HOME/') :-					% this definition only works for POSIX systems
-	'$lgt_environment_variable'('HOME', _).
-logtalk_library_path(home, '$HOMEDRIVE/$HOMEPATH/') :-	% this definition only works for Windows systems
-	'$lgt_environment_variable'('HOMEDRIVE', _),		% for some back-end Prolog compilers
-	'$lgt_environment_variable'('HOMEPATH', _).
+logtalk_library_path(home, HOME) :-
+	(	'$lgt_environment_variable'('COMSPEC', _) ->
+		% Windows systems define this environment variable
+		'$lgt_environment_variable'('HOMEDRIVE', _),
+		'$lgt_environment_variable'('HOMEPATH', _),
+		% this definition only works for some back-end Prolog compilers
+		HOME = '$HOMEDRIVE/$HOMEPATH/'
+	;	'$lgt_environment_variable'('HOME', _) ->
+		% assume a POSIX system
+		HOME = '$HOME/'
+	;	fail
+	).
 logtalk_library_path(lgtuser, '$LOGTALKUSER/').
 logtalk_library_path(contributions, lgtuser('contributions/')).
 logtalk_library_path(examples, lgtuser('examples/')).
