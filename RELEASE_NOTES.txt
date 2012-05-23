@@ -26,6 +26,11 @@ RELEASE NOTES
     turn off the "smart_compilation" flag. Also, setting the "debug" flag
     on will turn off both the "smart_compilation" and "clean" flags.
 
+    Allows the soft-cut control construct, (*->)/2, when natively supported
+    by the back-end Prolog compiler, to be used in the body of grammar rules
+    (after a remark by Daniel Diaz while discussing GNU Prolog support for
+    the soft-cut control construct).
+
     Corrected a Logtalk compiler bug when the "source_data" flag is on with
     back-end Prolog compilers where is not possible to retrieve the position
     of a read term.
