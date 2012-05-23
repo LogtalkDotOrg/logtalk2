@@ -441,7 +441,12 @@ var
   XSB_DIR: String;
 begin
   if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
-    Result := XSB_DIR + '\config\i686-pc-cygwin\bin\xsb.exe'
+    if FileExists(XSB_DIR + '\config\i686-pc-cygwin\bin\xsb.exe') then
+      Result := XSB_DIR + '\config\i686-pc-cygwin\bin\xsb.exe'
+    else if FileExists(XSB_DIR + '\config\x64-pc-windows\bin\xsb.exe') then
+      Result := XSB_DIR + '\config\x64-pc-windows\bin\xsb.exe'
+    else if FileExists(XSB_DIR + '\config\x86-pc-windows\bin\xsb.exe') then
+      Result := XSB_DIR + '\config\x86-pc-windows\bin\xsb.exe'
   else
     Result := 'prolog_compiler_not_installed'
 end;
@@ -463,7 +468,12 @@ var
   XSB_DIR: String;
 begin
   if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
-    Result := XSB_DIR + '\config\i686-pc-cygwin-mt\bin\xsb.exe'
+    if FileExists(XSB_DIR + '\config\i686-pc-cygwin-mt\bin\xsb.exe') then
+      Result := XSB_DIR + '\config\i686-pc-cygwin-mt\bin\xsb.exe'
+    else if FileExists(XSB_DIR + '\config\x64-pc-windows-mt\bin\xsb.exe') then
+      Result := XSB_DIR + '\config\x64-pc-windows-mt\bin\xsb.exe'
+    else if FileExists(XSB_DIR + '\config\x86-pc-windows-mt\bin\xsb.exe') then
+      Result := XSB_DIR + '\config\x86-pc-windows-mt\bin\xsb.exe'
   else
     Result := 'prolog_compiler_not_installed'
 end;

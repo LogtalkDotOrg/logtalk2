@@ -56,9 +56,9 @@ RELEASE NOTES
     customizing the installation directory. Thanks to Daniel Moniz for
     the bug report and Gavin Lambert for diagnosing the bug.
 
-    Updated the Windows installer script to default to install only the
-    per-user files when run by a non-admin user on a computer where Logtalk
-    is already installed.
+    Updated the Windows installer script for improved detection of XSB and to
+    default to install only the per-user files when run by a non-admin user on
+    a computer where Logtalk is already installed.
 
     Added basic support for the LaTeX "listings "package. Added notes on the
     "minted" and "texmates" LaTeX packages.
