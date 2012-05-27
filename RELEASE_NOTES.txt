@@ -17,7 +17,8 @@ RELEASE NOTES
 
     Modified the message sending mechanism to call the "before" event handlers
     before performing the method lookup. This change should have no impact on
-    existing code but allows some interesting applications.
+    existing code but allows some interesting applications (e.g. fail instead
+    of throwing an exception when a message is not understood).
 
     More consistent handling of compiler flags between setting flag values
     when compiling/loading a file and when using the set_logtalk_flag/2
@@ -59,7 +60,7 @@ RELEASE NOTES
 
     Corrected a bug in the Windows installer that prevented users from
     customizing the installation directory. Thanks to Daniel Moniz for
-    the bug report and Gavin Lambert for diagnosing the bug.
+    the bug report and to Gavin Lambert for diagnosing the bug.
 
     Updated the Windows installer script for improved detection of XSB and to
     default to install only the per-user files when run by a non-admin user on
