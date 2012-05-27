@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.44.1 - April ??, 2012
+2.44.1 - May 28, 2012
 
     Modified the message sending mechanism to call the "before" event handlers
     before performing the method lookup. This change should have no impact on
@@ -67,6 +67,8 @@ RELEASE NOTES
 
     Added basic support for the LaTeX "listings "package. Added notes on the
     "minted" and "texmates" LaTeX packages.
+
+    Added notes on the Textastic iPad text editor.
 
     Added basic syntax coloring and code folding support for the UltraEdit
     text editor.
