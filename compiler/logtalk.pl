@@ -5765,6 +5765,7 @@ current_logtalk_flag(version, version(2, 44, 1)).
 	'$lgt_pp_object_'(Module, _, _, _, _, _, _, _, _, _, _),	% source file; there is no module closing directive
 	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),				% set the initial compilation context
 	'$lgt_tr_term'(end_of_file, Ctx),							% for compiling the end_of_file term
+	'$lgt_add_entity_predicate_properties'(Module),
 	'$lgt_tr_entity'(object, Module),
 	'$lgt_report_compiled_entity'(module, Module),
 	!.

@@ -12,6 +12,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 RELEASE NOTES
 =============
 
+    Corrected a bug in the compilation of modules as objects when the
+    "source_data2 flag is turned on that resulted in a non-instantiated
+    argument in the "number_of_clauses/2" property for the module predicates.
+
 
 2.44.1 - May 28, 2012
 
