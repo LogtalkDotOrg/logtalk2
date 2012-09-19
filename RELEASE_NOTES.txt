@@ -16,6 +16,10 @@ RELEASE NOTES
     "source_data" flag is turned on that resulted in a non-instantiated
     argument in the "number_of_clauses/2" property for the module predicates.
 
+    Updated the Windows installer script for detecting SWI-Prolog 6.3.1 (and,
+    hopefully, later versions) due to changes to the registry keys it uses for
+    the 64 bits version.
+
 
 2.44.1 - May 28, 2012
 
